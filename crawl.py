@@ -37,7 +37,7 @@ class Crawler:
         pluginList = []
 
         self.print("Loading plugins...")
-        for fileName in os.listdir(os.path.join(os.path.dirname(__file__), "plugins")):
+        for fileName in os.listdir(os.path.join(os.path.dirname(os.path.realpath(__file__)), "plugins")):
             pluginName = fileName[:-3]
             if fileName == '__init__.py' or fileName[-3:] != '.py' or fileName[0] == '_':
                 continue
