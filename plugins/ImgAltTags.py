@@ -18,5 +18,10 @@ class ImgAltTags:
             try:
                 image['alt']
             except KeyError:
-                self.missing_alts.append([url, image['src']])
-                self.crawler.printERR("Found missing alt tag for {}".format(image['src']))
+                try:
+                    output = image['src']
+                except KeyError:
+                    output = str(image)
+                    
+                self.missing_alts.append([url, output])            
+                self.crawler.printERR("Found missing alt tag for {}".format(output))
