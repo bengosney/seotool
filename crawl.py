@@ -14,11 +14,12 @@ from plugins import *
 
 
 class Crawler:
-    def __init__(self, url, plugins=[], verbose=True):
+    def __init__(self, url, plugins=[], verbose=True, verify=True):
         self.base_url = url
         self.plugins = plugins
         self.plugin_classes = []
         self.base_netloc = urllib.parse.urlparse(self.base_url).netloc
+        self.verify = verify
 
         self.visited = deque([])
         self.urls = deque([self.base_url])
@@ -101,7 +102,7 @@ class Crawler:
             self.visited.append(url)
             self.print("\n-- Crawling {}\n".format(url))
             
-            response = get(url)
+            response = get(url, verify=self.verify)
             html_soup = BeautifulSoup(response.text, 'html.parser')
 
             self._add_links(html_soup)
@@ -116,9 +117,10 @@ class Crawler:
 @click.argument('url')
 @click.option('--plugin', multiple=True, help="Only load named plugins")
 @click.option('--verbose', default=True)
-def main(url, verbose, plugin):
+@click.option('--verify/--noverify', default=True, help="Verify SSLs")
+def main(url, verbose, plugin, verify):
     """This script will crawl give URL and analyse the output using plugins"""
-    crawler = Crawler(url, verbose=verbose, plugins=plugin)
+    crawler = Crawler(url, verbose=verbose, plugins=plugin, verify=verify)
     crawler.crawl()
 
 if __name__ == '__main__':
