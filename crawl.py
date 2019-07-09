@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 from requests import get
+from requests.exceptions import TooManyRedirects
 from bs4 import BeautifulSoup
 from collections import deque
 import urllib.parse
@@ -112,8 +113,12 @@ class Crawler:
             
             self.visited.append(url)
             self.print("\n-- Crawling {}\n".format(url))
-            
-            response = get(url, verify=self.verify)
+
+            try:
+                response = get(url, verify=self.verify)
+            except TooManyRedirects:
+                self.printERR("Too many redirects, skipping")
+                continue
             html_soup = BeautifulSoup(response.text, 'html.parser')
 
             self._add_links(html_soup)
