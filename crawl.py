@@ -30,16 +30,20 @@ class Crawler:
     def _init_plugins(self):
         import importlib
 
+        pluginList = []
+
         self.print("Loading plugins")
         for fileName in os.listdir(os.path.join(os.path.dirname(__file__), "plugins")):
             pluginName = fileName[:-3]
-            if fileName == '__init__.py' or fileName[-3:] != '.py':
+            if fileName == '__init__.py' or fileName[-3:] != '.py' or fileName[0] == '_':
                 continue
 
-            self.print("Loading {}...".format(pluginName))
             _module = getattr(plugins, pluginName)
-            _class = getattr(_module, pluginName)
+            _class = getattr(_module, pluginName)            
             self.plugin_classes.append(_class(self))
+            pluginList.append(pluginName)
+
+        self.print("Loaded {}".format(", ".join(pluginList)))
             
 
     def _add_links(self, html_soup):
