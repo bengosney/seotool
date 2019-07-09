@@ -14,7 +14,7 @@ from plugins import *
 
 
 class Crawler:
-    def __init__(self, url, plugins=["imgalttags"], verbose=True):
+    def __init__(self, url, plugins=[], verbose=True):
         self.base_url = url
         self.plugins = plugins
         self.plugin_classes = []
@@ -32,18 +32,23 @@ class Crawler:
 
         pluginList = []
 
-        self.print("Loading plugins")
+        self.print("Loading plugins...")
         for fileName in os.listdir(os.path.join(os.path.dirname(__file__), "plugins")):
             pluginName = fileName[:-3]
             if fileName == '__init__.py' or fileName[-3:] != '.py' or fileName[0] == '_':
                 continue
 
-            _module = getattr(plugins, pluginName)
-            _class = getattr(_module, pluginName)            
-            self.plugin_classes.append(_class(self))
-            pluginList.append(pluginName)
+            if len(self.plugins) == 0 or pluginName in self.plugins:
+                _module = getattr(plugins, pluginName)
+                _class = getattr(_module, pluginName)            
+                self.plugin_classes.append(_class(self))
+                pluginList.append(pluginName)
 
-        self.print("Loaded {}".format(", ".join(pluginList)))
+        if len(pluginList) > 0:
+            self.print("Loaded {}".format(", ".join(pluginList)))
+        else:
+            self.print("Error no plugins loaded")
+            exit(0)
             
 
     def _add_links(self, html_soup):
@@ -106,10 +111,12 @@ class Crawler:
 
 
 @click.command()
-@click.option('--url', help="Base URL to crawl", prompt="URL to crawl")
+@click.argument('url')
+@click.option('--plugin', multiple=True, help="Only load named plugins")
 @click.option('--verbose', default=True)
-def main(url, verbose):
-    crawler = Crawler(url, verbose=verbose)
+def main(url, verbose, plugin):
+    """This script will crawl give URL and analyse the output using plugins"""
+    crawler = Crawler(url, verbose=verbose, plugins=plugin)
     crawler.crawl()
 
 if __name__ == '__main__':
