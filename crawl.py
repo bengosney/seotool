@@ -86,11 +86,19 @@ class Crawler:
         for plugin in self.plugin_classes:
             plugin_name = plugin.__class__.__name__
             path = os.path.join(base_path, "{}.csv".format(plugin_name))
-            
-            with open(path, 'w') as f:
-                w = csv.writer(f)
-                w.writerow(plugin.get_results_headder())
-                w.writerows(plugin.get_results())
+
+            results = plugin.get_results()
+            if len(results):
+                with open(path, 'w') as f:
+                    w = csv.writer(f)
+                    w.writerow(plugin.get_results_headder())
+                    w.writerows(results)
+            else:
+                try:
+                    os.remove(path)
+                except FileNotFoundError:
+                    pass
+                    
             
     def crawl(self):
         while True:
