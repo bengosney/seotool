@@ -77,7 +77,7 @@ class Crawler:
         self.print(text, 'red')
 
     def save_results(self):
-        base_path = os.path.join(os.path.dirname(__file__), "results", self.base_netloc)
+        base_path = os.path.join(os.getcwd(), "results-{}".format(self.base_netloc))
         try:
             os.makedirs(base_path)
         except FileExistsError:
