@@ -9,6 +9,9 @@ import os
 import csv
 import importlib
 
+import urllib3
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
 import plugins
 from plugins import *
 
