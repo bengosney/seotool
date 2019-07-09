@@ -65,9 +65,12 @@ class Crawler:
             if abs_url not in self.urls and abs_url not in self.visited:
                 self.urls.append(abs_url)
 
-    def print(self, text):
+    def print(self, text, color='white'):
         if self.verbose:
-            click.echo(text)
+            click.secho(text, fg=color)
+
+    def printERR(self, text):
+        self.print(text, 'red')
 
     def save_results(self):
         base_path = os.path.join(os.path.dirname(__file__), "results", self.base_netloc)
@@ -92,12 +95,11 @@ class Crawler:
             except IndexError:
                 break
 
-            if url in self.visited:
-                self.print("Already visited {}".format(url))
+            if url in self.visited:                
                 continue
             
             self.visited.append(url)
-            self.print("\n--Crawling {}\n".format(url))
+            self.print("\n-- Crawling {}\n".format(url))
             
             response = get(url)
             html_soup = BeautifulSoup(response.text, 'html.parser')
