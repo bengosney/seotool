@@ -79,7 +79,7 @@ class Crawler:
             exit(0)
 
         if len(pluginPostList):
-            self.print(f"Loaded results processing plugins: {', '.join(pluginPreList)}")
+            self.print(f"Loaded results processing plugins: {', '.join(pluginPostList)}")
         
 
     def _add_links(self, html_soup):
@@ -125,7 +125,7 @@ class Crawler:
             results = plugin.get_results()
             results_header = plugin.get_results_header()
 
-            results_store.update({plugin_name: results_header + results})
+            results_store.update({plugin_name: [results_header] + results})
             with open(path, 'w') as f:
                 w = csv.writer(f)
                 w.writerow(results_header)
@@ -134,7 +134,7 @@ class Crawler:
                     
         for plugin in self.plugin_post_classes:
             self.print(f"Processing results with {plugin.__class__.__name__}")
-            plugin.process_results(results)        
+            plugin.process_results(results_store)
                     
             
     def crawl(self):
