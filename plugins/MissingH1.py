@@ -14,4 +14,4 @@ class MissingH1:
 
         if len(h1s) == 0:
             self.missing_h1s.append([url])
-            self.crawler.printERR("Found no H1 on {}".format(url))
+            self.crawler.printERR(f"Found no H1 on {url}")

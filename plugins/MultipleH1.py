@@ -16,4 +16,4 @@ class MultipleH1:
         if count > 1:
             h1s = [h1.getText() for h1 in h1s].insert(0, url)
             self.multiple_h1s.append(h1s)
-            self.crawler.printERR("Found {} H1s on {}".format(count, url))
+            self.crawler.printERR(f"Found {count} H1s on {url}")

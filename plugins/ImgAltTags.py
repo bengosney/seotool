@@ -24,4 +24,4 @@ class ImgAltTags:
                     output = str(image)
                     
                 self.missing_alts.append([url, output])            
-                self.crawler.printERR("Found missing alt tag for {}".format(output))
+                self.crawler.printERR(f"Found missing alt tag for {output}")

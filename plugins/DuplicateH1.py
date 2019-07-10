@@ -15,7 +15,7 @@ class DuplicateH1:
         for h1Tag in h1s:
             h1 = h1Tag.getText()
             try:                
-                self.crawler.printERR("H1 already seen on {}".format(", ".join(self.h1s[h1])))
+                self.crawler.printERR(f"H1 already seen on {', '.join(self.h1s[h1])}")
                 self.h1s[h1].append(url)
             except KeyError:
                 self.h1s.update({h1: [url]})

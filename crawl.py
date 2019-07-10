@@ -50,7 +50,7 @@ class Crawler:
                 pluginList.append(pluginName)
 
         if len(pluginList) > 0:
-            self.print("Loaded {}".format(", ".join(pluginList)))
+            self.print(f"Loaded parsing plugins: {', '.join(pluginList)}")
         else:
             self.print("Error no plugins loaded")
             exit(0)
@@ -78,7 +78,7 @@ class Crawler:
         self.print(text, 'red')
 
     def save_results(self):
-        base_path = os.path.join(os.getcwd(), "results-{}".format(self.base_netloc))
+        base_path = os.path.join(os.getcwd(), f"results-{self.base_netloc}")
         try:
             os.makedirs(base_path)
         except FileExistsError:
@@ -86,7 +86,7 @@ class Crawler:
         
         for plugin in self.plugin_classes:
             plugin_name = plugin.__class__.__name__
-            path = os.path.join(base_path, "{}.csv".format(plugin_name))
+            path = os.path.join(base_path, f"{plugin_name}.csv")
 
             results = plugin.get_results()
             if len(results):
@@ -112,7 +112,7 @@ class Crawler:
                 continue
             
             self.visited.append(url)
-            self.print("\n-- Crawling {}\n".format(url))
+            self.print(f"\n-- Crawling {url}\n")
 
             try:
                 response = get(url, verify=self.verify)
