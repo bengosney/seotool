@@ -156,7 +156,7 @@ class Crawler:
 @click.command()
 @click.argument('url')
 @click.option('--plugin', multiple=True, help="Only load named plugins")
-@click.option('--verbose', default=True)
+@click.option('--verbose/--quiet', default=True, help="Show or supress output")
 @click.option('--verify/--noverify', default=True, help="Verify SSLs")
 def main(url, verbose, plugin, verify):
     """This script will crawl give URL and analyse the output using plugins"""
