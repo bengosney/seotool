@@ -89,7 +89,7 @@ class Crawler:
             path = os.path.join(base_path, f"{plugin_name}.csv")
 
             results = plugin.get_results()
-            if len(results):
+            if results is not None and len(results):
                 with open(path, 'w') as f:
                     w = csv.writer(f)
                     w.writerow(plugin.get_results_headder())
