@@ -1,5 +1,4 @@
 import urllib.parse
-from pprint import pprint
 
 class Internal301:
     def __init__(self, crawler):
