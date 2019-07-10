@@ -25,8 +25,6 @@ class Crawler:
         self.plugin_classes = []
         self.plugin_pre_classes = []
         self.plugin_post_classes = []
-        self.base_netloc = urllib.parse.urlparse(self.base_url).netloc
-
         self.visited = deque([])
         self.urls = deque([self.base_url])
         self.all_urls = [self.base_url]
@@ -38,6 +36,10 @@ class Crawler:
 
         if self.base_url != url:
             self.print(f"\nBase URL {url} resolved to {self.base_url}\n", 'yellow')
+
+        self.base_netloc = urllib.parse.urlparse(self.base_url).netloc
+        self.results_base_path = os.path.join(os.getcwd(), f"results-{self.base_netloc}")
+
 
     def _init_plugins(self):
         import importlib
@@ -108,11 +110,11 @@ class Crawler:
         self.print(text, 'red')
 
     def save_results(self):        
-        base_path = os.path.join(os.getcwd(), f"results-{self.base_netloc}")
-        self.print(f"\nSaving results to {base_path}\n", "green")
+        
+        self.print(f"\nSaving results to {self.results_base_path}\n", "green")
         
         try:
-            os.makedirs(base_path)
+            os.makedirs(self.results_base_path)
         except FileExistsError:
             pass
 
@@ -120,7 +122,7 @@ class Crawler:
         
         for plugin in self.plugin_classes:
             plugin_name = plugin.__class__.__name__
-            path = os.path.join(base_path, f"{plugin_name}.csv")
+            path = os.path.join(self.results_base_path, f"{plugin_name}.csv")
 
             results = plugin.get_results()
             results_header = plugin.get_results_header()
