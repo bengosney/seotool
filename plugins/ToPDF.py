@@ -17,7 +17,7 @@ class ToPDF:
             table = ""
             headdings = []
             for i, row in enumerate(results[block]):
-                text = f"{text}\n| {' | '.join(row)} | {'   |' * (cols - len(row))}"
+                text = f"{text}\n| {' | '.join(row[:5])} | {'   |' * (cols - len(row))}"
                 if i == 0:
                     text = f"{text}\n|{'---|' * cols}"
 
