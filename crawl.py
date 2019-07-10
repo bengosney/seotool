@@ -98,28 +98,34 @@ class Crawler:
     def printERR(self, text):
         self.print(text, 'red')
 
-    def save_results(self):
+    def save_results(self):        
         base_path = os.path.join(os.getcwd(), f"results-{self.base_netloc}")
+        self.print(f"\nSaving results to {base_path}\n", "green")
+        
         try:
             os.makedirs(base_path)
         except FileExistsError:
             pass
+
+        results_store = {}
         
         for plugin in self.plugin_classes:
             plugin_name = plugin.__class__.__name__
             path = os.path.join(base_path, f"{plugin_name}.csv")
 
             results = plugin.get_results()
-            if results is not None and len(results):
-                with open(path, 'w') as f:
-                    w = csv.writer(f)
-                    w.writerow(plugin.get_results_header())
+            results_header = plugin.get_results_header()
+
+            results_store.update({plugin_name: results_header + results})
+            with open(path, 'w') as f:
+                w = csv.writer(f)
+                w.writerow(results_header)
+                if results is not None and len(results):
                     w.writerows(results)
-            else:
-                try:
-                    os.remove(path)
-                except FileNotFoundError:
-                    pass
+                    
+        for plugin in self.plugin_post_classes:
+            self.print(f"Processing results with {plugin.__class__.__name__}")
+            plugin.process_results(results)        
                     
             
     def crawl(self):
