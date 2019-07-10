@@ -51,7 +51,7 @@ class Crawler:
                 _module = getattr(plugins, pluginName)
                 _class = getattr(_module, pluginName)
                 instance = _class(self)
-                if all(hasattr(instance, func) for func in ['get_results_headder', 'get_results', 'parse']):
+                if all(hasattr(instance, func) for func in ['get_results_header', 'get_results', 'parse']):
                     self.plugin_classes.append(instance)
                     pluginList.append(pluginName)
 
@@ -113,7 +113,7 @@ class Crawler:
             if results is not None and len(results):
                 with open(path, 'w') as f:
                     w = csv.writer(f)
-                    w.writerow(plugin.get_results_headder())
+                    w.writerow(plugin.get_results_header())
                     w.writerows(results)
             else:
                 try:

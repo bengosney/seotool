@@ -3,7 +3,7 @@ class MissingH1:
         self.missing_h1s = []
         self.crawler = crawler
 
-    def get_results_headder(self):
+    def get_results_header(self):
         return ['url']
         
     def get_results(self):

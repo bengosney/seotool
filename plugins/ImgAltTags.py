@@ -5,7 +5,7 @@ class ImgAltTags:
         self.missing_alts = []
         self.crawler = crawler
 
-    def get_results_headder(self):
+    def get_results_header(self):
         return ['src', 'url']
         
     def get_results(self):

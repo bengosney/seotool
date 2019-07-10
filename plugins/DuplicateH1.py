@@ -3,7 +3,7 @@ class DuplicateH1:
         self.h1s = {}
         self.crawler = crawler
 
-    def get_results_headder(self):
+    def get_results_header(self):
         return ['h1', 'urls']
         
     def get_results(self):

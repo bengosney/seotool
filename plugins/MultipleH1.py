@@ -3,7 +3,7 @@ class MultipleH1:
         self.multiple_h1s = []
         self.crawler = crawler
 
-    def get_results_headder(self):
+    def get_results_header(self):
         return ['url', 'h1s']
         
     def get_results(self):
