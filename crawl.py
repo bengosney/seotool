@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from requests import get
+from requests import get, head
 from requests.exceptions import TooManyRedirects
 from bs4 import BeautifulSoup
 from collections import deque
@@ -19,20 +19,25 @@ from plugins import *
 
 class Crawler:
     def __init__(self, url, plugins=[], verbose=True, verify=True):
-        self.base_url = url
+        self.verify = verify
+        self.base_url = head(url, verify=verify).url
         self.plugins = plugins
         self.plugin_classes = []
         self.plugin_pre_classes = []
         self.plugin_post_classes = []
         self.base_netloc = urllib.parse.urlparse(self.base_url).netloc
-        self.verify = verify
 
         self.visited = deque([])
         self.urls = deque([self.base_url])
+        self.all_urls = [self.base_url]
+        self.resolve_cache = {}
 
         self.verbose = verbose
 
         self._init_plugins()
+
+        if self.base_url != url:
+            self.print(f"\nBase URL {url} resolved to {self.base_url}\n", 'yellow')
 
     def _init_plugins(self):
         import importlib
@@ -87,9 +92,13 @@ class Crawler:
 
             if urllib.parse.urlparse(abs_url).netloc != self.base_netloc:
                 continue
-        
-            if abs_url not in self.urls and abs_url not in self.visited:
+
+            if abs_url in self.resolve_cache:
+                abs_url = self.resolve_cache[abs_url]
+                
+            if abs_url not in self.all_urls:
                 self.urls.append(abs_url)
+                self.all_urls.append(abs_url)
 
     def print(self, text, color='white'):
         if self.verbose:
@@ -137,7 +146,7 @@ class Crawler:
 
             if url in self.visited:                
                 continue
-            
+
             self.visited.append(url)
             self.print(f"\n-- Crawling {url}\n")
 
@@ -146,6 +155,12 @@ class Crawler:
             except TooManyRedirects:
                 self.printERR("Too many redirects, skipping")
                 continue
+
+            self.resolve_cache.update({url: response.url})
+            if url != response.url and response.url in self.visited:
+                self.print(f"{url} resolves to {response.url} and has already been visited", "yellow")
+                continue
+                
             html_soup = BeautifulSoup(response.text, 'html.parser')
 
             for plugin in self.plugin_pre_classes:
