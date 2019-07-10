@@ -22,6 +22,8 @@ class Crawler:
         self.base_url = url
         self.plugins = plugins
         self.plugin_classes = []
+        self.plugin_pre_classes = []
+        self.plugin_post_classes = []
         self.base_netloc = urllib.parse.urlparse(self.base_url).netloc
         self.verify = verify
 
@@ -36,6 +38,8 @@ class Crawler:
         import importlib
 
         pluginList = []
+        pluginPreList = []
+        pluginPostList = []
 
         self.print("Loading plugins...")
         for fileName in os.listdir(os.path.join(os.path.dirname(os.path.realpath(__file__)), "plugins")):
@@ -45,16 +49,33 @@ class Crawler:
 
             if len(self.plugins) == 0 or pluginName in self.plugins:
                 _module = getattr(plugins, pluginName)
-                _class = getattr(_module, pluginName)            
-                self.plugin_classes.append(_class(self))
-                pluginList.append(pluginName)
+                _class = getattr(_module, pluginName)
+                instance = _class(self)
+                if all(hasattr(instance, func) for func in ['get_results_headder', 'get_results', 'parse']):
+                    self.plugin_classes.append(instance)
+                    pluginList.append(pluginName)
 
+                if all(hasattr(instance, func) for func in ['process_html']):
+                    self.plugin_pre_classes.append(instance)
+                    pluginPreList.append(pluginName)
+                    
+                if all(hasattr(instance, func) for func in ['process_results']):
+                    self.plugin_post_classes.append(instance)
+                    pluginPostList.append(pluginName)
+                    
+
+        if len(pluginPreList):
+            self.print(f"Loaded pre processing plugins: {', '.join(pluginPreList)}")
+            
         if len(pluginList) > 0:
             self.print(f"Loaded parsing plugins: {', '.join(pluginList)}")
         else:
             self.print("Error no plugins loaded")
             exit(0)
-            
+
+        if len(pluginPostList):
+            self.print(f"Loaded results processing plugins: {', '.join(pluginPreList)}")
+        
 
     def _add_links(self, html_soup):
         links = html_soup.find_all('a')
@@ -120,6 +141,9 @@ class Crawler:
                 self.printERR("Too many redirects, skipping")
                 continue
             html_soup = BeautifulSoup(response.text, 'html.parser')
+
+            for plugin in self.plugin_pre_classes:
+                html_soup = plugin.process_html(html_soup)
 
             self._add_links(html_soup)
 
