@@ -18,7 +18,7 @@ from plugins import *
 
 
 class Crawler:
-    def __init__(self, url, plugins=[], verbose=True, verify=True):
+    def __init__(self, url, plugins=[], verbose=True, verify=True, disabled=[]):
         self.verify = verify
         self.base_url = head(url, verify=verify).url
         self.plugins = plugins
@@ -29,6 +29,7 @@ class Crawler:
         self.urls = deque([self.base_url])
         self.all_urls = [self.base_url]
         self.resolve_cache = {}
+        self.disabled = disabled
 
         self.verbose = verbose
 
@@ -54,7 +55,7 @@ class Crawler:
             if fileName == '__init__.py' or fileName[-3:] != '.py' or fileName[0] == '_':
                 continue
 
-            if len(self.plugins) == 0 or pluginName in self.plugins:
+            if (len(self.plugins) == 0 or pluginName in self.plugins) and pluginName not in self.disabled:
                 _module = getattr(plugins, pluginName)
                 _class = getattr(_module, pluginName)
                 instance = _class(self)
@@ -186,11 +187,12 @@ class Crawler:
 @click.command()
 @click.argument('url')
 @click.option('--plugin', multiple=True, help="Only load named plugins")
+@click.option('--disable', multiple=True, help="Disable plugins")
 @click.option('--verbose/--quiet', default=True, help="Show or supress output")
 @click.option('--verify/--noverify', default=True, help="Verify SSLs")
-def main(url, verbose, plugin, verify):
+def main(url, verbose, plugin, verify, disable):
     """This script will crawl give URL and analyse the output using plugins"""
-    crawler = Crawler(url, verbose=verbose, plugins=plugin, verify=verify)
+    crawler = Crawler(url, verbose=verbose, plugins=plugin, verify=verify, disabled=disable)
     crawler.crawl()
 
 if __name__ == '__main__':
