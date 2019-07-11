@@ -124,15 +124,19 @@ class Crawler:
             plugin_name = plugin.__class__.__name__
             path = os.path.join(self.results_base_path, f"{plugin_name}.csv")
 
-            results = plugin.get_results()
-            results_header = plugin.get_results_header()
+            try:
+                results = plugin.get_results()
+                results_header = plugin.get_results_header()
 
-            results_store.update({plugin_name: [results_header] + results})
-            with open(path, 'w') as f:
-                w = csv.writer(f)
-                w.writerow(results_header)
-                if results is not None and len(results):
-                    w.writerows(results)
+                results_store.update({plugin_name: [results_header] + results})
+                with open(path, 'w') as f:
+                    w = csv.writer(f)
+                    w.writerow(results_header)
+                    if results is not None and len(results):
+                        w.writerows(results)
+            except Exception as ERR:
+                self.printERR(f"Uncaught error saving output of {plugin.__class__.__name__}\n {ERR}")
+                continue
                     
         for plugin in self.plugin_post_classes:
             self.print(f"Processing results with {plugin.__class__.__name__}")
