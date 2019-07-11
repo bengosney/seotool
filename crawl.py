@@ -41,6 +41,9 @@ class Crawler:
         self.base_netloc = urllib.parse.urlparse(self.base_url).netloc
         self.results_base_path = os.path.join(os.getcwd(), f"results-{self.base_netloc}")
 
+    @staticmethod
+    def get_plugin_list():
+        return [f[:-3] for f in os.listdir(os.path.join(os.path.dirname(os.path.realpath(__file__)), "plugins")) if f[-3:] == '.py' and f[0] != '_']
 
     def _init_plugins(self):
         import importlib
@@ -50,28 +53,26 @@ class Crawler:
         pluginPostList = []
 
         self.print("Loading plugins...")
-        for fileName in os.listdir(os.path.join(os.path.dirname(os.path.realpath(__file__)), "plugins")):
-            pluginName = fileName[:-3]
-            if fileName == '__init__.py' or fileName[-3:] != '.py' or fileName[0] == '_':
-                continue
 
-            if (len(self.plugins) == 0 or pluginName in self.plugins) and pluginName not in self.disabled:
-                _module = getattr(plugins, pluginName)
-                _class = getattr(_module, pluginName)
-                instance = _class(self)
-                if all(hasattr(instance, func) for func in ['get_results_header', 'get_results', 'parse']):
-                    self.plugin_classes.append(instance)
-                    pluginList.append(pluginName)
+        if len(self.plugins) == 0:
+            self.plugins = self.get_plugin_list()
+            
+        for pluginName in [p for p in self.plugins if p not in self.disabled]:
+            _module = getattr(plugins, pluginName)
+            _class = getattr(_module, pluginName)
+            instance = _class(self)
+            if all(hasattr(instance, func) for func in ['get_results_header', 'get_results', 'parse']):
+                self.plugin_classes.append(instance)
+                pluginList.append(pluginName)
 
-                if all(hasattr(instance, func) for func in ['process_html']):
-                    self.plugin_pre_classes.append(instance)
-                    pluginPreList.append(pluginName)
+            if all(hasattr(instance, func) for func in ['process_html']):
+                self.plugin_pre_classes.append(instance)
+                pluginPreList.append(pluginName)
                     
-                if all(hasattr(instance, func) for func in ['process_results']):
-                    self.plugin_post_classes.append(instance)
-                    pluginPostList.append(pluginName)
+            if all(hasattr(instance, func) for func in ['process_results']):
+                self.plugin_post_classes.append(instance)
+                pluginPostList.append(pluginName)
                     
-
         if len(pluginPreList):
             self.print(f"Loaded pre processing plugins: {', '.join(pluginPreList)}")
             
@@ -185,15 +186,25 @@ class Crawler:
 
 
 @click.command()
-@click.argument('url')
+@click.argument('url', required=False)
 @click.option('--plugin', multiple=True, help="Only load named plugins")
 @click.option('--disable', multiple=True, help="Disable plugins")
 @click.option('--verbose/--quiet', default=True, help="Show or supress output")
 @click.option('--verify/--noverify', default=True, help="Verify SSLs")
-def main(url, verbose, plugin, verify, disable):
+@click.option('--list-plugins', is_flag=True, help="Lists plugins")
+def main(url, verbose, plugin, verify, disable, list_plugins):
     """This script will crawl give URL and analyse the output using plugins"""
-    crawler = Crawler(url, verbose=verbose, plugins=plugin, verify=verify, disabled=disable)
-    crawler.crawl()
+    if list_plugins:
+        plugins = Crawler.get_plugin_list()
+        [click.echo(plugin) for plugin in plugins]
+    else:
+        if url is None:
+            ctx = click.get_current_context()
+            click.echo(ctx.get_help())
+            ctx.exit()
+            
+        crawler = Crawler(url, verbose=verbose, plugins=plugin, verify=verify, disabled=disable)
+        crawler.crawl()
 
 if __name__ == '__main__':
     main()
