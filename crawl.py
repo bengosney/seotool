@@ -9,6 +9,7 @@ import click
 import os
 import csv
 import importlib
+import inspect
 
 import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -173,14 +174,32 @@ class Crawler:
                 continue
                 
             html_soup = BeautifulSoup(response.text, 'html.parser')
+            args = {
+                'status_code': response.status_code,
+                'url': url,
+            }
+
 
             for plugin in self.plugin_pre_classes:
-                html_soup = plugin.process_html(html_soup)
+                try:
+                    supported_prams = plugin.supported_prams
+                except AttributeError:
+                    sig = inspect.signature(plugin.process_html)
+                    supported_prams = [p.name for p in sig.parameters.values()]
+                    plugin.supported_prams = supported_prams
+                html_soup = plugin.process_html(html_soup, **{key:value for (key, value) in args.items() if key in supported_prams})
+                
 
             self._add_links(html_soup)
 
             for plugin in self.plugin_classes:
-                plugin.parse(html_soup, url=url)
+                try:
+                    supported_prams = plugin.supported_prams
+                except AttributeError:
+                    sig = inspect.signature(plugin.parse)
+                    supported_prams = [p.name for p in sig.parameters.values()]
+                    plugin.supported_prams = supported_prams                    
+                plugin.parse(html_soup, **{key:value for (key, value) in args.items() if key in supported_prams})
                 
         self.save_results()
 
