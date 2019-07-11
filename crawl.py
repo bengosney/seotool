@@ -161,6 +161,9 @@ class Crawler:
             except TooManyRedirects:
                 self.printERR("Too many redirects, skipping")
                 continue
+            except Exception as ERR:
+                self.printERR(f"Uncaught error: {ERR}")
+                continue
 
             self.resolve_cache.update({url: response.url})
             if url != response.url and response.url in self.visited:
