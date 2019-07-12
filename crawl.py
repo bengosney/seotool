@@ -18,6 +18,9 @@ import plugins
 from plugins import *
 
 
+class SkipPage(Exception):
+    pass
+
 class Crawler:
     def __init__(self, url, plugins=[], verbose=True, verify=True, disabled=[]):
         self.verify = verify
@@ -46,6 +49,9 @@ class Crawler:
     def get_plugin_list():
         return [f[:-3] for f in os.listdir(os.path.join(os.path.dirname(os.path.realpath(__file__)), "plugins")) if f[-3:] == '.py' and f[0] != '_']
 
+    def skip_page():
+        raise SkipPage
+    
     def _init_plugins(self):
         import importlib
 
@@ -177,6 +183,7 @@ class Crawler:
             args = {
                 'status_code': response.status_code,
                 'url': url,
+                'response': response,
             }
 
 
@@ -187,7 +194,11 @@ class Crawler:
                     sig = inspect.signature(plugin.process_html)
                     supported_prams = [p.name for p in sig.parameters.values()]
                     plugin.supported_prams = supported_prams
-                html_soup = plugin.process_html(html_soup, **{key:value for (key, value) in args.items() if key in supported_prams})
+                    
+                try:
+                    html_soup = plugin.process_html(html_soup, **{key:value for (key, value) in args.items() if key in supported_prams})
+                except SkipPage:
+                    continue
                 
 
             self._add_links(html_soup)
