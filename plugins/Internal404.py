@@ -1,5 +1,6 @@
 import urllib.parse
 
+
 class Internal404:
     def __init__(self, crawler):
         self.crawler = crawler
@@ -7,29 +8,29 @@ class Internal404:
         self.f404s = []
 
     def get_results_header(self):
-        return ['url', 'pages']
-    
+        return ["url", "pages"]
+
     def get_results(self):
         out = []
-        
+
         for url in self.f404s:
             out.append([url] + self.links[url])
 
-        return out            
-        
+        return out
+
     def parse(self, html_soup, url=None, status_code=None):
         if url == None or status_code == None:
             return
-        
+
         if status_code == 404:
             self.f404s.append(url)
             self.crawler.printERR(f"404 found: {url}")
         else:
-            links = html_soup.find_all('a')
+            links = html_soup.find_all("a")
 
-            for link in links:                
+            for link in links:
                 try:
-                    abs_url = urllib.parse.urljoin(self.crawler.base_url, link['href'])
+                    abs_url = urllib.parse.urljoin(self.crawler.base_url, link["href"])
                 except KeyError:
                     continue
 
@@ -37,4 +38,3 @@ class Internal404:
                     self.links[abs_url].append(url)
                 except KeyError:
                     self.links.update({abs_url: [url]})
-        

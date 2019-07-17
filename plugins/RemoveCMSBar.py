@@ -4,7 +4,7 @@ class RemoveCMSBar:
 
     def process_html(self, html):
         try:
-            html.find('div', id="cms_front_end_bar").decompose()
+            html.find("div", id="cms_front_end_bar").decompose()
         except AttributeError:
             pass
 

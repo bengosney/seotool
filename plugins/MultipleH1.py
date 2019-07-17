@@ -4,13 +4,13 @@ class MultipleH1:
         self.crawler = crawler
 
     def get_results_header(self):
-        return ['url', 'h1s']
-        
+        return ["url", "h1s"]
+
     def get_results(self):
         return self.multiple_h1s
-        
+
     def parse(self, html_soup, url=None):
-        h1s = html_soup.find_all('h1')
+        h1s = html_soup.find_all("h1")
 
         count = len(h1s)
         if count > 1:

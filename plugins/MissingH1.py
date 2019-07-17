@@ -4,13 +4,13 @@ class MissingH1:
         self.crawler = crawler
 
     def get_results_header(self):
-        return ['url']
-        
+        return ["url"]
+
     def get_results(self):
         return self.missing_h1s
-        
+
     def parse(self, html_soup, url=None):
-        h1s = html_soup.find_all('h1')
+        h1s = html_soup.find_all("h1")
 
         if len(h1s) == 0:
             self.missing_h1s.append([url])
