@@ -50,14 +50,14 @@ class Crawler:
         )
 
     @staticmethod
+    def get_plugin_dir():
+        return os.path.join(os.path.dirname(os.path.realpath(__file__)), "plugins")
+
+    @staticmethod
     def get_plugin_list():
-        return [
-            f[:-3]
-            for f in os.listdir(
-                os.path.join(os.path.dirname(os.path.realpath(__file__)), "plugins")
-            )
-            if f[-3:] == ".py" and f[0] != "_"
-        ]
+        allFiles = os.listdir(Crawler.get_plugin_dir())
+
+        return [f[:-3] for f in allFiles if f[-3:] == ".py" and f[0] != "_"]
 
     def skip_page():
         raise SkipPage
