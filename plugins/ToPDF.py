@@ -3,6 +3,17 @@ import pdfkit
 import re
 import os
 
+CSS = """
+@page {
+  margin: 1cm;
+}
+body {
+    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
+    font-weight: 400;
+    line-height: 1.45
+}
+"""
+
 class ToPDF:
     def __init__(self, crawler):
         self.crawler = crawler
@@ -24,7 +35,10 @@ class ToPDF:
             except:
                 pass
 
-        html = markdown(text, output_format='html4', extensions=['tables'])
+        report_html = markdown(text, output_format='html5', extensions=['tables'])
+        html = f"<html><head><style>{CSS}</style></head><body>{report_html}</body></html>"
+        with open(os.path.join(self.crawler.results_base_path, f'report-for-{self.crawler.base_netloc}.html'), 'w') as f:
+            f.write(html)
         report_path = os.path.join(self.crawler.results_base_path, f'report-for-{self.crawler.base_netloc}.pdf')
         pdfkit.from_string(html, report_path)
         self.crawler.print(f"Saved pdf report to {report_path}")
