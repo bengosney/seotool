@@ -10,6 +10,7 @@ import os
 import csv
 import importlib
 import inspect
+import time
 
 import urllib3
 
@@ -24,7 +25,7 @@ class SkipPage(Exception):
 
 
 class Crawler:
-    def __init__(self, url, plugins=[], verbose=True, verify=True, disabled=[]):
+    def __init__(self, url, plugins=[], verbose=True, verify=True, disabled=[], delay=0):
         self.verify = verify
         self.base_url = head(url, verify=verify).url
         self.plugins = plugins
@@ -36,6 +37,7 @@ class Crawler:
         self.all_urls = [self.base_url]
         self.resolve_cache = {}
         self.disabled = disabled
+        self.delay = delay    
 
         self.verbose = verbose
 
@@ -111,7 +113,7 @@ class Crawler:
         links = html_soup.find_all("a")
         for link in links:
             try:
-                abs_url = urllib.parse.urljoin(self.base_url, link["href"])
+                abs_url = urllib.parse.urljoin(self.base_url, link["href"]).split('#')[0].split('?')[0]
             except KeyError:
                 continue
 
@@ -168,7 +170,21 @@ class Crawler:
             plugin.process_results(results_store)
 
     def crawl(self):
-        while True:
+        self._crawling = True
+        
+        try:
+            self._crawl()
+        except KeyboardInterrupt:
+            self.printERR("User Interrupt: Stopping and saving")
+            self._crawling = False
+
+        self.save_results()
+            
+    def _crawl(self):
+        while self._crawling:
+            if self.delay:
+                time.sleep(self.delay)
+                
             try:
                 url = self.urls.pop()
             except IndexError:
@@ -240,9 +256,7 @@ class Crawler:
                         for (key, value) in args.items()
                         if key in supported_prams
                     },
-                )
-
-        self.save_results()
+                )                
 
 
 @click.command()
@@ -252,7 +266,8 @@ class Crawler:
 @click.option("--verbose/--quiet", default=True, help="Show or supress output")
 @click.option("--verify/--noverify", default=True, help="Verify SSLs")
 @click.option("--list-plugins", is_flag=True, help="Lists plugins")
-def main(url, verbose, plugin, verify, disable, list_plugins):
+@click.option("--delay", help="Delay between crawling pages", default=0)
+def main(url, verbose, plugin, verify, disable, list_plugins, delay):
     """This script will crawl give URL and analyse the output using plugins"""
     if list_plugins:
         plugins = Crawler.get_plugin_list()
@@ -264,7 +279,7 @@ def main(url, verbose, plugin, verify, disable, list_plugins):
             ctx.exit()
 
         crawler = Crawler(
-            url, verbose=verbose, plugins=plugin, verify=verify, disabled=disable
+            url, verbose=verbose, plugins=plugin, verify=verify, disabled=disable, delay=delay
         )
         crawler.crawl()
 
