@@ -47,9 +47,7 @@ class Crawler:
             self.print(f"\nBase URL {url} resolved to {self.base_url}\n", "yellow")
 
         self.base_netloc = urllib.parse.urlparse(self.base_url).netloc
-        self.results_base_path = os.path.join(
-            os.getcwd(), f"results-{self.base_netloc}"
-        )
+        self.results_base_path = os.path.join(os.getcwd(), f"results-{self.base_netloc}")
 
     @staticmethod
     def get_plugin_dir():
@@ -80,10 +78,8 @@ class Crawler:
             _module = getattr(plugins, pluginName)
             _class = getattr(_module, pluginName)
             instance = _class(self)
-            if all(
-                hasattr(instance, func)
-                for func in ["get_results_header", "get_results", "parse"]
-            ):
+            
+            if all(hasattr(instance, func) for func in ["get_results_header", "get_results", "parse"]):
                 self.plugin_classes.append(instance)
                 pluginList.append(pluginName)
 
@@ -105,9 +101,7 @@ class Crawler:
             exit(0)
 
         if len(pluginPostList):
-            self.print(
-                f"Loaded results processing plugins: {', '.join(pluginPostList)}"
-            )
+            self.print(f"Loaded results processing plugins: {', '.join(pluginPostList)}")
 
     def _add_links(self, html_soup):
         links = html_soup.find_all("a")
@@ -160,9 +154,7 @@ class Crawler:
                     if results is not None and len(results):
                         w.writerows(results)
             except Exception as ERR:
-                self.printERR(
-                    f"Uncaught error saving output of {plugin.__class__.__name__}\n {ERR}"
-                )
+                self.printERR(f"Uncaught error saving output of {plugin.__class__.__name__}\n {ERR}")
                 continue
 
         for plugin in self.plugin_post_classes:
@@ -207,10 +199,7 @@ class Crawler:
 
             self.resolve_cache.update({url: response.url})
             if url != response.url and response.url in self.visited:
-                self.print(
-                    f"{url} resolves to {response.url} and has already been visited",
-                    "yellow",
-                )
+                self.print(f"{url} resolves to {response.url} and has already been visited", "yellow")
                 continue
 
             html_soup = BeautifulSoup(response.text, "html.parser")
@@ -249,14 +238,8 @@ class Crawler:
                     sig = inspect.signature(plugin.parse)
                     supported_prams = [p.name for p in sig.parameters.values()]
                     plugin.supported_prams = supported_prams
-                plugin.parse(
-                    html_soup,
-                    **{
-                        key: value
-                        for (key, value) in args.items()
-                        if key in supported_prams
-                    },
-                )                
+                    
+                plugin.parse(html_soup, **{ key: value for (key, value) in args.items() if key in supported_prams })
 
 
 @click.command()
@@ -278,9 +261,7 @@ def main(url, verbose, plugin, verify, disable, list_plugins, delay):
             click.echo(ctx.get_help())
             ctx.exit()
 
-        crawler = Crawler(
-            url, verbose=verbose, plugins=plugin, verify=verify, disabled=disable, delay=delay
-        )
+        crawler = Crawler(url, verbose=verbose, plugins=plugin, verify=verify, disabled=disable, delay=delay)
         crawler.crawl()
 
 
