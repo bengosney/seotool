@@ -202,6 +202,11 @@ class Crawler:
                 self.print(f"{url} resolves to {response.url} and has already been visited", "yellow")
                 continue
 
+            content_type = response.headers["content-type"].split(';')[0]
+            if content_type != "text/html":
+                self.print(f"{content_type} is not crawlable", "yellow")
+                continue
+            
             html_soup = BeautifulSoup(response.text, "html.parser")
             args = {
                 "status_code": response.status_code,
