@@ -59,7 +59,7 @@ class Crawler:
 
         return [f[:-3] for f in allFiles if f[-3:] == ".py" and f[0] != "_"]
 
-    def skip_page():
+    def skip_page(self):
         raise SkipPage
 
     def _init_plugins(self):
