@@ -1,6 +1,6 @@
 import mimetypes
-from urllib.parse import urlparse
 import os
+from urllib.parse import urlparse
 
 
 class IgnorePDF:

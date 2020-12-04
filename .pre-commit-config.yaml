@@ -34,4 +34,3 @@ repos:
     hooks:
       - id: pip-compile
         files: ^(setup\.py|requirements.txt)$
-  

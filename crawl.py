@@ -1,23 +1,22 @@
 #!/usr/bin/env python3
 
+import csv
+import inspect
+import os
+import time
+import urllib.parse
+from collections import deque
+
+import click
+import urllib3
+from bs4 import BeautifulSoup
 from requests import get, head
 from requests.exceptions import TooManyRedirects
-from bs4 import BeautifulSoup
-from collections import deque
-import urllib.parse
-import click
-import os
-import csv
-import importlib
-import inspect
-import time
-
-import urllib3
-
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 import plugins
-from plugins import *
+from plugins import *  # noqa
+
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
 class SkipPage(Exception):
@@ -37,7 +36,7 @@ class Crawler:
         self.all_urls = [self.base_url]
         self.resolve_cache = {}
         self.disabled = disabled
-        self.delay = delay    
+        self.delay = delay
 
         self.verbose = verbose
 
@@ -63,7 +62,6 @@ class Crawler:
         raise SkipPage
 
     def _init_plugins(self):
-        import importlib
 
         pluginList = []
         pluginPreList = []
@@ -78,7 +76,7 @@ class Crawler:
             _module = getattr(plugins, pluginName)
             _class = getattr(_module, pluginName)
             instance = _class(self)
-            
+
             if all(hasattr(instance, func) for func in ["get_results_header", "get_results", "parse"]):
                 self.plugin_classes.append(instance)
                 pluginList.append(pluginName)
@@ -107,7 +105,7 @@ class Crawler:
         links = html_soup.find_all("a")
         for link in links:
             try:
-                abs_url = urllib.parse.urljoin(self.base_url, link["href"]).split('#')[0].split('?')[0]
+                abs_url = urllib.parse.urljoin(self.base_url, link["href"]).split("#")[0].split("?")[0]
             except KeyError:
                 continue
 
@@ -163,7 +161,7 @@ class Crawler:
 
     def crawl(self):
         self._crawling = True
-        
+
         try:
             self._crawl()
         except KeyboardInterrupt:
@@ -171,12 +169,12 @@ class Crawler:
             self._crawling = False
 
         self.save_results()
-            
+
     def _crawl(self):
         while self._crawling:
             if self.delay:
                 time.sleep(self.delay)
-                
+
             try:
                 url = self.urls.pop()
             except IndexError:
@@ -202,11 +200,11 @@ class Crawler:
                 self.print(f"{url} resolves to {response.url} and has already been visited", "yellow")
                 continue
 
-            content_type = response.headers["content-type"].split(';')[0]
+            content_type = response.headers["content-type"].split(";")[0]
             if content_type != "text/html":
                 self.print(f"{content_type} is not crawlable", "yellow")
                 continue
-            
+
             html_soup = BeautifulSoup(response.text, "html.parser")
             args = {
                 "status_code": response.status_code,
@@ -225,11 +223,7 @@ class Crawler:
                 try:
                     html_soup = plugin.process_html(
                         html_soup,
-                        **{
-                            key: value
-                            for (key, value) in args.items()
-                            if key in supported_prams
-                        },
+                        **{key: value for (key, value) in args.items() if key in supported_prams},
                     )
                 except SkipPage:
                     continue
@@ -243,8 +237,8 @@ class Crawler:
                     sig = inspect.signature(plugin.parse)
                     supported_prams = [p.name for p in sig.parameters.values()]
                     plugin.supported_prams = supported_prams
-                    
-                plugin.parse(html_soup, **{ key: value for (key, value) in args.items() if key in supported_prams })
+
+                plugin.parse(html_soup, **{key: value for (key, value) in args.items() if key in supported_prams})
 
 
 @click.command()
