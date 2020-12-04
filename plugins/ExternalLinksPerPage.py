@@ -7,7 +7,7 @@ class ExternalLinksPerPage:
         self.links = {}
 
     def get_results_header(self):
-        return ["src", "dest", "pages"]
+        return ["page", "links"]
 
     def get_results(self):
         return [[url] + links for (url, links) in self.links.items()]
