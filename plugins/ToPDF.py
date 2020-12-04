@@ -1,7 +1,8 @@
-from markdown import markdown
-import pdfkit
-import re
 import os
+import re
+
+import pdfkit
+from markdown import markdown
 
 CSS = """
 @page {
@@ -99,28 +100,24 @@ class ToPDF:
         for block in results:
             try:
                 title = re.sub("(?<!^)([A-Z0-9]+)", " \\1", block)
-                
+
                 if title in ["Link Map", "External Links Per Page"]:
                     continue
 
                 text = f"{text}\n\n##{title}\n"
                 if len(results[block]) > 1:
                     cols = max([len(r) for r in results[block]])
-                    table = ""
-                    headdings = []
                     for i, row in enumerate(results[block]):
                         text = f"{text}\n| {' | '.join(row[:5])} | {'   |' * (cols - len(row))}"
                         if i == 0:
                             text = f"{text}\n|{'---|' * cols}"
                 else:
                     text = f"{text}\nNo issues found"
-            except:
+            except:  # noqa
                 pass
 
         report_html = markdown(text, output_format="html5", extensions=["tables"])
-        html = (
-            f"<html><head><style>{CSS}</style></head><body>{report_html}</body></html>"
-        )
+        html = f"<html><head><style>{CSS}</style></head><body>{report_html}</body></html>"
         with open(
             os.path.join(
                 self.crawler.results_base_path,
@@ -129,8 +126,6 @@ class ToPDF:
             "w",
         ) as f:
             f.write(html)
-        report_path = os.path.join(
-            self.crawler.results_base_path, f"report-for-{self.crawler.base_netloc}.pdf"
-        )
+        report_path = os.path.join(self.crawler.results_base_path, f"report-for-{self.crawler.base_netloc}.pdf")
         pdfkit.from_string(html, report_path)
         self.crawler.print(f"Saved pdf report to {report_path}")

@@ -19,7 +19,7 @@ class Internal404:
         return out
 
     def parse(self, html_soup, url=None, status_code=None):
-        if url == None or status_code == None:
+        if url is None or status_code is None:
             return
 
         if status_code == 404:

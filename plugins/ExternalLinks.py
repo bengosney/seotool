@@ -14,7 +14,6 @@ class ExternalLinks:
 
     def parse(self, html_soup, url=None):
         links = html_soup.find_all("a")
-        urls = []
         parsed_base = urllib.parse.urlparse(self.crawler.base_url)
 
         for link in links:
@@ -22,7 +21,7 @@ class ExternalLinks:
                 full_url = urllib.parse.urljoin(self.crawler.base_url, link["href"])
             except KeyError:
                 continue
-            
+
             parsed_url = urllib.parse.urlparse(full_url)
             if parsed_url.netloc != parsed_base.netloc:
                 self.links.append(full_url)

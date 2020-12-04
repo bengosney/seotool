@@ -22,7 +22,7 @@ class ExternalLinksPerPage:
                 full_url = urllib.parse.urljoin(self.crawler.base_url, link["href"])
             except KeyError:
                 continue
-            
+
             parsed_url = urllib.parse.urlparse(full_url)
             if parsed_url.netloc != parsed_base.netloc:
                 urls.append(full_url)

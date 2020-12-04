@@ -1,6 +1,3 @@
-from collections import deque
-
-
 class ImgAltTags:
     def __init__(self, crawler):
         self.missing_alts = []

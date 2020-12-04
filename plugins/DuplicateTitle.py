@@ -7,9 +7,7 @@ class DuplicateTitle:
         return ["title", "urls"]
 
     def get_results(self):
-        return [
-            [title, *urls] for (title, urls) in self.titles.items() if len(urls) > 1
-        ]
+        return [[title, *urls] for (title, urls) in self.titles.items() if len(urls) > 1]
 
     def parse(self, html_soup, url=None):
         titles = html_soup.find_all("title")
@@ -26,8 +24,6 @@ class DuplicateTitle:
             try:
                 self.titles[title].append(url)
                 self.titles[title] = list(set(self.titles[title]))
-                self.crawler.printERR(
-                    f"Title already seen on {', '.join(self.titles[title])}"
-                )
+                self.crawler.printERR(f"Title already seen on {', '.join(self.titles[title])}")
             except KeyError:
                 self.titles.update({title: [url]})

@@ -26,8 +26,6 @@ class DuplicateMeta:
             try:
                 self.metas[meta].append(url)
                 self.metas[meta] = list(set(self.metas[meta]))
-                self.crawler.printERR(
-                    f"Meta Description already seen on {', '.join(self.metas[meta])}"
-                )
+                self.crawler.printERR(f"Meta Description already seen on {', '.join(self.metas[meta])}")
             except KeyError:
                 self.metas.update({meta: [url]})

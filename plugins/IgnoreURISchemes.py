@@ -1,8 +1,3 @@
-import mimetypes
-from urllib.parse import urlparse
-import os
-
-
 class IgnoreURISchemes:
     def __init__(self, crawler):
         self.crawler = crawler
@@ -15,7 +10,7 @@ class IgnoreURISchemes:
             except KeyError:
                 continue
 
-            if href.lower().startswith(('tel:', 'mailto:')):
+            if href.lower().startswith(("tel:", "mailto:")):
                 link.decompose()
 
         return html
