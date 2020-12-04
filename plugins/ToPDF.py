@@ -100,7 +100,7 @@ class ToPDF:
             try:
                 title = re.sub("(?<!^)([A-Z0-9]+)", " \\1", block)
                 
-                if title == "Link Map":
+                if title in ["Link Map", "External Links Per Page"]:
                     continue
 
                 text = f"{text}\n\n##{title}\n"
