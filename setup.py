@@ -13,6 +13,5 @@ setup(
         "requests",
         "urllib3",
         "Markdown",
-        "pre-commit",
     ],
 )

@@ -245,7 +245,7 @@ class Crawler:
 @click.argument("url", required=False)
 @click.option("--plugin", multiple=True, help="Only load named plugins")
 @click.option("--disable", multiple=True, help="Disable plugins")
-@click.option("--verbose/--quiet", default=True, help="Show or supress output")
+@click.option("--verbose/--quiet", default=True, help="Show or suppress output")
 @click.option("--verify/--noverify", default=True, help="Verify SSLs")
 @click.option("--list-plugins", is_flag=True, help="Lists plugins")
 @click.option("--delay", help="Delay between crawling pages", default=0)
