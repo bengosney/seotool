@@ -16,6 +16,9 @@ from requests.exceptions import TooManyRedirects
 import plugins
 from plugins import *  # noqa
 
+import asyncio
+from pyppeteer import launch
+
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
@@ -170,6 +173,24 @@ class Crawler:
 
         self.save_results()
 
+    def getResponse(self, url):
+        return asyncio.run(self._pyppeteer(url))
+        
+        return get(url, verify=self.verify)
+
+    async def _pyppeteer(self, url):
+        browser = await launch()
+        page = await browser.newPage()
+        response = await page.goto(url, {'waitUntil' : 'domcontentloaded'})
+        await page.screenshot({'path': 'example.png'})
+        #response = {}
+        #response['text'] = await page.evaluate('() => document.body.innerHTML');
+        #response['url'] = page.url
+        #response['headers'] = _response.headers
+        await browser.close()
+
+        return response
+
     def _crawl(self):
         while self._crawling:
             if self.delay:
@@ -187,7 +208,7 @@ class Crawler:
             self.print(f"\n-- Crawling {url}\n")
 
             try:
-                response = get(url, verify=self.verify)
+                response = self.getResponse(url)
             except TooManyRedirects:
                 self.printERR("Too many redirects, skipping")
                 continue
