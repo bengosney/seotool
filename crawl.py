@@ -183,10 +183,6 @@ class Crawler:
         page = await browser.newPage()
         response = await page.goto(url, {'waitUntil' : 'domcontentloaded'})
         await page.screenshot({'path': 'example.png'})
-        #response = {}
-        #response['text'] = await page.evaluate('() => document.body.innerHTML');
-        #response['url'] = page.url
-        #response['headers'] = _response.headers
         await browser.close()
 
         return response
@@ -207,8 +203,11 @@ class Crawler:
             self.visited.append(url)
             self.print(f"\n-- Crawling {url}\n")
 
+            headers = {
+                'User-Agent': 'PYSCRAPE 1.0',
+            }
             try:
-                response = self.getResponse(url)
+                response = get(url, verify=self.verify, headers=headers)
             except TooManyRedirects:
                 self.printERR("Too many redirects, skipping")
                 continue
@@ -270,7 +269,8 @@ class Crawler:
 @click.option("--verify/--noverify", default=True, help="Verify SSLs")
 @click.option("--list-plugins", is_flag=True, help="Lists plugins")
 @click.option("--delay", help="Delay between crawling pages", default=0)
-def main(url, verbose, plugin, verify, disable, list_plugins, delay):
+@click.option("--pyppeteer/--requests", default=True, help="Select the fetch and parse method")
+def main(url, verbose, plugin, verify, disable, list_plugins, delay, pyppeteer):
     """This script will crawl give URL and analyse the output using plugins"""
     if list_plugins:
         plugins = Crawler.get_plugin_list()
