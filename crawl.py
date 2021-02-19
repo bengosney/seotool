@@ -10,24 +10,23 @@ from collections import deque
 import click
 import urllib3
 from bs4 import BeautifulSoup
-from requests import get, head
+from requests import head
 from requests.exceptions import TooManyRedirects
 
+import engines
 import plugins
+from engines import EngineException
 from plugins import *  # noqa
 
-import engines
-from engines import EngineException
-
-
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
 
 class SkipPage(Exception):
     pass
 
 
 class Crawler:
-    def __init__(self, url, plugins=[], verbose=True, verify=True, disabled=[], delay=0, engine='pyppeteer'):
+    def __init__(self, url, plugins=[], verbose=True, verify=True, disabled=[], delay=0, engine="pyppeteer"):
         self.verify = verify
         self.base_url = head(url, verify=verify).url
         self.plugins = plugins
@@ -181,7 +180,6 @@ class Crawler:
             return engine.get(url, verify=self.verify)
         except Exception as ERR:
             raise EngineException() from ERR
-    
 
     def _crawl(self):
         while self._crawling:
@@ -204,7 +202,7 @@ class Crawler:
             except TooManyRedirects:
                 self.printERR("Too many redirects, skipping")
                 continue
-            except EngineException as ERR: 
+            except EngineException as ERR:
                 raise ERR
             except Exception as ERR:
                 self.printERR(f"Uncaught error: {ERR}")
@@ -277,9 +275,9 @@ def main(url, verbose, plugin, verify, disable, list_plugins, delay, pyppeteer):
             ctx.exit()
 
         if pyppeteer:
-            engine = 'pyppeteer'
+            engine = "pyppeteer"
         else:
-            engine = 'requests'
+            engine = "requests"
 
         crawler = Crawler(url, verbose=verbose, plugins=plugin, verify=verify, disabled=disable, delay=delay, engine=engine)
         crawler.crawl()

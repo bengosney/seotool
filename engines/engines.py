@@ -1,5 +1,6 @@
-from dataclasses import dataclass
 from abc import ABC, abstractmethod
+from dataclasses import dataclass
+
 
 @dataclass
 class response:
@@ -11,8 +12,9 @@ class response:
 
 class engine(ABC):
     @abstractmethod
-    def get(self, url:str, **kwargs):
+    def get(self, url: str, **kwargs):
         pass
+
 
 class EngineException(Exception):
     pass
