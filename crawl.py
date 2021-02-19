@@ -16,18 +16,18 @@ from requests.exceptions import TooManyRedirects
 import plugins
 from plugins import *  # noqa
 
-import asyncio
-from pyppeteer import launch
+import engines
+from engines import EngineException
+
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-
 
 class SkipPage(Exception):
     pass
 
 
 class Crawler:
-    def __init__(self, url, plugins=[], verbose=True, verify=True, disabled=[], delay=0):
+    def __init__(self, url, plugins=[], verbose=True, verify=True, disabled=[], delay=0, engine='pyppeteer'):
         self.verify = verify
         self.base_url = head(url, verify=verify).url
         self.plugins = plugins
@@ -40,6 +40,7 @@ class Crawler:
         self.resolve_cache = {}
         self.disabled = disabled
         self.delay = delay
+        self.engine = engine
 
         self.verbose = verbose
 
@@ -174,18 +175,13 @@ class Crawler:
         self.save_results()
 
     def getResponse(self, url):
-        return asyncio.run(self._pyppeteer(url))
-        
-        return get(url, verify=self.verify)
-
-    async def _pyppeteer(self, url):
-        browser = await launch()
-        page = await browser.newPage()
-        response = await page.goto(url, {'waitUntil' : 'domcontentloaded'})
-        await page.screenshot({'path': 'example.png'})
-        await browser.close()
-
-        return response
+        engine_cls = getattr(engines, self.engine)
+        engine = engine_cls()
+        try:
+            return engine.get(url, verify=self.verify)
+        except Exception as ERR:
+            raise EngineException() from ERR
+    
 
     def _crawl(self):
         while self._crawling:
@@ -208,6 +204,8 @@ class Crawler:
             except TooManyRedirects:
                 self.printERR("Too many redirects, skipping")
                 continue
+            except EngineException as ERR: 
+                raise ERR
             except Exception as ERR:
                 self.printERR(f"Uncaught error: {ERR}")
                 continue
@@ -222,7 +220,7 @@ class Crawler:
                 self.print(f"{content_type} is not crawlable", "yellow")
                 continue
 
-            html_soup = BeautifulSoup(response.text, "html.parser")
+            html_soup = BeautifulSoup(response.body, "html.parser")
             args = {
                 "status_code": response.status_code,
                 "url": url,
@@ -278,7 +276,12 @@ def main(url, verbose, plugin, verify, disable, list_plugins, delay, pyppeteer):
             click.echo(ctx.get_help())
             ctx.exit()
 
-        crawler = Crawler(url, verbose=verbose, plugins=plugin, verify=verify, disabled=disable, delay=delay)
+        if pyppeteer:
+            engine = 'pyppeteer'
+        else:
+            engine = 'requests'
+
+        crawler = Crawler(url, verbose=verbose, plugins=plugin, verify=verify, disabled=disable, delay=delay, engine=engine)
         crawler.crawl()
 
 
