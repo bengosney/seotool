@@ -7,11 +7,14 @@ setup(
     packages=find_packages(),
     scripts=["crawl.py"],
     install_requires=[
+        "pyppeteer",
         "beautifulsoup4",
         "Click",
         "pdfkit",
         "requests",
         "urllib3",
         "Markdown",
+        "pre-commit",
+        "pip-tools",
     ],
 )

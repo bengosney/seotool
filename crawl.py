@@ -16,15 +16,18 @@ from requests.exceptions import TooManyRedirects
 import plugins
 from plugins import *  # noqa
 
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+import engines
+from engines import EngineException
 
+
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 class SkipPage(Exception):
     pass
 
 
 class Crawler:
-    def __init__(self, url, plugins=[], verbose=True, verify=True, disabled=[], delay=0):
+    def __init__(self, url, plugins=[], verbose=True, verify=True, disabled=[], delay=0, engine='pyppeteer'):
         self.verify = verify
         self.base_url = head(url, verify=verify).url
         self.plugins = plugins
@@ -37,6 +40,7 @@ class Crawler:
         self.resolve_cache = {}
         self.disabled = disabled
         self.delay = delay
+        self.engine = engine
 
         self.verbose = verbose
 
@@ -170,6 +174,15 @@ class Crawler:
 
         self.save_results()
 
+    def getResponse(self, url):
+        engine_cls = getattr(engines, self.engine)
+        engine = engine_cls()
+        try:
+            return engine.get(url, verify=self.verify)
+        except Exception as ERR:
+            raise EngineException() from ERR
+    
+
     def _crawl(self):
         while self._crawling:
             if self.delay:
@@ -187,10 +200,12 @@ class Crawler:
             self.print(f"\n-- Crawling {url}\n")
 
             try:
-                response = get(url, verify=self.verify)
+                response = self.getResponse(url)
             except TooManyRedirects:
                 self.printERR("Too many redirects, skipping")
                 continue
+            except EngineException as ERR: 
+                raise ERR
             except Exception as ERR:
                 self.printERR(f"Uncaught error: {ERR}")
                 continue
@@ -205,7 +220,7 @@ class Crawler:
                 self.print(f"{content_type} is not crawlable", "yellow")
                 continue
 
-            html_soup = BeautifulSoup(response.text, "html.parser")
+            html_soup = BeautifulSoup(response.body, "html.parser")
             args = {
                 "status_code": response.status_code,
                 "url": url,
@@ -249,7 +264,8 @@ class Crawler:
 @click.option("--verify/--noverify", default=True, help="Verify SSLs")
 @click.option("--list-plugins", is_flag=True, help="Lists plugins")
 @click.option("--delay", help="Delay between crawling pages", default=0)
-def main(url, verbose, plugin, verify, disable, list_plugins, delay):
+@click.option("--pyppeteer/--requests", default=True, help="Select the fetch and parse method")
+def main(url, verbose, plugin, verify, disable, list_plugins, delay, pyppeteer):
     """This script will crawl give URL and analyse the output using plugins"""
     if list_plugins:
         plugins = Crawler.get_plugin_list()
@@ -260,7 +276,12 @@ def main(url, verbose, plugin, verify, disable, list_plugins, delay):
             click.echo(ctx.get_help())
             ctx.exit()
 
-        crawler = Crawler(url, verbose=verbose, plugins=plugin, verify=verify, disabled=disable, delay=delay)
+        if pyppeteer:
+            engine = 'pyppeteer'
+        else:
+            engine = 'requests'
+
+        crawler = Crawler(url, verbose=verbose, plugins=plugin, verify=verify, disabled=disable, delay=delay, engine=engine)
         crawler.crawl()
 
 
