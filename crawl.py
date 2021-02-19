@@ -203,11 +203,8 @@ class Crawler:
             self.visited.append(url)
             self.print(f"\n-- Crawling {url}\n")
 
-            headers = {
-                'User-Agent': 'PYSCRAPE 1.0',
-            }
             try:
-                response = get(url, verify=self.verify, headers=headers)
+                response = self.getResponse(url)
             except TooManyRedirects:
                 self.printERR("Too many redirects, skipping")
                 continue
