@@ -4,7 +4,7 @@ from engines import engine, response
 
 
 class requests(engine):
-    def get(self, url: str, **kwargs):
+    async def get(self, url: str, **kwargs):
         requests_response = get(url, **kwargs)
 
         return requests._convert_response(requests_response)
