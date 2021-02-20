@@ -12,7 +12,7 @@ class response:
 
 class engine(ABC):
     @abstractmethod
-    def get(self, url: str, **kwargs):
+    async def get(self, url: str, **kwargs):
         pass
 
 

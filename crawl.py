@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 import csv
 import inspect
 import os
@@ -162,26 +160,26 @@ class Crawler:
             self.print(f"Processing results with {plugin.__class__.__name__}")
             plugin.process_results(results_store)
 
-    def crawl(self):
+    async def crawl(self):
         self._crawling = True
 
         try:
-            self._crawl()
+            await self._crawl()
         except KeyboardInterrupt:
             self.printERR("User Interrupt: Stopping and saving")
             self._crawling = False
 
         self.save_results()
 
-    def getResponse(self, url):
+    async def getResponse(self, url):
         engine_cls = getattr(engines, self.engine)
         engine = engine_cls()
         try:
-            return engine.get(url, verify=self.verify)
+            return await engine.get(url, verify=self.verify)
         except Exception as ERR:
             raise EngineException() from ERR
 
-    def _crawl(self):
+    async def _crawl(self):
         while self._crawling:
             if self.delay:
                 time.sleep(self.delay)
@@ -198,7 +196,7 @@ class Crawler:
             self.print(f"\n-- Crawling {url}\n")
 
             try:
-                response = self.getResponse(url)
+                response = await self.getResponse(url)
             except TooManyRedirects:
                 self.printERR("Too many redirects, skipping")
                 continue
@@ -252,36 +250,3 @@ class Crawler:
                     plugin.supported_prams = supported_prams
 
                 plugin.parse(html_soup, **{key: value for (key, value) in args.items() if key in supported_prams})
-
-
-@click.command()
-@click.argument("url", required=False)
-@click.option("--plugin", multiple=True, help="Only load named plugins")
-@click.option("--disable", multiple=True, help="Disable plugins")
-@click.option("--verbose/--quiet", default=True, help="Show or suppress output")
-@click.option("--verify/--noverify", default=True, help="Verify SSLs")
-@click.option("--list-plugins", is_flag=True, help="Lists plugins")
-@click.option("--delay", help="Delay between crawling pages", default=0)
-@click.option("--pyppeteer/--requests", default=True, help="Select the fetch and parse method")
-def main(url, verbose, plugin, verify, disable, list_plugins, delay, pyppeteer):
-    """This script will crawl give URL and analyse the output using plugins"""
-    if list_plugins:
-        plugins = Crawler.get_plugin_list()
-        [click.echo(plugin) for plugin in plugins]
-    else:
-        if url is None:
-            ctx = click.get_current_context()
-            click.echo(ctx.get_help())
-            ctx.exit()
-
-        if pyppeteer:
-            engine = "pyppeteer"
-        else:
-            engine = "requests"
-
-        crawler = Crawler(url, verbose=verbose, plugins=plugin, verify=verify, disabled=disable, delay=delay, engine=engine)
-        crawler.crawl()
-
-
-if __name__ == "__main__":
-    main()
