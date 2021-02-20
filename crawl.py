@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import asyncio
 import csv
 import inspect
 import os
@@ -162,26 +163,26 @@ class Crawler:
             self.print(f"Processing results with {plugin.__class__.__name__}")
             plugin.process_results(results_store)
 
-    def crawl(self):
+    async def crawl(self):
         self._crawling = True
 
         try:
-            self._crawl()
+            await self._crawl()
         except KeyboardInterrupt:
             self.printERR("User Interrupt: Stopping and saving")
             self._crawling = False
 
         self.save_results()
 
-    def getResponse(self, url):
+    async def getResponse(self, url):
         engine_cls = getattr(engines, self.engine)
         engine = engine_cls()
         try:
-            return engine.get(url, verify=self.verify)
+            return await engine.get(url, verify=self.verify)
         except Exception as ERR:
             raise EngineException() from ERR
 
-    def _crawl(self):
+    async def _crawl(self):
         while self._crawling:
             if self.delay:
                 time.sleep(self.delay)
@@ -198,7 +199,7 @@ class Crawler:
             self.print(f"\n-- Crawling {url}\n")
 
             try:
-                response = self.getResponse(url)
+                response = await self.getResponse(url)
             except TooManyRedirects:
                 self.printERR("Too many redirects, skipping")
                 continue
@@ -280,7 +281,7 @@ def main(url, verbose, plugin, verify, disable, list_plugins, delay, pyppeteer):
             engine = "requests"
 
         crawler = Crawler(url, verbose=verbose, plugins=plugin, verify=verify, disabled=disable, delay=delay, engine=engine)
-        crawler.crawl()
+        asyncio.run(crawler.crawl())
 
 
 if __name__ == "__main__":
