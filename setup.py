@@ -5,16 +5,15 @@ setup(
     name="seotool",
     version="1.0",
     packages=find_packages(),
-    scripts=["crawl.py"],
     install_requires=[
-        "pyppeteer",
         "beautifulsoup4",
-        "Click",
+        "click",
+        "markdown",
         "pdfkit",
+        "pyppeteer",
         "requests",
-        "urllib3",
-        "Markdown",
-        "pre-commit",
-        "pip-tools",
     ],
+    entry_points={
+        "console_scripts": ["seo-crawl=cli:main"],
+    },
 )
