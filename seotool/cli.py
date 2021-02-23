@@ -3,7 +3,8 @@
 import asyncio
 
 import click
-from crawl import Crawler
+
+from .crawl import Crawler
 
 
 @click.command()
