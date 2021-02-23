@@ -3,7 +3,6 @@
 import asyncio
 
 import click
-
 from crawl import Crawler
 
 

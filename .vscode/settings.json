@@ -1,4 +1,7 @@
 {
     "python.formatting.provider": "black",
-    "python.pythonPath": "/home/ben/projects/seotool/bin/python"
+    "python.pythonPath": "/home/ben/projects/seotool/bin/python",
+    "cSpell.words": [
+        "seotool"
+    ]
 }

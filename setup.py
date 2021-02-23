@@ -14,6 +14,6 @@ setup(
         "requests",
     ],
     entry_points={
-        "console_scripts": ["seo-crawl=cli:main"],
+        "console_scripts": ["seo-crawl=seotool.cli:main"],
     },
 )
