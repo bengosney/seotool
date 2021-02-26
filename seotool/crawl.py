@@ -49,6 +49,8 @@ class Crawler:
         self.base_netloc = urllib.parse.urlparse(self.base_url).netloc
         self.results_base_path = os.path.join(os.getcwd(), f"results-{self.base_netloc}")
 
+        self.engine_instance = None
+
     @staticmethod
     def get_plugin_dir():
         return os.path.join(os.path.dirname(os.path.realpath(__file__)), "..", "plugins")
@@ -163,17 +165,25 @@ class Crawler:
     async def crawl(self):
         self._crawling = True
 
-        try:
-            await self._crawl()
-        except KeyboardInterrupt:
-            self.printERR("User Interrupt: Stopping and saving")
-            self._crawling = False
+        engine = await self.getEngine()
+        async with engine:
+            try:
+                await self._crawl()
+            except KeyboardInterrupt:
+                self.printERR("User Interrupt: Stopping and saving")
+                self._crawling = False
 
         self.save_results()
 
+    async def getEngine(self):
+        if self.engine_instance is None:
+            engine_cls = getattr(engines, self.engine)
+            self.engine_instance = engine_cls()
+
+        return self.engine_instance
+
     async def getResponse(self, url):
-        engine_cls = getattr(engines, self.engine)
-        engine = engine_cls()
+        engine = await self.getEngine()
         try:
             return await engine.get(url, verify=self.verify)
         except Exception as ERR:
