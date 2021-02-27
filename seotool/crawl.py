@@ -1,7 +1,7 @@
+import asyncio
 import csv
 import inspect
 import os
-import time
 import urllib.parse
 from collections import deque
 
@@ -192,7 +192,7 @@ class Crawler:
     async def _crawl(self):
         while self._crawling:
             if self.delay:
-                time.sleep(self.delay)
+                await asyncio.sleep(self.delay)
 
             try:
                 url = self.urls.pop()
