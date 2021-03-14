@@ -16,6 +16,6 @@ pyee==8.1.0               # via pyppeteer
 pyppeteer==0.2.5          # via seotool (setup.py)
 requests==2.25.1          # via seotool (setup.py)
 soupsieve==2.2            # via beautifulsoup4
-tqdm==4.58.0              # via pyppeteer
+tqdm==4.59.0              # via pyppeteer
 urllib3==1.26.3           # via pyppeteer, requests
 websockets==8.1           # via pyppeteer
