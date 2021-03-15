@@ -18,7 +18,7 @@ identify==2.1.0
     # via pre-commit
 nodeenv==1.5.0
     # via pre-commit
-pip-tools==5.5.0
+pip-tools==6.0.0
     # via -r requirements.dev.in
 pre-commit==2.11.0
     # via -r requirements.dev.in
