@@ -95,7 +95,7 @@ class Crawler:
         if len(pluginPreList):
             self.print(f"Loaded pre processing plugins: {', '.join(pluginPreList)}")
 
-        if len(pluginList) > 0:
+        if pluginList:
             self.print(f"Loaded parsing plugins: {', '.join(pluginList)}")
         else:
             self.print("Error no plugins loaded")

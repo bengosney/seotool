@@ -106,7 +106,7 @@ class ToPDF:
 
                 text = f"{text}\n\n##{title}\n"
                 if len(results[block]) > 1:
-                    cols = max([len(r) for r in results[block]])
+                    cols = max(len(r) for r in results[block])
                     for i, row in enumerate(results[block]):
                         text = f"{text}\n| {' | '.join(row[:5])} | {'   |' * (cols - len(row))}"
                         if i == 0:
