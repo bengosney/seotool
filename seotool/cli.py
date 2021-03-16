@@ -27,11 +27,7 @@ def main(url, verbose, plugin, verify, disable, list_plugins, delay, pyppeteer):
             click.echo(ctx.get_help())
             ctx.exit()
 
-        if pyppeteer:
-            engine = "pyppeteer"
-        else:
-            engine = "requests"
-
+        engine = "pyppeteer" if pyppeteer else "requests"
         crawler = Crawler(url, verbose=verbose, plugins=plugin, verify=verify, disabled=disable, delay=delay, engine=engine)
         asyncio.run(crawler.crawl())
 

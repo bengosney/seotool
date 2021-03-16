@@ -11,12 +11,7 @@ class Internal404:
         return ["url", "pages"]
 
     def get_results(self):
-        out = []
-
-        for url in self.f404s:
-            out.append([url] + self.links[url])
-
-        return out
+        return [[url] + self.links[url] for url in self.f404s]
 
     def parse(self, html_soup, url=None, status_code=None):
         if url is None or status_code is None:

@@ -10,20 +10,14 @@ class Internal301:
         return ["src", "dest", "pages"]
 
     def _find_links(self, url):
-        found = []
-        for page in self.links:
-            if url in self.links[page]:
-                found.append(page)
-
-        return found
+        return [page for page in self.links if url in self.links[page]]
 
     def get_results(self):
-        out = []
-        for (src, dest) in self.crawler.resolve_cache.items():
-            if src.rstrip("/") != dest.rstrip("/"):
-                out.append([src, dest] + self._find_links(src))
-
-        return out
+        return [
+            [src, dest] + self._find_links(src)
+            for (src, dest) in self.crawler.resolve_cache.items()
+            if src.rstrip("/") != dest.rstrip("/")
+        ]
 
     def parse(self, html_soup, url=None):
         links = html_soup.find_all("a")
