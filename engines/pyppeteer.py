@@ -18,6 +18,8 @@ class pyppeteer(engine):
             body=await page.content(),
         )
 
+        await page.close()
+
         return responseObj
 
     async def __aenter__(self):
