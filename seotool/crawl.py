@@ -189,6 +189,35 @@ class Crawler:
         except Exception as ERR:
             raise EngineException() from ERR
 
+    def should_process(self, url, response):
+        self.resolve_cache.update({url: response.url})
+        if url != response.url and response.url in self.visited:
+            self.print(f"{url} resolves to {response.url} and has already been visited", "yellow")
+            return False
+
+        content_type = response.headers["content-type"].split(";")[0]
+        if content_type != "text/html":
+            self.print(f"{content_type} is not crawlable", "yellow")
+            return False
+
+        return True
+
+    def pre_process(self, html, args):
+        for plugin in self.plugin_pre_classes:
+            try:
+                supported_prams = plugin.supported_prams
+            except AttributeError:
+                sig = inspect.signature(plugin.process_html)
+                supported_prams = [p.name for p in sig.parameters.values()]
+                plugin.supported_prams = supported_prams
+
+            html = plugin.process_html(
+                html,
+                **{key: value for (key, value) in args.items() if key in supported_prams},
+            )
+
+        return html
+
     async def _crawl(self):
         while self._crawling:
             if self.delay:
@@ -210,20 +239,8 @@ class Crawler:
             except TooManyRedirects:
                 self.printERR("Too many redirects, skipping")
                 continue
-            except EngineException as ERR:
-                raise ERR
-            except Exception as ERR:
-                self.printERR(f"Uncaught error: {ERR}")
-                continue
 
-            self.resolve_cache.update({url: response.url})
-            if url != response.url and response.url in self.visited:
-                self.print(f"{url} resolves to {response.url} and has already been visited", "yellow")
-                continue
-
-            content_type = response.headers["content-type"].split(";")[0]
-            if content_type != "text/html":
-                self.print(f"{content_type} is not crawlable", "yellow")
+            if not self.should_process(url, response):
                 continue
 
             html_soup = BeautifulSoup(response.body, "html.parser")
@@ -233,21 +250,10 @@ class Crawler:
                 "response": response,
             }
 
-            for plugin in self.plugin_pre_classes:
-                try:
-                    supported_prams = plugin.supported_prams
-                except AttributeError:
-                    sig = inspect.signature(plugin.process_html)
-                    supported_prams = [p.name for p in sig.parameters.values()]
-                    plugin.supported_prams = supported_prams
-
-                try:
-                    html_soup = plugin.process_html(
-                        html_soup,
-                        **{key: value for (key, value) in args.items() if key in supported_prams},
-                    )
-                except SkipPage:
-                    continue
+            try:
+                html_soup = self.pre_process(html_soup, args)
+            except SkipPage:
+                continue
 
             self._add_links(html_soup)
 
