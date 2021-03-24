@@ -1,9 +1,14 @@
-.PHONY: dev
-.DEFAULT_GOAL: dev
+.PHONY := dev, pip-tools
+.DEFAULT_GOAL := dev
 
 %-requirements.txt: requirements.%.in
-	pip-compile -o $@ $^
+	@echo "Builing $@"
+	@pip-compile -q -o $@ $^
+
+requirements.txt: setup.py
+	@echo "Builing requirements.txt"
+	@pip-compile -q
 
 dev: requirements.txt dev-requirements.txt
-	pip install pip-tools
-	pip-sync $^
+	@echo "Installing requirements"
+	@pip-sync $^

@@ -13,6 +13,8 @@ setup(
         "pdfkit",
         "pyppeteer",
         "requests",
+        "pyqt5",
+        "pyqt5-tools",
     ],
     entry_points={
         "console_scripts": ["seo-crawl=seotool.cli:main"],
