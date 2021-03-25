@@ -195,7 +195,10 @@ class Crawler:
             self.print(f"{url} resolves to {response.url} and has already been visited", "yellow")
             return False
 
-        content_type = response.headers["content-type"].split(";")[0]
+        try:
+            content_type = response.headers["content-type"].split(";")[0]
+        except KeyError:
+            content_type = None
         if content_type != "text/html":
             self.print(f"{content_type} is not crawlable", "yellow")
             return False
