@@ -19,7 +19,7 @@ class OutputCSV:
             path = os.path.join(self.crawler.results_base_path, f"{filename}.csv")
 
             with open(path, "w") as f:
-                if result_set.data is None:
+                if result_set.data is None or len(result_set.data) == 0:
                     continue
 
                 w = csv.DictWriter(f, result_set.data[0].keys())

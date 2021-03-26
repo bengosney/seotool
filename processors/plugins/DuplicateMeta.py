@@ -1,17 +1,23 @@
+from processors import ResultSet, hookimpl_processor
+
+
 class DuplicateMeta:
+    """Duplicate Metadata"""
+
     def __init__(self, crawler):
         self.metas = {}
         self.crawler = crawler
 
-    def get_results_header(self):
-        return ["meta", "urls"]
+    @hookimpl_processor
+    def get_results_set(self):
+        data = [{"meta": meta, "url": ",".join(urls)} for (meta, urls) in self.metas.items() if len(urls) > 1]
 
-    def get_results(self):
-        return [[meta, *urls] for (meta, urls) in self.metas.items() if len(urls) > 1]
+        return ResultSet("Duplicate Metadata", f"{self.__doc__}", data)
 
-    def parse(self, html_soup, url=None):
-        metas = html_soup.find_all("meta", {"name": "description"})
-        canonicals = html_soup.find_all("link", {"rel": "canonical"})
+    @hookimpl_processor
+    def process(self, html, url):
+        metas = html.find_all("meta", {"name": "description"})
+        canonicals = html.find_all("link", {"rel": "canonical"})
         if len(canonicals) > 0:
             try:
                 url = canonicals[0]["href"]

@@ -30,4 +30,4 @@ class PreProcessor:
         return pm
 
     def process_html(self, html, url, status_code, response):
-        self.hook.process_html(html=html, response=response, url=url, status_code=status_code)
+        self.hook.process_html(html=html, response=response, url=url, status_code=status_code)  # type: ignore

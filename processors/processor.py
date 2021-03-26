@@ -33,7 +33,7 @@ class Processor:
         return pm
 
     def process(self, html, url, status_code, response) -> None:
-        self.hook.process(html=html, response=response, url=url, status_code=status_code)
+        self.hook.process(html=html, response=response, url=url, status_code=status_code)  # type: ignore
 
     def get_results_sets(self) -> List[ResultSet]:
-        return self.hook.get_results_set()
+        return self.hook.get_results_set()  # type: ignore

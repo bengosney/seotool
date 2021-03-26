@@ -7,7 +7,7 @@ from processors.dataModels import ResultSet
 
 
 class OutputProcessor:
-    def __init__(self, crawler, enabled: List = [], disabled: List = []):
+    def __init__(self, crawler, enabled: List = [], disabled: List = []) -> None:
         self.crawler = crawler
         self.enabled = enabled if len(enabled) else plugins.__all__
         self.disabled = disabled
@@ -15,7 +15,7 @@ class OutputProcessor:
         self.pm = self.get_plugin_manager()
         self.hook = self.pm.hook
 
-    def get_plugin_manager(self):
+    def get_plugin_manager(self) -> pluggy.PluginManager:
         pm = pluggy.PluginManager("output_processors")
         pm.add_hookspecs(hookspecs.output_processor)
         pm.load_setuptools_entrypoints("output_processors")
@@ -33,4 +33,4 @@ class OutputProcessor:
         return pm
 
     def process_results_sets(self, resultsSets: List[ResultSet]) -> None:
-        return self.hook.process_output(resultsSets=resultsSets)
+        return self.hook.process_output(resultsSets=resultsSets)  # type: ignore

@@ -1,20 +1,24 @@
 import urllib.parse
 
+from processors import ResultSet, hookimpl_processor
 
-class ExternalLinksPerPage:
+
+class ExternalLinks:
+    """List of external links"""
+
     def __init__(self, crawler):
         self.crawler = crawler
-        self.links = {}
+        self.links = []
 
-    def get_results_header(self):
-        return ["page", "links"]
+    @hookimpl_processor
+    def get_results_set(self):
+        data = [{"Link": link} for link in set(self.links)]
 
-    def get_results(self):
-        return [[url] + links for (url, links) in self.links.items()]
+        return ResultSet("External Links", f"{self.__doc__}", data)
 
-    def parse(self, html_soup, url=None):
-        links = html_soup.find_all("a")
-        urls = []
+    @hookimpl_processor
+    def process(self, html):
+        links = html.find_all("a")
         parsed_base = urllib.parse.urlparse(self.crawler.base_url)
 
         for link in links:
@@ -25,6 +29,4 @@ class ExternalLinksPerPage:
 
             parsed_url = urllib.parse.urlparse(full_url)
             if parsed_url.netloc != parsed_base.netloc:
-                urls.append(full_url)
-
-        self.links.update({url: urls})
+                self.links.append(full_url)

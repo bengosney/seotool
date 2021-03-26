@@ -10,7 +10,6 @@ from requests import head
 from requests.exceptions import TooManyRedirects
 
 import engines
-import plugins
 from engines import EngineException
 from processors import OutputProcessor, PreProcessor, Processor
 
@@ -64,44 +63,8 @@ class Crawler:
 
     def _init_plugins(self):
         self.processor = Processor(self)
-
-        pluginList = []
-        pluginPreList = []
-        pluginPostList = []
-
-        self.print("Loading plugins...")
-
-        if len(self.plugins) == 0:
-            self.plugins = self.get_plugin_list()
-
-        for pluginName in [p for p in self.plugins if p not in self.disabled]:
-            _module = getattr(plugins, pluginName)
-            _class = getattr(_module, pluginName)
-            instance = _class(self)
-
-            if all(hasattr(instance, func) for func in ["get_results_header", "get_results", "parse"]):
-                self.plugin_classes.append(instance)
-                pluginList.append(pluginName)
-
-            if all(hasattr(instance, func) for func in ["process_html"]):
-                self.plugin_pre_classes.append(instance)
-                pluginPreList.append(pluginName)
-
-            if all(hasattr(instance, func) for func in ["process_results"]):
-                self.plugin_post_classes.append(instance)
-                pluginPostList.append(pluginName)
-
-        if len(pluginPreList):
-            self.print(f"Loaded pre processing plugins: {', '.join(pluginPreList)}")
-
-        if pluginList:
-            self.print(f"Loaded parsing plugins: {', '.join(pluginList)}")
-        else:
-            self.print("Error no plugins loaded")
-            exit(0)
-
-        if len(pluginPostList):
-            self.print(f"Loaded results processing plugins: {', '.join(pluginPostList)}")
+        self.preprocessor = PreProcessor(self)
+        self.outputprocessor = OutputProcessor(self)
 
     def _add_links(self, html_soup):
         links = html_soup.find_all("a")
@@ -131,15 +94,13 @@ class Crawler:
     def save_results(self):
         self.print(f"\nSaving results to {self.results_base_path}\n", "green")
 
-        output = OutputProcessor(self)
-
         try:
             os.makedirs(self.results_base_path)
         except FileExistsError:
             pass
 
         results_store = self.processor.get_results_sets()
-        output.process_results_sets(results_store)
+        self.outputprocessor.process_results_sets(results_store)
 
     async def crawl(self):
         self._crawling = True
@@ -182,7 +143,6 @@ class Crawler:
         return True
 
     async def _crawl(self):
-        preprocessor = PreProcessor(self)
 
         while self._crawling:
             if self.delay:
@@ -211,7 +171,7 @@ class Crawler:
             html_soup = BeautifulSoup(response.body, "html.parser")
 
             try:
-                preprocessor.process_html(html_soup, url, response.status_code, response)
+                self.preprocessor.process_html(html_soup, url, response.status_code, response)
             except SkipPage:
                 continue
             finally:

@@ -12,6 +12,14 @@
             "program": "seotool-cli.py",
             "console": "integratedTerminal",
             "args": ["https://www.isitbinday.com"]
+        },
+        {
+            "name": "Python: stl",
+            "type": "python",
+            "request": "launch",
+            "program": "seotool-cli.py",
+            "console": "integratedTerminal",
+            "args": ["https://www.stretchtheirlegs.co.uk"]
         }
     ]
 }
