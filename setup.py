@@ -13,8 +13,10 @@ setup(
         "pdfkit",
         "pyppeteer",
         "requests",
+        "pluggy",
     ],
     entry_points={
         "console_scripts": ["seo-crawl=seotool.cli:main"],
+        # "pre_processors": ["search=processors.plugins.IgnoreSearchPages"]
     },
 )

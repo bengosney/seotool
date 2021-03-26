@@ -12,6 +12,7 @@ click==7.1.2              # via seotool (setup.py)
 idna==2.10                # via requests
 markdown==3.3.4           # via seotool (setup.py)
 pdfkit==0.6.1             # via seotool (setup.py)
+pluggy==0.13.1            # via seotool (setup.py)
 pyee==8.1.0               # via pyppeteer
 pyppeteer==0.2.5          # via seotool (setup.py)
 requests==2.25.1          # via seotool (setup.py)

@@ -1,6 +1,4 @@
 import asyncio
-import csv
-import inspect
 import os
 import urllib.parse
 from collections import deque
@@ -14,7 +12,7 @@ from requests.exceptions import TooManyRedirects
 import engines
 import plugins
 from engines import EngineException
-from plugins import *  # noqa
+from processors import OutputProcessor, PreProcessor, Processor
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
@@ -65,6 +63,7 @@ class Crawler:
         raise SkipPage
 
     def _init_plugins(self):
+        self.processor = Processor(self)
 
         pluginList = []
         pluginPreList = []
@@ -130,37 +129,17 @@ class Crawler:
         self.print(text, "red")
 
     def save_results(self):
-
         self.print(f"\nSaving results to {self.results_base_path}\n", "green")
+
+        output = OutputProcessor(self)
 
         try:
             os.makedirs(self.results_base_path)
         except FileExistsError:
             pass
 
-        results_store = {}
-
-        for plugin in self.plugin_classes:
-            plugin_name = plugin.__class__.__name__
-            path = os.path.join(self.results_base_path, f"{plugin_name}.csv")
-
-            try:
-                results = plugin.get_results()
-                results_header = plugin.get_results_header()
-
-                results_store.update({plugin_name: [results_header] + results})
-                with open(path, "w") as f:
-                    w = csv.writer(f)
-                    w.writerow(results_header)
-                    if results is not None and len(results):
-                        w.writerows(results)
-            except Exception as ERR:
-                self.printERR(f"Uncaught error saving output of {plugin.__class__.__name__}\n {ERR}")
-                continue
-
-        for plugin in self.plugin_post_classes:
-            self.print(f"Processing results with {plugin.__class__.__name__}")
-            plugin.process_results(results_store)
+        results_store = self.processor.get_results_sets()
+        output.process_results_sets(results_store)
 
     async def crawl(self):
         self._crawling = True
@@ -202,23 +181,9 @@ class Crawler:
 
         return True
 
-    def pre_process(self, html, args):
-        for plugin in self.plugin_pre_classes:
-            try:
-                supported_prams = plugin.supported_prams
-            except AttributeError:
-                sig = inspect.signature(plugin.process_html)
-                supported_prams = [p.name for p in sig.parameters.values()]
-                plugin.supported_prams = supported_prams
-
-            html = plugin.process_html(
-                html,
-                **{key: value for (key, value) in args.items() if key in supported_prams},
-            )
-
-        return html
-
     async def _crawl(self):
+        preprocessor = PreProcessor(self)
+
         while self._crawling:
             if self.delay:
                 await asyncio.sleep(self.delay)
@@ -244,25 +209,12 @@ class Crawler:
                 continue
 
             html_soup = BeautifulSoup(response.body, "html.parser")
-            args = {
-                "status_code": response.status_code,
-                "url": url,
-                "response": response,
-            }
 
             try:
-                html_soup = self.pre_process(html_soup, args)
+                preprocessor.process_html(html_soup, url, response.status_code, response)
             except SkipPage:
                 continue
+            finally:
+                self._add_links(html_soup)
 
-            self._add_links(html_soup)
-
-            for plugin in self.plugin_classes:
-                try:
-                    supported_prams = plugin.supported_prams
-                except AttributeError:
-                    sig = inspect.signature(plugin.parse)
-                    supported_prams = [p.name for p in sig.parameters.values()]
-                    plugin.supported_prams = supported_prams
-
-                plugin.parse(html_soup, **{key: value for (key, value) in args.items() if key in supported_prams})
+            self.processor.process(html_soup, url, response.status_code, response)
