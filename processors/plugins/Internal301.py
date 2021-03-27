@@ -15,7 +15,7 @@ class Internal301:
 
     @hookimpl_processor
     def get_results_set(self):
-        data = [{"src": src, "dest": dest, "links": ",".join(self._find_links(src))} for (src, dest) in self.crawler.resolve_cache.items() if src.rstrip("/") != dest.rstrip("/")]
+        data = [{"src": src, "dest": dest, "links": self._find_links(src)} for (src, dest) in self.crawler.resolve_cache.items() if src.rstrip("/") != dest.rstrip("/")]
 
         return ResultSet("Internal 301s", f"{self.__doc__}", data)
 

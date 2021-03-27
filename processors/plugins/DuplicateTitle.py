@@ -10,9 +10,9 @@ class DuplicateTitle:
 
     @hookimpl_processor
     def get_results_set(self):
-        data = [{"title": title, "urls": ", ".join(urls)} for (title, urls) in self.titles.items() if len(urls) > 1]
+        data = [{"title": title, "urls": urls} for (title, urls) in self.titles.items() if len(urls) > 1]
 
-        return ResultSet("Duplicate Metadata", f"{self.__doc__}", data)
+        return ResultSet("Duplicate Titles", f"{self.__doc__}", data)
 
     @hookimpl_processor
     def process(self, html, url):

@@ -13,7 +13,7 @@ class ExternalImagesByURL:
 
     @hookimpl_processor
     def get_results_set(self):
-        data = [{"Image": image, "url": ",".join(urls)} for (image, urls) in self.images.items()]
+        data = [{"Image": image, "url": urls} for (image, urls) in self.images.items()]
 
         return ResultSet("External Images by URL", f"{self.__doc__}", data)
 

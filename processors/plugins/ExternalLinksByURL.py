@@ -13,7 +13,7 @@ class ExternalLinksByURL:
 
     @hookimpl_processor
     def get_results_set(self):
-        data = [{"Link": link, "url": ",".join(urls)} for (link, urls) in self.links.items()]
+        data = [{"Link": link, "url": urls} for (link, urls) in self.links.items()]
 
         return ResultSet("External Links by URL", f"{self.__doc__}", data)
 

@@ -10,7 +10,7 @@ class DuplicateH1:
 
     @hookimpl_processor
     def get_results_set(self):
-        data = [{"h1": h1, "url": ",".join(urls)} for (h1, urls) in self.h1s.items() if len(urls) > 1]
+        data = [{"h1": h1, "url": urls} for (h1, urls) in self.h1s.items() if len(urls) > 1]
 
         return ResultSet("Duplicate H1's", f"{self.__doc__}", data)
 
