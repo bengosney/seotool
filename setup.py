@@ -14,6 +14,7 @@ setup(
         "pyppeteer",
         "requests",
         "pluggy",
+        "Jinja2",
     ],
     entry_points={
         "console_scripts": ["seo-crawl=seotool.cli:main"],
