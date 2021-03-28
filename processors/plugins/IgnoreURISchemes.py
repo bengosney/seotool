@@ -1,7 +1,8 @@
-class IgnoreURISchemes:
-    def __init__(self, crawler):
-        self.crawler = crawler
+import processors
 
+
+class IgnoreURISchemes:
+    @processors.hookimpl_pre_processor
     def process_html(self, html, response):
         links = html.find_all("a")
         for link in links:

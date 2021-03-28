@@ -2,17 +2,18 @@ import mimetypes
 import os
 from urllib.parse import urlparse
 
+import processors
+from seotool.crawl import SkipPage
+
 
 class IgnorePDF:
-    def __init__(self, crawler):
-        self.crawler = crawler
-
+    @processors.hookimpl_pre_processor
     def process_html(self, html, response):
         content_type = response.headers["content-type"]
         extension = mimetypes.guess_extension(content_type)
 
         if extension == "pdf":
-            self.crawler.skip_page()
+            raise SkipPage
 
         links = html.find_all("a")
         for link in links:

@@ -1,0 +1,2 @@
+class SkipPage(Exception):
+    pass

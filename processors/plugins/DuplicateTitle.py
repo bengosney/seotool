@@ -1,18 +1,24 @@
+from processors import ResultSet, hookimpl_processor
+
+
 class DuplicateTitle:
+    """Duplicate title tags"""
+
     def __init__(self, crawler):
         self.titles = {}
         self.crawler = crawler
 
-    def get_results_header(self):
-        return ["title", "urls"]
+    @hookimpl_processor
+    def get_results_set(self):
+        data = [{"title": title, "urls": urls} for (title, urls) in self.titles.items() if len(urls) > 1]
 
-    def get_results(self):
-        return [[title, *urls] for (title, urls) in self.titles.items() if len(urls) > 1]
+        return ResultSet("Duplicate Titles", f"{self.__doc__}", data)
 
-    def parse(self, html_soup, url=None):
-        titles = html_soup.find_all("title")
+    @hookimpl_processor
+    def process(self, html, url):
+        titles = html.find_all("title")
 
-        canonicals = html_soup.find_all("link", {"rel": "canonical"})
+        canonicals = html.find_all("link", {"rel": "canonical"})
         if len(canonicals) > 0:
             try:
                 url = canonicals[0]["href"]

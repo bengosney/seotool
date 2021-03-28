@@ -13,8 +13,11 @@ setup(
         "pdfkit",
         "pyppeteer",
         "requests",
+        "pluggy",
+        "Jinja2",
     ],
     entry_points={
         "console_scripts": ["seo-crawl=seotool.cli:main"],
+        # "seo_processor": ["search=processors.plugins.IgnoreSearchPages"]
     },
 )

@@ -1,7 +1,8 @@
-class IgnoreSearchPages:
-    def __init__(self, crawler):
-        self.crawler = crawler
+import processors
 
+
+class IgnoreSearchPages:
+    @processors.hookimpl_pre_processor
     def process_html(self, html):
         links = html.find_all("a")
         for link in links:
@@ -12,5 +13,3 @@ class IgnoreSearchPages:
 
             if "/search/" in href:
                 link.decompose()
-
-        return html
