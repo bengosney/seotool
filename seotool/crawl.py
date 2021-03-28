@@ -12,12 +12,9 @@ from requests.exceptions import TooManyRedirects
 import engines
 from engines import EngineException
 from processors import Processor
+from seotool.exceptions import SkipPage
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-
-
-class SkipPage(Exception):
-    pass
 
 
 class Crawler:
@@ -47,16 +44,6 @@ class Crawler:
         self.results_base_path = os.path.join(os.getcwd(), f"results-{self.base_netloc}")
 
         self.engine_instance = None
-
-    @staticmethod
-    def get_plugin_dir():
-        return os.path.join(os.path.dirname(os.path.realpath(__file__)), "..", "plugins")
-
-    @staticmethod
-    def get_plugin_list():
-        allFiles = os.listdir(Crawler.get_plugin_dir())
-
-        return [f[:-3] for f in allFiles if f[-3:] == ".py" and f[0] != "_"]
 
     def skip_page(self):
         raise SkipPage
