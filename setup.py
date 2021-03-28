@@ -18,6 +18,6 @@ setup(
     ],
     entry_points={
         "console_scripts": ["seo-crawl=seotool.cli:main"],
-        # "pre_processors": ["search=processors.plugins.IgnoreSearchPages"]
+        # "seo_processor": ["search=processors.plugins.IgnoreSearchPages"]
     },
 )

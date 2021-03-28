@@ -11,7 +11,7 @@ from requests.exceptions import TooManyRedirects
 
 import engines
 from engines import EngineException
-from processors import OutputProcessor, PreProcessor, Processor
+from processors import Processor
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
@@ -63,8 +63,7 @@ class Crawler:
 
     def _init_plugins(self):
         self.processor = Processor(self)
-        self.preprocessor = PreProcessor(self)
-        self.outputprocessor = OutputProcessor(self)
+        self.print(f"Loaded plugins: {', '.join(self.processor.plugin_names)}")
 
     def _add_links(self, html_soup):
         links = html_soup.find_all("a")
@@ -100,7 +99,7 @@ class Crawler:
             pass
 
         results_store = self.processor.get_results_sets()
-        self.outputprocessor.process_results_sets(results_store)
+        self.processor.process_results_sets(results_store)
 
     async def crawl(self):
         self._crawling = True
@@ -171,7 +170,7 @@ class Crawler:
             html_soup = BeautifulSoup(response.body, "html.parser")
 
             try:
-                self.preprocessor.process_html(html_soup, url, response.status_code, response)
+                self.processor.process_html(html_soup, url, response.status_code, response)
             except SkipPage:
                 continue
             finally:
