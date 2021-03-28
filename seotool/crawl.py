@@ -129,7 +129,6 @@ class Crawler:
         return True
 
     async def _crawl(self):
-
         while self._crawling:
             if self.delay:
                 await asyncio.sleep(self.delay)
