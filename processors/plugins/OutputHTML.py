@@ -27,7 +27,7 @@ class OutputHTML:
 <html>
 <head>
     <title>SEO Report for {{ url }}</title>
-    <styles>{{ styles }}</styles>
+    <style>{{ styles }}</style>
 </head>
 <body>
     <h1>SEO Report for {{ url }}</h1>
