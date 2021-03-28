@@ -4,7 +4,7 @@ import asyncio
 
 import click
 
-from .crawl import Crawler
+from seotool.crawl import Crawler
 
 
 @click.command()
@@ -15,8 +15,8 @@ from .crawl import Crawler
 @click.option("--verify/--noverify", default=True, help="Verify SSLs")
 @click.option("--list-plugins", is_flag=True, help="Lists plugins")
 @click.option("--delay", help="Delay between crawling pages", default=0)
-@click.option("--pyppeteer/--requests", default=True, help="Select the fetch and parse method")
-def main(url, verbose, plugin, verify, disable, list_plugins, delay, pyppeteer):
+@click.option("--engine", default="pyppeteer", help="Fetch and parse engine to use")
+def main(url, verbose, plugin, verify, disable, list_plugins, delay, engine):
     """This script will crawl give URL and analyse the output using plugins"""
     if list_plugins:
         plugins = Crawler.get_plugin_list()
@@ -27,7 +27,6 @@ def main(url, verbose, plugin, verify, disable, list_plugins, delay, pyppeteer):
             click.echo(ctx.get_help())
             ctx.exit()
 
-        engine = "pyppeteer" if pyppeteer else "requests"
         crawler = Crawler(url, verbose=verbose, plugins=plugin, verify=verify, disabled=disable, delay=delay, engine=engine)
         asyncio.run(crawler.crawl())
 

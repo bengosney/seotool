@@ -6,10 +6,9 @@ from engines import engine, response
 class pyppeteer(engine):
     browser = None
 
-    async def get(self, url: str, **kwargs):
+    async def get(self, url: str, **kwargs) -> response:
         page = await self.browser.newPage()
         result = await page.goto(url, {"waitUntil": "domcontentloaded"})
-        # await page.screenshot({'path': 'example.png'})
 
         responseObj = response(
             headers=result.headers,

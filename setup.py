@@ -17,7 +17,11 @@ setup(
         "Jinja2",
     ],
     entry_points={
-        "console_scripts": ["seo-crawl=seotool.cli:main"],
         # "seo_processor": ["search=processors.plugins.IgnoreSearchPages"]
+        "console_scripts": ["seo-crawl=seotool.cli:main"],
+        "seo_engines": [
+            "pyppeteer=engines.pyppeteer:pyppeteer",
+            "requests=engines.requests:requests",
+        ],
     },
 )
