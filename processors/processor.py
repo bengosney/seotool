@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 import pluggy
 
@@ -7,11 +7,12 @@ from processors.dataModels import ResultSet
 
 
 class Processor:
-    def __init__(self, crawler, enabled: List = [], disabled: List = []):
+    def __init__(self, crawler, enabled: Optional[List] = None, disabled: List = []):
         self.crawler = crawler
-        self.enabled = enabled if len(enabled) else plugins.__all__
+        self.enabled = enabled
         self.disabled = disabled
 
+        self.plugin_names = []
         self.pm = self.get_plugin_manager()
         self.hook = self.pm.hook
 
@@ -19,7 +20,6 @@ class Processor:
         pm = pluggy.PluginManager("seo_processor")
         pm.add_hookspecs(hookspecs.processor)
         pm.load_setuptools_entrypoints("seo_processor")
-        pm.enable_tracing()
 
         for plugin in plugins.__all__:
             __import__(f"processors.plugins.{plugin}")
@@ -29,6 +29,17 @@ class Processor:
                 pm.register(_class(self.crawler), plugin)
             except TypeError:
                 pm.register(_class(), plugin)
+
+        plugin_names = [p for p, _ in pm.list_name_plugin()]
+
+        if self.enabled is None:
+            self.enabled = plugin_names
+
+        for plugin in plugin_names:
+            if plugin not in self.enabled or plugin in self.disabled:
+                pm.set_blocked(plugin)
+            else:
+                self.plugin_names.append(plugin)
 
         return pm
 
@@ -43,7 +54,3 @@ class Processor:
 
     def process_results_sets(self, resultsSets: List[ResultSet]) -> None:
         return self.hook.process_output(resultsSets=resultsSets)  # type: ignore
-
-    @property
-    def plugin_names(self):
-        return [p for p, _ in self.pm.list_name_plugin()]

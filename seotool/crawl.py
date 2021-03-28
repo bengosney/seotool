@@ -24,7 +24,7 @@ class Crawler:
     def __init__(self, url, plugins=[], verbose=True, verify=True, disabled=[], delay=0, engine="pyppeteer"):
         self.verify = verify
         self.base_url = head(url, verify=verify).url
-        self.plugins = plugins
+        self.plugins = plugins if len(plugins) else None
         self.plugin_classes = []
         self.plugin_pre_classes = []
         self.plugin_post_classes = []
@@ -62,7 +62,7 @@ class Crawler:
         raise SkipPage
 
     def _init_plugins(self):
-        self.processor = Processor(self)
+        self.processor = Processor(self, self.plugins, self.disabled)
         self.print(f"Loaded plugins: {', '.join(self.processor.plugin_names)}")
 
     def _add_links(self, html_soup):
