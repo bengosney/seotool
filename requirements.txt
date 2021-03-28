@@ -9,7 +9,7 @@ beautifulsoup4==4.9.3     # via seotool (setup.py)
 certifi==2020.12.5        # via requests
 chardet==4.0.0            # via requests
 click==7.1.2              # via seotool (setup.py)
-idna==3.1                # via requests
+idna==2.10                # via requests
 jinja2==2.11.3            # via seotool (setup.py)
 markdown==3.3.4           # via seotool (setup.py)
 markupsafe==1.1.1         # via jinja2
@@ -18,7 +18,7 @@ pluggy==0.13.1            # via seotool (setup.py)
 pyee==8.1.0               # via pyppeteer
 pyppeteer==0.2.5          # via seotool (setup.py)
 requests==2.25.1          # via seotool (setup.py)
-soupsieve==2.2.1            # via beautifulsoup4
+soupsieve==2.2.1          # via beautifulsoup4
 tqdm==4.59.0              # via pyppeteer
 urllib3==1.26.4           # via pyppeteer, requests
 websockets==8.1           # via pyppeteer
