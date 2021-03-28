@@ -18,7 +18,9 @@ identify==2.2.0
     # via pre-commit
 nodeenv==1.5.0
     # via pre-commit
-pip-tools==6.0.0
+pep517==0.10.0
+    # via pip-tools
+pip-tools==6.0.1
     # via -r requirements.dev.in
 pre-commit==2.11.1
     # via -r requirements.dev.in
@@ -27,7 +29,9 @@ pyyaml==5.4.1
 six==1.15.0
     # via virtualenv
 toml==0.10.2
-    # via pre-commit
+    # via
+    #   pep517
+    #   pre-commit
 virtualenv==20.4.3
     # via pre-commit
 
