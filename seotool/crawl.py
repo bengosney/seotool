@@ -4,12 +4,12 @@ import urllib.parse
 from collections import deque
 
 import click
+import pkg_resources
 import urllib3
 from bs4 import BeautifulSoup
 from requests import head
 from requests.exceptions import TooManyRedirects
 
-import engines
 from engines import EngineException
 from processors import Processor
 from seotool.exceptions import SkipPage
@@ -44,6 +44,11 @@ class Crawler:
         self.results_base_path = os.path.join(os.getcwd(), f"results-{self.base_netloc}")
 
         self.engine_instance = None
+
+    @staticmethod
+    def get_plugin_list():
+        p = Processor(None)
+        return p.plugin_names
 
     def skip_page(self):
         raise SkipPage
@@ -103,7 +108,14 @@ class Crawler:
 
     async def getEngine(self):
         if self.engine_instance is None:
-            engine_cls = getattr(engines, self.engine)
+            engine_cls = None
+            for entry_point in pkg_resources.iter_entry_points("seo_engines"):
+                if self.engine == entry_point.name:
+                    engine_cls = entry_point.load()
+
+            if engine_cls is None:
+                raise EngineException(f"Engine not found: {self.engine}")
+
             self.engine_instance = engine_cls()
 
         return self.engine_instance
