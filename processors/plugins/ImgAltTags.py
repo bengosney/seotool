@@ -8,9 +8,6 @@ class ImgAltTags:
         self.missing_alts = []
         self.crawler = crawler
 
-    def get_results_header(self):
-        return ["src", "url"]
-
     @hookimpl_processor
     def get_results_set(self):
         return ResultSet("Images missing alt tags", f"{self.__doc__}", self.missing_alts)
