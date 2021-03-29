@@ -2,7 +2,6 @@
 
 # Standard Library
 import asyncio
-from pprint import pprint
 
 # Third Party
 import click
@@ -29,8 +28,6 @@ def list_plugins(ctx, param, value):
 @click.version_option()
 def main(url, verbose, plugin, verify, disable, delay, engine, **kwargs):
     """This script will crawl give URL and analyse the output using plugins."""
-
-    pprint(kwargs)
 
     if url is None:
         ctx = click.get_current_context()
