@@ -11,8 +11,12 @@ from seotool.crawl import Crawler
 
 
 def list_plugins(ctx, param, value):
+    if not value or ctx.resilient_parsing:
+        return
+
+    click.secho("\nAvailable plugins:\n", fg="green")
     plugins = Crawler.get_plugin_list()
-    [click.echo(plugin) for plugin in plugins]
+    [click.echo(f"\t{plugin}") for plugin in plugins]
     ctx.exit()
 
 
@@ -24,7 +28,7 @@ def list_plugins(ctx, param, value):
 @click.option("--verify/--noverify", default=True, help="Verify SSLs")
 @click.option("--delay", help="Delay between crawling pages", default=0)
 @click.option("--engine", default="pyppeteer", help="Fetch and parse engine to use")
-# @click.option("--list-plugins",  is_flag=True, callback=list_plugins, expose_value=False, is_eager=True, help="Lists plugins")
+@click.option("--list-plugins", is_flag=True, callback=list_plugins, expose_value=False, is_eager=True, help="Lists plugins")
 @click.version_option()
 def main(url, verbose, plugin, verify, disable, delay, engine, **kwargs):
     """This script will crawl give URL and analyse the output using plugins."""
