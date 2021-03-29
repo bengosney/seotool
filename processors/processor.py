@@ -1,8 +1,11 @@
+# Standard Library
 import inspect
 from typing import Any, Dict, List, Optional
 
+# Third Party
 import pluggy
 
+# First Party
 from processors import hookspecs, plugins
 from processors.dataModels import ResultSet
 

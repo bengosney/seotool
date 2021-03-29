@@ -1,9 +1,12 @@
+# Standard Library
 import os
 from typing import List
 
+# Third Party
 import click
 from jinja2 import Environment, FileSystemLoader, Template
 
+# First Party
 from processors import ResultSet, hookimpl_processor
 from seotool.crawl import Crawler
 

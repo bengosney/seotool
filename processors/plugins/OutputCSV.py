@@ -1,7 +1,9 @@
+# Standard Library
 import csv
 import os
 from typing import List
 
+# First Party
 from processors import ResultSet, hookimpl_processor
 from seotool.crawl import Crawler
 

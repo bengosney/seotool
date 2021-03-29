@@ -1,6 +1,8 @@
+# Standard Library
 import urllib.parse
 from collections import defaultdict
 
+# First Party
 from processors import ResultSet, hookimpl_processor
 
 

@@ -1,7 +1,9 @@
+# Standard Library
 import mimetypes
 import os
 from urllib.parse import urlparse
 
+# First Party
 import processors
 from seotool.crawl import SkipPage
 

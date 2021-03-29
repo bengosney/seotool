@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
 
+# Standard Library
 import asyncio
 from pprint import pprint
 
+# Third Party
 import click
 
+# First Party
 from seotool.crawl import Crawler
 
 

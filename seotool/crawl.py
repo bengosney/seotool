@@ -1,8 +1,10 @@
+# Standard Library
 import asyncio
 import os
 import urllib.parse
 from collections import deque
 
+# Third Party
 import click
 import pkg_resources
 import urllib3
@@ -10,6 +12,7 @@ from bs4 import BeautifulSoup
 from requests import head
 from requests.exceptions import TooManyRedirects
 
+# First Party
 from engines import EngineException
 from processors import Processor
 from seotool.exceptions import SkipPage

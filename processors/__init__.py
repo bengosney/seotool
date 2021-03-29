@@ -1,5 +1,7 @@
+# Third Party
 import pluggy
 
+# First Party
 from processors.dataModels import ResultSet
 from processors.processor import Processor
 

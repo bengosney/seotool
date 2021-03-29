@@ -1,8 +1,11 @@
+# Standard Library
 from typing import Dict, List, Optional
 
+# Third Party
 import pluggy
 from bs4 import BeautifulSoup
 
+# First Party
 from processors.dataModels import ResultSet
 
 hookspec_processor = pluggy.HookspecMarker("seo_processor")
