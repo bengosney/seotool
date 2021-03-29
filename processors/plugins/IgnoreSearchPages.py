@@ -2,7 +2,7 @@ import processors
 
 
 class IgnoreSearchPages:
-    @processors.hookimpl_pre_processor
+    @processors.hookimpl_processor
     def process_html(self, html):
         links = html.find_all("a")
         for link in links:

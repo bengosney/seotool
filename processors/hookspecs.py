@@ -24,3 +24,7 @@ class processor:
     @hookspec_processor
     def process_output(self, resultsSets: List[ResultSet]):
         """Process the data into a format"""
+
+    @hookspec_processor
+    def get_options(self):
+        """Get any cli arguments"""

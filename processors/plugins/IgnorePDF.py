@@ -7,7 +7,7 @@ from seotool.crawl import SkipPage
 
 
 class IgnorePDF:
-    @processors.hookimpl_pre_processor
+    @processors.hookimpl_processor
     def process_html(self, html, response):
         content_type = response.headers["content-type"]
         extension = mimetypes.guess_extension(content_type)

@@ -18,7 +18,7 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
 class Crawler:
-    def __init__(self, url, plugins=[], verbose=True, verify=True, disabled=[], delay=0, engine="pyppeteer"):
+    def __init__(self, url, plugins=[], verbose=True, verify=True, disabled=[], delay=0, engine="pyppeteer", plugin_options={}):
         self.verify = verify
         self.base_url = head(url, verify=verify).url
         self.plugins = plugins if len(plugins) else None
@@ -32,10 +32,11 @@ class Crawler:
         self.disabled = disabled
         self.delay = delay
         self.engine = engine
+        self.plugin_options = plugin_options
 
         self.verbose = verbose
 
-        self._init_plugins()
+        self._init_plugins(plugin_options)
 
         if self.base_url != url:
             self.print(f"\nBase URL {url} resolved to {self.base_url}\n", "yellow")
@@ -50,11 +51,16 @@ class Crawler:
         p = Processor(None)
         return p.plugin_names
 
+    @staticmethod
+    def get_plugin_options():
+        p = Processor(None)
+        return p.get_options()
+
     def skip_page(self):
         raise SkipPage
 
-    def _init_plugins(self):
-        self.processor = Processor(self, self.plugins, self.disabled)
+    def _init_plugins(self, plugin_options={}):
+        self.processor = Processor(self, self.plugins, self.disabled, plugin_options)
         self.print(f"Loaded plugins: {', '.join(self.processor.plugin_names)}")
 
     def _add_links(self, html_soup):

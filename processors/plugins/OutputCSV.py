@@ -2,7 +2,7 @@ import csv
 import os
 from typing import List
 
-from processors import ResultSet, hookimpl_output_processor
+from processors import ResultSet, hookimpl_processor
 from seotool.crawl import Crawler
 
 
@@ -10,7 +10,7 @@ class OutputCSV:
     def __init__(self, crawler: Crawler) -> None:
         self.crawler = crawler
 
-    @hookimpl_output_processor
+    @hookimpl_processor
     def process_output(self, resultsSets: List[ResultSet]):
         self.crawler.print("Writing CSVs")
 

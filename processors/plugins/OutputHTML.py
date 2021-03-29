@@ -1,26 +1,40 @@
 import os
 from typing import List
 
-from jinja2 import Template
+import click
+from jinja2 import Environment, FileSystemLoader, Template
 
-from processors import ResultSet, hookimpl_output_processor
+from processors import ResultSet, hookimpl_processor
 from seotool.crawl import Crawler
 
 
 class OutputHTML:
-    def __init__(self, crawler: Crawler) -> None:
+    def __init__(self, crawler: Crawler, html_template: str = "") -> None:
         self.crawler = crawler
+        self.template = html_template if html_template != "" else None
 
-    @hookimpl_output_processor
+    @hookimpl_processor
     def process_output(self, resultsSets: List[ResultSet]):
         self.crawler.print("Writing HTML")
 
         path = os.path.join(self.crawler.results_base_path, "report.html")
         data = {"url": self.crawler.base_url, "results_sets": resultsSets, "styles": self.get_styles()}
 
-        with open(path, "w") as f:
+        if self.template is not None:
+            loader = FileSystemLoader(searchpath=os.getcwd())
+            templateEnv = Environment(loader=loader)
+            template = templateEnv.get_template(self.template)
+        else:
             template = Template(self.get_template())
+
+        with open(path, "w") as f:
             f.write(template.render(**data))
+
+    @hookimpl_processor
+    def get_options(self):
+        return [
+            click.option("--html-template", default=None, help="Jinja template used to render the report"),
+        ]
 
     def get_template(self):
         return """

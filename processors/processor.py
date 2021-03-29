@@ -1,4 +1,5 @@
-from typing import List, Optional
+import inspect
+from typing import Any, Dict, List, Optional
 
 import pluggy
 
@@ -7,10 +8,11 @@ from processors.dataModels import ResultSet
 
 
 class Processor:
-    def __init__(self, crawler, enabled: Optional[List] = None, disabled: List = []):
+    def __init__(self, crawler, enabled: Optional[List] = None, disabled: List = [], plugin_options: Dict[str, Any] = {}):
         self.crawler = crawler
         self.enabled = enabled
         self.disabled = disabled
+        self.plugin_options = plugin_options
 
         self.plugin_names = []
         self.pm = self.get_plugin_manager()
@@ -25,10 +27,11 @@ class Processor:
             __import__(f"processors.plugins.{plugin}")
             _module = getattr(plugins, plugin)
             _class = getattr(_module, plugin)
-            try:
-                pm.register(_class(self.crawler), plugin)
-            except TypeError:
-                pm.register(_class(), plugin)
+
+            args = {"crawler": self.crawler, **self.plugin_options}
+            sig = inspect.signature(_class)
+            supported_prams = [p.name for p in sig.parameters.values()]
+            pm.register(_class(**{key: value for (key, value) in args.items() if key in supported_prams}), plugin)
 
         plugin_names = [p for p, _ in pm.list_name_plugin()]
 
@@ -54,3 +57,6 @@ class Processor:
 
     def process_results_sets(self, resultsSets: List[ResultSet]) -> None:
         return self.hook.process_output(resultsSets=resultsSets)  # type: ignore
+
+    def get_options(self) -> List:
+        return self.hook.get_options()  # type: ignore
