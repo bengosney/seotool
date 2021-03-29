@@ -1,6 +1,5 @@
 # Standard Library
 import csv
-import os
 from typing import List
 
 # First Party
@@ -16,13 +15,8 @@ class OutputCSV:
     def process_output(self, resultsSets: List[ResultSet]):
         self.crawler.print("Writing CSVs")
 
-        filenames_seen = []
         for result_set in resultsSets:
-            filename = "".join(c for c in result_set.title if c.isalpha() or c.isdigit() or c == "-").rstrip()
-            while filename in filenames_seen:
-                filename += "-duplicate-name"
-            filenames_seen.append(filename)
-            path = os.path.join(self.crawler.results_base_path, f"{filename}.csv")
+            path = self.crawler.get_output_name(result_set.title, "csv", "csv")
 
             with open(path, "w") as f:
                 if result_set.data is None or len(result_set.data) == 0:

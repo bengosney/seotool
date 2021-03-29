@@ -1,6 +1,9 @@
 # Standard Library
 import asyncio
+import inspect
 import os
+import re
+import string
 import urllib.parse
 from collections import deque
 
@@ -21,6 +24,9 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
 class Crawler:
+    _regex_whitespace = re.compile(r"\s+")
+    _regex_not_special = re.compile(f"[^{string.ascii_letters}{string.digits}_\\-. ]")
+
     def __init__(self, url, plugins=[], verbose=True, verify=True, disabled=[], delay=0, engine="pyppeteer", plugin_options={}):
         self.verify = verify
         self.base_url = head(url, verify=verify).url
@@ -58,6 +64,10 @@ class Crawler:
     def get_plugin_options():
         p = Processor(None)
         return p.get_options()
+
+    @classmethod
+    def get_extra_options(cls):
+        return cls.get_plugin_options() + [cls.get_engine_options()]
 
     def skip_page(self):
         raise SkipPage
@@ -102,6 +112,20 @@ class Crawler:
         results_store = self.processor.get_results_sets()
         self.processor.process_results_sets(results_store)
 
+    def get_output_name(self, name: str, extention: str, folder: str = ""):
+        path = os.path.join(self.results_base_path, folder)
+        try:
+            os.makedirs(path)
+        except FileExistsError:
+            pass
+
+        return os.path.join(path, f"{self._clean_filename(name)}.{extention}")
+
+    @classmethod
+    def _clean_filename(cls, filename):
+        cleaned_filename = cls._regex_not_special.sub(" ", filename)
+        return cls._regex_whitespace.sub("-", cleaned_filename[:255]).lower()
+
     async def crawl(self):
         self._crawling = True
 
@@ -115,6 +139,15 @@ class Crawler:
 
         self.save_results()
 
+    @staticmethod
+    def get_engine_options():
+        options = []
+        for entry_point in pkg_resources.iter_entry_points("seo_engines"):
+            engine_cls = entry_point.load()
+            options += engine_cls.get_options()
+
+        return options
+
     async def getEngine(self):
         if self.engine_instance is None:
             engine_cls = None
@@ -125,7 +158,11 @@ class Crawler:
             if engine_cls is None:
                 raise EngineException(f"Engine not found: {self.engine}")
 
-            self.engine_instance = engine_cls()
+            args = {"crawler": self, **self.plugin_options}
+            sig = inspect.signature(engine_cls)
+            supported_prams = [p.name for p in sig.parameters.values()]
+
+            self.engine_instance = engine_cls(**{key: value for (key, value) in args.items() if key in supported_prams})
 
         return self.engine_instance
 

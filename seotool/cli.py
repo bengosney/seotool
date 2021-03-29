@@ -42,7 +42,7 @@ def main(url, verbose, plugin, verify, disable, delay, engine, **kwargs):
     asyncio.run(crawler.crawl())
 
 
-options = Crawler.get_plugin_options()
+options = Crawler.get_extra_options()
 for plugin_options in options:
     for func in plugin_options:
         func(main)
