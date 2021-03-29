@@ -7,7 +7,7 @@ from processors import ResultSet, hookimpl_processor
 
 
 class ExternalImagesByURL:
-    """List of external images for each URL"""
+    """List of external images for each URL."""
 
     def __init__(self, crawler):
         self.crawler = crawler

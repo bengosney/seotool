@@ -6,7 +6,7 @@ from processors import ResultSet, hookimpl_processor
 
 
 class Internal404:
-    """Internal 404 links"""
+    """Internal 404 links."""
 
     def __init__(self, crawler):
         self.crawler = crawler

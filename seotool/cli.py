@@ -28,7 +28,7 @@ def list_plugins(ctx, param, value):
 # @click.option("--list-plugins",  is_flag=True, callback=list_plugins, expose_value=False, is_eager=True, help="Lists plugins")
 @click.version_option()
 def main(url, verbose, plugin, verify, disable, delay, engine, **kwargs):
-    """This script will crawl give URL and analyse the output using plugins"""
+    """This script will crawl give URL and analyse the output using plugins."""
 
     pprint(kwargs)
 

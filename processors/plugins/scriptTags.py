@@ -3,7 +3,7 @@ from processors import ResultSet, hookimpl_processor
 
 
 class scriptTags:
-    """Script tags used in the site"""
+    """Script tags used in the site."""
 
     def __init__(self, crawler):
         self.scriptTags = []

@@ -6,7 +6,7 @@ from processors import ResultSet, hookimpl_processor
 
 
 class Internal301:
-    """Internal links that 301"""
+    """Internal links that 301."""
 
     def __init__(self, crawler):
         self.crawler = crawler

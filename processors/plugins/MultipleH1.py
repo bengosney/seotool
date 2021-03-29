@@ -3,7 +3,7 @@ from processors import ResultSet, hookimpl_processor
 
 
 class MultipleH1:
-    """Multiple H1's confuse search engines and screen readers"""
+    """Multiple H1's confuse search engines and screen readers."""
 
     def __init__(self, crawler):
         self.multiple_h1s = []

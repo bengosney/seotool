@@ -14,20 +14,20 @@ hookspec_processor = pluggy.HookspecMarker("seo_processor")
 class processor:
     @hookspec_processor
     def process_html(self, html: BeautifulSoup, url: str, response: Dict, status_code: str) -> None:
-        """Pre-process the html before any checks are run"""
+        """Pre-process the html before any checks are run."""
 
     @hookspec_processor
     def process(self, html: BeautifulSoup, url: str, response: Dict, status_code: str) -> None:
-        """Process the html"""
+        """Process the html."""
 
     @hookspec_processor
     def get_results_set(self) -> Optional[ResultSet]:
-        """Get a results object"""
+        """Get a results object."""
 
     @hookspec_processor
     def process_output(self, resultsSets: List[ResultSet]):
-        """Process the data into a format"""
+        """Process the data into a format."""
 
     @hookspec_processor
     def get_options(self):
-        """Get any cli arguments"""
+        """Get any cli arguments."""

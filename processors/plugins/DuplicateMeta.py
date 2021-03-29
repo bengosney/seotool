@@ -3,7 +3,7 @@ from processors import ResultSet, hookimpl_processor
 
 
 class DuplicateMeta:
-    """Duplicate Metadata"""
+    """Duplicate Metadata."""
 
     def __init__(self, crawler):
         self.metas = {}

@@ -3,7 +3,7 @@ from processors import ResultSet, hookimpl_processor
 
 
 class DuplicateH1:
-    """Duplicate H1"""
+    """Duplicate H1."""
 
     def __init__(self, crawler):
         self.h1s = {}

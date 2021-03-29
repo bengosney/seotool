@@ -3,7 +3,7 @@ from processors import ResultSet, hookimpl_processor
 
 
 class ImgAltTags:
-    """Images missing alt tags"""
+    """Images missing alt tags."""
 
     def __init__(self, crawler):
         self.missing_alts = []

@@ -3,7 +3,7 @@ from processors import ResultSet, hookimpl_processor
 
 
 class DuplicateTitle:
-    """Duplicate title tags"""
+    """Duplicate title tags."""
 
     def __init__(self, crawler):
         self.titles = {}

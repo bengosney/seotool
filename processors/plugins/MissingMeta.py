@@ -3,7 +3,7 @@ from processors import ResultSet, hookimpl_processor
 
 
 class MissingMeta:
-    """Metatags give search engins a better idea of what the page is about"""
+    """Metatags give search engins a better idea of what the page is about."""
 
     def __init__(self, crawler):
         self.missing_metas = []

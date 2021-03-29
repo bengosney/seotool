@@ -6,7 +6,7 @@ from processors import ResultSet, hookimpl_processor
 
 
 class ExternalLinks:
-    """List of external links"""
+    """List of external links."""
 
     def __init__(self, crawler):
         self.crawler = crawler
