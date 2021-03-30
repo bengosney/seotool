@@ -1,3 +1,6 @@
+# Future
+from __future__ import annotations
+
 # Standard Library
 import asyncio
 import inspect
@@ -7,7 +10,7 @@ import string
 import urllib.parse
 from collections import deque
 from functools import cached_property
-from typing import Callable, List
+from typing import Callable
 
 # Third Party
 import click
@@ -32,13 +35,10 @@ class Crawler:
         self.url = url
         self.verify = verify
         self.plugins = plugins if len(plugins) else None
-        self.plugin_classes = []
-        self.plugin_pre_classes = []
-        self.plugin_post_classes = []
-        self.visited = deque([])
-        self.urls = deque([])
-        self.all_urls = []
-        self.resolve_cache = {}
+        self.visited: deque[str] = deque([])
+        self.urls: deque[str] = deque([])
+        self.all_urls: list[str] = []
+        self.resolve_cache: dict[str, str] = {}
         self.disabled = disabled
         self.delay = delay
         self.engine = engine
@@ -47,7 +47,6 @@ class Crawler:
         self.verbose = verbose
 
         self._init_plugins(plugin_options)
-        self.engine_instance = None
 
     @cached_property
     def base_url(self) -> str:
@@ -67,17 +66,17 @@ class Crawler:
         return os.path.join(os.getcwd(), f"results-{self.base_netloc}")
 
     @staticmethod
-    def get_plugin_list() -> List[str]:
+    def get_plugin_list() -> list[str]:
         p = Processor(None)
         return p.plugin_names
 
     @staticmethod
-    def get_plugin_options() -> List[List[Callable]]:
+    def get_plugin_options() -> list[list[Callable]]:
         p = Processor(None)
         return p.get_options()
 
     @classmethod
-    def get_extra_options(cls) -> List[List[Callable]]:
+    def get_extra_options(cls) -> list[list[Callable]]:
         return cls.get_plugin_options() + [cls.get_engine_options()]
 
     def skip_page(self) -> None:
@@ -146,9 +145,9 @@ class Crawler:
 
     async def crawl(self) -> None:
         self._crawling = True
-        self.reset_urls
+        self.reset_urls()
 
-        engine = await self.getEngine()
+        engine = self.engine_instance
         async with engine:
             try:
                 await self._crawl()
@@ -159,7 +158,7 @@ class Crawler:
         self.save_results()
 
     @staticmethod
-    def get_engine_options() -> List[Callable]:
+    def get_engine_options() -> list[Callable]:
         options = []
         for entry_point in pkg_resources.iter_entry_points("seo_engines"):
             engine_cls = entry_point.load()
@@ -167,26 +166,25 @@ class Crawler:
 
         return options
 
-    async def getEngine(self) -> engine:
-        if self.engine_instance is None:
-            engine_cls = None
-            for entry_point in pkg_resources.iter_entry_points("seo_engines"):
-                if self.engine == entry_point.name:
-                    engine_cls = entry_point.load()
+    @cached_property
+    def engine_instance(self) -> engine:
+        self.print(f"Attempting to load {self.engine}")
+        engine_cls = None
+        for entry_point in pkg_resources.iter_entry_points("seo_engines"):
+            if self.engine == entry_point.name:
+                engine_cls = entry_point.load()
 
-            if engine_cls is None:
-                raise EngineException(f"Engine not found: {self.engine}")
+        if engine_cls is None:
+            raise EngineException(f"Engine not found: {self.engine}")
 
-            args = {"crawler": self, **self.plugin_options}
-            sig = inspect.signature(engine_cls)
-            supported_prams = [p.name for p in sig.parameters.values()]
+        args = {"crawler": self, **self.plugin_options}
+        sig = inspect.signature(engine_cls)
+        supported_prams = [p.name for p in sig.parameters.values()]
 
-            self.engine_instance = engine_cls(**{key: value for (key, value) in args.items() if key in supported_prams})
-
-        return self.engine_instance
+        return engine_cls(**{key: value for (key, value) in args.items() if key in supported_prams})
 
     async def getResponse(self, url) -> response:
-        engine = await self.getEngine()
+        engine = self.engine_instance
         try:
             return await engine.get(url, verify=self.verify)
         except Exception as ERR:
