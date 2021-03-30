@@ -5,7 +5,7 @@ description = "Pluing based SEO Reporting Tool"
 authors = [
     "Ben Gosney <bengosney@googlemail.com>"
 ]
-python = "^3.7"
+python = "^3.8"
 repository = "https://github.com/bengosney/stretchtheirlegs/"
 
 [build-system]
