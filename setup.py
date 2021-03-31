@@ -6,7 +6,7 @@ setup(
     name="seotool",
     version="2.0.0",
     packages=find_packages(),
-    python_requires="~=3.7",
+    python_requires="~=3.8",
     install_requires=[
         "beautifulsoup4",
         "click",
