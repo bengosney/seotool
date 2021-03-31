@@ -26,6 +26,8 @@ pdfkit==0.6.1
     # via seotool (setup.py)
 pluggy==0.13.1
     # via seotool (setup.py)
+pydantic==1.8.1
+    # via seotool (setup.py)
 pyee==8.1.0
     # via pyppeteer
 pyppeteer==0.2.5
@@ -36,6 +38,8 @@ soupsieve==2.2.1
     # via beautifulsoup4
 tqdm==4.59.0
     # via pyppeteer
+typing-extensions==3.7.4.3
+    # via pydantic
 urllib3==1.26.4
     # via
     #   pyppeteer

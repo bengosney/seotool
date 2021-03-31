@@ -1,6 +1,8 @@
 # Standard Library
-from dataclasses import dataclass
 from typing import Dict, List
+
+# Third Party
+from pydantic.dataclasses import dataclass
 
 
 @dataclass
