@@ -1,5 +1,5 @@
 # Standard Library
-from typing import Dict, List
+from typing import Any, Dict, List
 
 # Third Party
 from pydantic.dataclasses import dataclass
@@ -9,7 +9,7 @@ from pydantic.dataclasses import dataclass
 class ResultSet:
     title: str
     body: str
-    data: List[Dict[str, str]]
+    data: List[Dict[str, Any]]
 
     @property
     def data_headers(self):
