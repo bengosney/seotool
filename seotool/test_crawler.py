@@ -35,3 +35,12 @@ def test_can_crawl(httpserver: HTTPServer):
 
     assert len(crawler.all_urls) == 2
     assert page2_url in crawler.all_urls
+
+
+def test_runs_plugin(httpserver: HTTPServer):
+    httpserver.expect_request("/").respond_with_data("<h1>page2</h1>", content_type="text/html")
+
+    crawler = Crawler(httpserver.url_for("/"), verbose=False, plugins=["MultipleH1", "MissingH1"])
+    results = crawler.asyncio_crawl(save=False)
+
+    assert len(results) == 2
