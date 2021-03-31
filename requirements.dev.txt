@@ -40,6 +40,8 @@ py==1.10.0
     # via pytest
 pyparsing==2.4.7
     # via packaging
+pytest-httpserver==1.0.0
+    # via -r requirements.dev.in
 pytest-mock==3.5.1
     # via -r requirements.dev.in
 pytest==6.2.2
@@ -61,6 +63,8 @@ typing-extensions==3.7.4.3
     # via mypy
 virtualenv==20.4.3
     # via pre-commit
+werkzeug==1.0.1
+    # via pytest-httpserver
 
 # The following packages are considered to be unsafe in a requirements file:
 # pip
