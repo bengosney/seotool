@@ -16,7 +16,6 @@ setup(
         "requests",
         "pluggy",
         "Jinja2",
-        "pydantic",
     ],
     entry_points={
         # "seo_processor": ["search=processors.plugins.IgnoreSearchPages"]

@@ -1,5 +1,5 @@
-# Third Party
-from pydantic.dataclasses import dataclass
+# Standard Library
+from dataclasses import dataclass
 
 
 @dataclass
