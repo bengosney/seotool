@@ -5,19 +5,6 @@ from pytest_httpserver import HTTPServer
 from seotool.crawl import Crawler
 
 
-def get_page(body, content):
-    return f"""
-<html>
-<head>
-    <title>{content}</title>
-</head>
-<body>
-{body}
-</body>
-</html>
-"""
-
-
 def test_external(httpserver: HTTPServer):
     img = "http://example.com/external.png"
     httpserver.expect_request("/").respond_with_data(
