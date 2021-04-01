@@ -11,7 +11,7 @@ class DuplicateMeta:
 
     @hookimpl_processor
     def get_results_set(self):
-        data = [{"meta": meta, "url": urls} for (meta, urls) in self.metas.items() if len(urls) > 1]
+        data = [{"meta": meta, "url": sorted(urls)} for (meta, urls) in self.metas.items() if len(urls) > 1]
 
         return ResultSet("Duplicate Metadata", f"{self.__doc__}", data)
 
