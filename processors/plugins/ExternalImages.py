@@ -14,7 +14,7 @@ class ExternalImages:
 
     @hookimpl_processor
     def get_results_set(self):
-        data = [{"Image": image} for image in set(self.images)]
+        data = [{"image": image} for image in set(self.images)]
 
         return ResultSet("External Images", f"{self.__doc__}", data)
 
