@@ -13,7 +13,7 @@ def test_duplicates(httpserver: HTTPServer):
     crawler = Crawler(httpserver.url_for("/"), verbose=False, plugins=["DuplicateH1"])
     (res,) = crawler.asyncio_crawl(save=False)
 
-    expected_data = [{"h1": "page1", "url": sorted([httpserver.url_for("/"), httpserver.url_for("/page2")])}]
+    expected_data = [{"h1": "page1", "urls": sorted([httpserver.url_for("/"), httpserver.url_for("/page2")])}]
 
     assert res.data == expected_data
 

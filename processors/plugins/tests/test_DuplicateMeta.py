@@ -39,7 +39,7 @@ def test_duplicates(httpserver: HTTPServer):
     crawler = Crawler(httpserver.url_for("/"), verbose=False, plugins=["DuplicateMeta"])
     (res,) = crawler.asyncio_crawl(save=False)
 
-    expected_data = [{"meta": meta, "url": sorted([httpserver.url_for("/"), httpserver.url_for("/page2")])}]
+    expected_data = [{"meta": meta, "urls": sorted([httpserver.url_for("/"), httpserver.url_for("/page2")])}]
 
     assert res.data == expected_data
 
