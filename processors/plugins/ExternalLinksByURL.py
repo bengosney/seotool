@@ -15,7 +15,7 @@ class ExternalLinksByURL:
 
     @hookimpl_processor
     def get_results_set(self):
-        data = [{"Link": link, "url": urls} for (link, urls) in self.links.items()]
+        data = [{"link": link, "urls": sorted(urls)} for (link, urls) in self.links.items()]
 
         return ResultSet("External Links by URL", f"{self.__doc__}", data)
 
@@ -32,4 +32,4 @@ class ExternalLinksByURL:
 
             parsed_url = urllib.parse.urlparse(full_url)
             if parsed_url.netloc != parsed_base.netloc:
-                self.links[url].append(full_url)
+                self.links[full_url].append(url)

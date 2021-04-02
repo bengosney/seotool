@@ -3,5 +3,9 @@
     "python.pythonPath": "/home/ben/projects/seotool/bin/python",
     "cSpell.words": [
         "seotool"
-    ]
+    ],
+    "python.testing.pytestArgs": [],
+    "python.testing.unittestEnabled": false,
+    "python.testing.nosetestsEnabled": false,
+    "python.testing.pytestEnabled": true
 }

@@ -1,13 +1,13 @@
 # Standard Library
 from dataclasses import dataclass
-from typing import Dict, List
+from typing import Any, Dict, List
 
 
 @dataclass
 class ResultSet:
     title: str
     body: str
-    data: List[Dict[str, str]]
+    data: List[Dict[str, Any]]
 
     @property
     def data_headers(self):

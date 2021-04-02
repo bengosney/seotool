@@ -2,4 +2,7 @@ pip-tools
 pre-commit
 pytest
 pytest-mock
+pytest_click
+pytest-clarity
 mypy
+pytest-httpserver

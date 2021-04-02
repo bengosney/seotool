@@ -20,22 +20,6 @@
             "program": "seotool-cli.py",
             "console": "integratedTerminal",
             "args": ["https://www.stretchtheirlegs.co.uk"]
-        },
-        {
-            "name": "Python: list",
-            "type": "python",
-            "request": "launch",
-            "program": "seotool-cli.py",
-            "console": "integratedTerminal",
-            "args": ["--list-plugins"]
-        },
-        {
-            "name": "Python: help",
-            "type": "python",
-            "request": "launch",
-            "program": "seotool-cli.py",
-            "console": "integratedTerminal",
-            "args": ["--help"]
         }
     ]
 }

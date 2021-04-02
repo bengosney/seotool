@@ -25,6 +25,7 @@ from engines import EngineException
 from engines.dataModels import response
 from engines.engines import engine
 from processors import Processor
+from processors.dataModels import ResultSet
 from seotool.exceptions import SkipPage
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -143,7 +144,7 @@ class Crawler:
         self.urls = deque([self.base_url])
         self.all_urls = [self.base_url]
 
-    async def crawl(self) -> None:
+    async def crawl(self, save: bool = True) -> list[ResultSet]:
         self._crawling = True
         self.reset_urls()
 
@@ -155,7 +156,13 @@ class Crawler:
                 self.printERR("User Interrupt: Stopping and saving")
                 self._crawling = False
 
-        self.save_results()
+        if save:
+            self.save_results()
+
+        return self.processor.get_results_sets()
+
+    def asyncio_crawl(self, save: bool = True) -> list[ResultSet]:
+        return asyncio.run(self.crawl(save))
 
     @staticmethod
     def get_engine_options() -> list[Callable]:

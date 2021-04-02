@@ -2,7 +2,7 @@
 from processors import ResultSet, hookimpl_processor
 
 
-class scriptTags:
+class ScriptTags:
     """Script tags used in the site."""
 
     def __init__(self, crawler):
