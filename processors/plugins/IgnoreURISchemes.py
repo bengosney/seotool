@@ -1,3 +1,6 @@
+# Standard Library
+from urllib.parse import urlparse
+
 # First Party
 import processors
 
@@ -12,7 +15,8 @@ class IgnoreURISchemes:
             except KeyError:
                 continue
 
-            if href.lower().startswith(("tel:", "mailto:")):
+            parts = urlparse(href.lower())
+            if parts.scheme not in ["", "http", "https"]:
                 link.decompose()
 
         return html
