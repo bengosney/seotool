@@ -11,12 +11,15 @@ class IgnoreURISchemes:
         links = html.find_all("a")
         for link in links:
             try:
-                href = link["href"]
+                href = link["href"].lower()
             except KeyError:
                 continue
 
-            parts = urlparse(href.lower())
+            parts = urlparse(href)
             if parts.scheme not in ["", "http", "https"]:
+                link.decompose()
+
+            if href.startswith(("tel:", "mailto:")):
                 link.decompose()
 
         return html
