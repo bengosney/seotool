@@ -8,7 +8,9 @@ from seotool.crawl import Crawler
 def test_duplicates(httpserver: HTTPServer):
     httpserver.expect_request("/page2").respond_with_data("<h1>page1</h1>", content_type="text/html")
     page2_url = httpserver.url_for("/page2")
-    httpserver.expect_request("/").respond_with_data(f'<h1>page1</h1><a href="{page2_url}">page 2</a>', content_type="text/html")
+    httpserver.expect_request("/").respond_with_data(
+        f'<h1>page1</h1><a href="{page2_url}">page 2</a>', content_type="text/html"
+    )
 
     crawler = Crawler(httpserver.url_for("/"), verbose=False, plugins=["DuplicateH1"])
     (res,) = crawler.asyncio_crawl(save=False)
@@ -21,7 +23,9 @@ def test_duplicates(httpserver: HTTPServer):
 def test_no_duplicates(httpserver: HTTPServer):
     httpserver.expect_request("/page2").respond_with_data("<h1>page2</h1>", content_type="text/html")
     page2_url = httpserver.url_for("/page2")
-    httpserver.expect_request("/").respond_with_data(f'<h1>page1</h1><a href="{page2_url}">page 2</a>', content_type="text/html")
+    httpserver.expect_request("/").respond_with_data(
+        f'<h1>page1</h1><a href="{page2_url}">page 2</a>', content_type="text/html"
+    )
 
     crawler = Crawler(httpserver.url_for("/"), verbose=False, plugins=["DuplicateH1"])
     res = crawler.asyncio_crawl(save=False)[0]

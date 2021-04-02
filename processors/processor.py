@@ -11,7 +11,9 @@ from processors.dataModels import ResultSet
 
 
 class Processor:
-    def __init__(self, crawler, enabled: Optional[List] = None, disabled: List = [], plugin_options: Dict[str, Any] = {}):
+    def __init__(
+        self, crawler, enabled: Optional[List] = None, disabled: List = [], plugin_options: Dict[str, Any] = {}
+    ):
         self.crawler = crawler
         self.enabled = enabled
         self.disabled = disabled

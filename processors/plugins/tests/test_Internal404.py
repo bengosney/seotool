@@ -9,7 +9,9 @@ def test_internal_404(httpserver: HTTPServer):
     httpserver.expect_request("/page2").respond_with_data("", status=404, content_type="text/html")
     page2_url = httpserver.url_for("/page2")
 
-    httpserver.expect_request("/page3").respond_with_data(f'<a href="{page2_url}">page2</a>', status=404, content_type="text/html")
+    httpserver.expect_request("/page3").respond_with_data(
+        f'<a href="{page2_url}">page2</a>', status=404, content_type="text/html"
+    )
     page3_url = httpserver.url_for("/page3")
 
     httpserver.expect_request("/").respond_with_data(

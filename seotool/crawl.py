@@ -32,7 +32,17 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
 class Crawler:
-    def __init__(self, url: str, plugins=[], verbose=True, verify=True, disabled=[], delay=0, engine="pyppeteer", plugin_options={}) -> None:
+    def __init__(
+        self,
+        url: str,
+        plugins=[],
+        verbose=True,
+        verify=True,
+        disabled=[],
+        delay=0,
+        engine="pyppeteer",
+        plugin_options={},
+    ) -> None:
         self.url = url
         self.verify = verify
         self.plugins = plugins if len(plugins) else None
