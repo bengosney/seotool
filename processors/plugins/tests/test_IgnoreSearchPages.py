@@ -1,31 +1,32 @@
 # Standard Library
 
 # Third Party
-from pytest_httpserver import HTTPServer
 
 # First Party
-from seotool.crawl import Crawler
+
+# Third Party
+from bs4 import BeautifulSoup
+
+# First Party
+from processors.plugins.IgnoreSearchPages import IgnoreSearchPages
 
 
-def test_ignoring_pdf(httpserver: HTTPServer):
-    httpserver.expect_request("/page1").respond_with_data(
-        "<h1>Page 1</h1>",
-        content_type="text/html",
-    )
-    httpserver.expect_request("/search/page1").respond_with_data(
-        "<h1>Search Page 1</h1>",
-        content_type="text/html",
-    )
-
-    httpserver.expect_request("/").respond_with_data(
-        f"""
-        <a href="{httpserver.url_for("/page1")}">page1</a>
-        <a href="{httpserver.url_for("/search/page1")}">page2</a>
-        """,
-        content_type="text/html",
+def test_ignore_search_pages():
+    html = BeautifulSoup(
+        """
+<a href="/link">link</a>
+<a href="http://www.example.com/search/page2">example</a>
+<a href="/search/page1">Search Page 1</a>
+<a href="/search">Search</a>
+    """,
+        "html.parser",
     )
 
-    crawler = Crawler(httpserver.url_for("/"), verbose=False, plugins=["IgnoreSearchPages"])
-    crawler.asyncio_crawl(save=False)
+    links = html.find_all("a")
+    assert len(links) == 4
 
-    assert sorted(crawler.all_urls) == sorted([httpserver.url_for("/page1"), httpserver.url_for("/")])
+    plugin = IgnoreSearchPages()
+    plugin.process_html(html)
+
+    links = html.find_all("a")
+    assert len(links) == 2
