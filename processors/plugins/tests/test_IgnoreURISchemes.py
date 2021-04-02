@@ -1,9 +1,3 @@
-# Standard Library
-
-# Third Party
-
-# First Party
-
 # Third Party
 from bs4 import BeautifulSoup
 
