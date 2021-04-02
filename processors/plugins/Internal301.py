@@ -18,7 +18,8 @@ class Internal301:
 
     @hookimpl_processor
     def get_results_set(self):
-        data = [{"src": url, "dest": self.crawler.resolve_cache[url], "links": self._find_links(url)} for url in self.url301s]
+        resolve_cache = self.crawler.resolve_cache
+        data = [{"src": url, "dest": resolve_cache[url], "links": self._find_links(url)} for url in self.url301s]
 
         return ResultSet("Internal 301s", f"{self.__doc__}", data)
 

@@ -22,7 +22,9 @@ def test_duplicates(httpserver: HTTPServer):
     meta = "content"
     httpserver.expect_request("/page2").respond_with_data(get_page("<h1>page2</h1>", meta), content_type="text/html")
     page2_url = httpserver.url_for("/page2")
-    httpserver.expect_request("/page3").respond_with_data(get_page("<h1>page3</h1>", "Other Meta"), content_type="text/html")
+    httpserver.expect_request("/page3").respond_with_data(
+        get_page("<h1>page3</h1>", "Other Meta"), content_type="text/html"
+    )
     page3_url = httpserver.url_for("/page3")
     httpserver.expect_request("/").respond_with_data(
         get_page(

@@ -28,7 +28,9 @@ def list_plugins(ctx, param, value):
 @click.option("--verify/--noverify", default=True, help="Verify SSLs")
 @click.option("--delay", help="Delay between crawling pages", default=0)
 @click.option("--engine", default="pyppeteer", help="Fetch and parse engine to use")
-@click.option("--list-plugins", is_flag=True, callback=list_plugins, expose_value=False, is_eager=True, help="Lists plugins")
+@click.option(
+    "--list-plugins", is_flag=True, callback=list_plugins, expose_value=False, is_eager=True, help="Lists plugins"
+)
 @click.version_option()
 def main(url, verbose, plugin, verify, disable, delay, engine, **kwargs):
     """This script will crawl give URL and analyse the output using plugins."""
@@ -38,7 +40,16 @@ def main(url, verbose, plugin, verify, disable, delay, engine, **kwargs):
         click.echo(ctx.get_help())
         ctx.exit()
 
-    crawler = Crawler(url, verbose=verbose, plugins=plugin, verify=verify, disabled=disable, delay=delay, engine=engine, plugin_options=kwargs)
+    crawler = Crawler(
+        url,
+        verbose=verbose,
+        plugins=plugin,
+        verify=verify,
+        disabled=disable,
+        delay=delay,
+        engine=engine,
+        plugin_options=kwargs,
+    )
     asyncio.run(crawler.crawl())
 
 
