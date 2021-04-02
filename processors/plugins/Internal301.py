@@ -11,18 +11,22 @@ class Internal301:
     def __init__(self, crawler):
         self.crawler = crawler
         self.links = {}
+        self.url301s = []
 
     def _find_links(self, url):
-        return [page for page in self.links if url in self.links[page]]
+        return sorted([page for page in self.links if url in self.links[page]])
 
     @hookimpl_processor
     def get_results_set(self):
-        data = [{"src": src, "dest": dest, "links": self._find_links(src)} for (src, dest) in self.crawler.resolve_cache.items() if src.rstrip("/") != dest.rstrip("/")]
+        data = [{"src": url, "dest": self.crawler.resolve_cache[url], "links": self._find_links(url)} for url in self.url301s]
 
         return ResultSet("Internal 301s", f"{self.__doc__}", data)
 
     @hookimpl_processor
-    def process(self, html, url):
+    def process(self, html, url, status_code):
+        if status_code == 301:
+            self.url301s.append(url)
+
         links = html.find_all("a")
         urls = []
 
