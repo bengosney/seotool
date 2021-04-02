@@ -2,7 +2,7 @@
 from processors import ResultSet, hookimpl_processor
 
 
-class ImgAltTags:
+class MissingImgAltTags:
     """Images missing alt tags."""
 
     def __init__(self, crawler):
