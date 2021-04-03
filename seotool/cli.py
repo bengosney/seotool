@@ -28,11 +28,12 @@ def list_plugins(ctx, param, value):
 @click.option("--verify/--noverify", default=True, help="Verify SSLs")
 @click.option("--delay", help="Delay between crawling pages", default=0)
 @click.option("--engine", default="pyppeteer", help="Fetch and parse engine to use")
+@click.option("--workers", type=int, default=None, help="Number of workers to run, defaults to CPU core count")
 @click.option(
     "--list-plugins", is_flag=True, callback=list_plugins, expose_value=False, is_eager=True, help="Lists plugins"
 )
 @click.version_option()
-def main(url, verbose, plugin, verify, disable, delay, engine, **kwargs):
+def main(url, verbose, plugin, verify, disable, delay, engine, workers, **kwargs):
     """This script will crawl give URL and analyse the output using plugins."""
 
     if url is None:

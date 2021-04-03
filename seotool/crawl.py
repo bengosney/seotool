@@ -4,6 +4,7 @@ from __future__ import annotations
 # Standard Library
 import asyncio
 import inspect
+import multiprocessing
 import os
 import re
 import string
@@ -27,6 +28,7 @@ from engines.engines import engine
 from processors import Processor
 from processors.dataModels import ResultSet
 from seotool.exceptions import SkipPage
+from seotool.queue import Queue
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
@@ -42,6 +44,7 @@ class Crawler:
         delay=0,
         engine="pyppeteer",
         plugin_options={},
+        worker_count=None,
     ) -> None:
         self.url = url
         self.verify = verify
@@ -54,6 +57,8 @@ class Crawler:
         self.delay = delay
         self.engine = engine
         self.plugin_options = plugin_options
+
+        self.worker_count = worker_count if worker_count is not None else multiprocessing.cpu_count()
 
         self.verbose = verbose
 
@@ -97,7 +102,7 @@ class Crawler:
         self.processor = Processor(self, self.plugins, self.disabled, plugin_options)
         self.print(f"Loaded plugins: {', '.join(self.processor.plugin_names)}")
 
-    def _add_links(self, html_soup) -> None:
+    async def _add_links(self, html_soup) -> None:
         links = html_soup.find_all("a")
         for link in links:
             try:
@@ -114,6 +119,7 @@ class Crawler:
             if abs_url not in self.all_urls:
                 self.urls.append(abs_url)
                 self.all_urls.append(abs_url)
+                await self.queue.put(abs_url)
 
     def print(self, text, color="white") -> None:
         if self.verbose:
@@ -150,18 +156,26 @@ class Crawler:
         cleaned_filename = regex_not_special.sub(" ", filename)
         return regex_whitespace.sub("-", cleaned_filename[:255]).lower().strip("-")
 
-    def reset_urls(self) -> None:
+    async def reset_urls(self) -> None:
         self.urls = deque([self.base_url])
         self.all_urls = [self.base_url]
 
+        self.queue.empty()
+        await self.queue.put(self.base_url)
+
     async def crawl(self, save: bool = True) -> list[ResultSet]:
         self._crawling = True
-        self.reset_urls()
+
+        self.print(f"Crawling with {self.worker_count} workers")
+
+        self.queue = Queue(self.worker_count)
+
+        await self.reset_urls()
 
         engine = self.engine_instance
         async with engine:
             try:
-                await self._crawl()
+                await asyncio.gather(*(self._crawl() for _ in range(self.worker_count)))
             except KeyboardInterrupt:
                 self.printERR("User Interrupt: Stopping and saving")
                 self._crawling = False
@@ -225,12 +239,18 @@ class Crawler:
 
     async def _crawl(self) -> None:
         while self._crawling:
+            if sorted(self.visited) == sorted(self.urls) and await self.queue.try_stop():
+                self._crawling = False
+                break
+                # pass
+
             if self.delay:
                 await asyncio.sleep(self.delay)
 
-            try:
-                url = self.urls.pop()
-            except IndexError:
+            async with self.queue as q:
+                url = await q.get()
+
+            if url is None:
                 break
 
             if url in self.visited:
@@ -255,6 +275,6 @@ class Crawler:
             except SkipPage:
                 continue
             finally:
-                self._add_links(html_soup)
+                await self._add_links(html_soup)
 
             self.processor.process(html_soup, url, response.status_code, response)

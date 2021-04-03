@@ -28,8 +28,8 @@ def test_internal_404(httpserver: HTTPServer):
 
     expected_data = [{"title": "title", "urls": sorted([page2_url, page3_url])}]
     expected_data = [
-        {"link": page3_url, "pages": [page1_url]},
         {"link": page2_url, "pages": sorted([page1_url, page3_url])},
+        {"link": page3_url, "pages": [page1_url]},
     ]
 
     assert res.data == expected_data

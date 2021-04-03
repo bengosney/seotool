@@ -27,8 +27,8 @@ def test_internal_301(httpserver: HTTPServer):
     (res,) = crawler.asyncio_crawl(save=False)
 
     expected_data = [
-        {"src": page3_url, "dest": page3_url, "links": [page1_url]},
         {"src": page2_url, "dest": page2_url, "links": sorted([page1_url, page3_url])},
+        {"src": page3_url, "dest": page3_url, "links": [page1_url]},
     ]
 
     assert res.data == expected_data
