@@ -23,6 +23,21 @@ def test_missing_meta():
     assert res.data == [{"url": "/"}]
 
 
+def test_empty_meta():
+    html = BeautifulSoup(
+        """
+<meta name="description" content="" />
+    """,
+        "html.parser",
+    )
+
+    plugin = MissingMeta(c)
+    plugin.process(html=html, url="/")
+    res = plugin.get_results_set()
+
+    assert res.data == [{"url": "/"}]
+
+
 def test_not_missing_meta():
     html = BeautifulSoup(
         """
