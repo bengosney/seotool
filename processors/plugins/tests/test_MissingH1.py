@@ -23,6 +23,22 @@ def test_missing_h1():
     assert res.data == [{"url": "/"}]
 
 
+def test_empty_h1():
+    html = BeautifulSoup(
+        """
+<h1></h1>
+<p>Page Content</p>
+    """,
+        "html.parser",
+    )
+
+    plugin = MissingH1(c)
+    plugin.process(html=html, url="/")
+    res = plugin.get_results_set()
+
+    assert res.data == [{"url": "/"}]
+
+
 def test_not_missing_h1():
     html = BeautifulSoup(
         """
