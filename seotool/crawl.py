@@ -14,12 +14,12 @@ from functools import cached_property
 from typing import Callable
 
 # Third Party
-import click
 import pkg_resources
 import urllib3
 from bs4 import BeautifulSoup
 from requests import head
 from requests.exceptions import MissingSchema, TooManyRedirects
+from rich.console import Console
 
 # First Party
 from engines import EngineException
@@ -61,6 +61,8 @@ class Crawler:
         self.worker_count = worker_count if worker_count is not None else multiprocessing.cpu_count()
 
         self.verbose = verbose
+        self.console = Console()
+        self.error_console = Console(stderr=True, style="bold red")
 
         self._init_plugins(plugin_options)
 
@@ -121,9 +123,9 @@ class Crawler:
                 self.all_urls.append(abs_url)
                 await self.queue.put(abs_url)
 
-    def print(self, text, color="white") -> None:
+    def print(self, text, style: str | None = None) -> None:
         if self.verbose:
-            click.secho(text, fg=color)
+            self.console.print(text, style=style)
 
     def printERR(self, text) -> None:
         self.print(text, "red")
@@ -242,7 +244,6 @@ class Crawler:
             if sorted(self.visited) == sorted(self.urls) and await self.queue.try_stop():
                 self._crawling = False
                 break
-                # pass
 
             if self.delay:
                 await asyncio.sleep(self.delay)

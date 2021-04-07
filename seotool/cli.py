@@ -5,6 +5,9 @@ import asyncio
 
 # Third Party
 import click
+from rich.console import Console
+from rich.markdown import Markdown
+from rich.traceback import install as traceback_install
 
 # First Party
 from seotool.crawl import Crawler
@@ -36,9 +39,21 @@ def list_plugins(ctx, param, value):
 def main(url, verbose, plugin, verify, disable, delay, engine, workers, **kwargs):
     """This script will crawl give URL and analyse the output using plugins."""
 
+    if verbose:
+        traceback_install()
+
     if url is None:
+        console = Console()
         ctx = click.get_current_context()
-        click.echo(ctx.get_help())
+        try:
+            with open("README.md") as f:
+                rawMarkdown = f.read()
+            md = Markdown(rawMarkdown)
+            console.print(md)
+            console.print("\n")
+        except FileNotFoundError:
+            pass
+        console.print(ctx.get_help())
         ctx.exit()
 
     crawler = Crawler(
