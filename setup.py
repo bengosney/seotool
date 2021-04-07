@@ -10,6 +10,7 @@ setup(
     install_requires=[
         "beautifulsoup4",
         "click",
+        "rich",
         "markdown",
         "pdfkit",
         "pyppeteer",
