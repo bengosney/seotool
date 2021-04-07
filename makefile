@@ -1,4 +1,4 @@
-.PHONY := install, install-dev, help
+.PHONY := install, install-dev, help, tools
 .DEFAULT_GOAL := install-dev
 
 INS=$(wildcard requirements.*.in)
@@ -17,9 +17,11 @@ requirements.txt: setup.py
 	@sed -i 's/pip-compile $^/pip-compile/g' $@
 
 install: requirements.txt ## Install production requirements
+	@pip -q install pip-tools
 	@echo "Installing $^"
 	@pip-sync $^
 
 install-dev: requirements.txt $(REQS) ## Install development requirements (default)
+	@pip -q install pip-tools
 	@echo "Installing $^"
 	@pip-sync $^
