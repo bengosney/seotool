@@ -27,7 +27,7 @@ class Processor:
         pm = pluggy.PluginManager("seo_processor")
         pm.add_hookspecs(hookspecs.processor)
         pm.load_setuptools_entrypoints("seo_processor")
-
+        plugin_default_disabled = []
         for plugin in plugins.__all__:
             __import__(f"processors.plugins.{plugin}")
             _module = getattr(plugins, plugin)
@@ -37,11 +37,16 @@ class Processor:
             sig = inspect.signature(_class)
             supported_prams = [p.name for p in sig.parameters.values()]
             pm.register(_class(**{key: value for (key, value) in args.items() if key in supported_prams}), plugin)
+            try:
+                if _class.default_disabled:
+                    plugin_default_disabled.append(plugin)
+            except AttributeError:
+                pass
 
         plugin_names = [p for p, _ in pm.list_name_plugin()]
 
         if self.enabled is None:
-            self.enabled = plugin_names
+            self.enabled = [n for n in plugin_names if n not in plugin_default_disabled]
 
         for plugin in plugin_names:
             if plugin not in self.enabled or plugin in self.disabled:
