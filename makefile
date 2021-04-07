@@ -14,6 +14,7 @@ requirements.%.txt: requirements.%.in
 requirements.txt: setup.py
 	@echo "Builing $@"
 	@pip-compile -q $^
+	@sed -i 's/pip-compile $^/pip-compile/g' $@
 
 install: requirements.txt ## Install production requirements
 	@echo "Installing $^"
