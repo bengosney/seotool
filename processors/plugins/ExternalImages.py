@@ -8,6 +8,8 @@ from processors import ResultSet, hookimpl_processor
 class ExternalImages:
     """List of external images."""
 
+    default_disabled = True
+
     def __init__(self, crawler):
         self.crawler = crawler
         self.images = []

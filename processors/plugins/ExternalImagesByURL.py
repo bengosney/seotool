@@ -9,6 +9,8 @@ from processors import ResultSet, hookimpl_processor
 class ExternalImagesByURL:
     """List of external images for each URL."""
 
+    default_disabled = True
+
     def __init__(self, crawler):
         self.crawler = crawler
         self.images = defaultdict(lambda: [])

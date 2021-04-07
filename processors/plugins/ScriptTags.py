@@ -5,6 +5,8 @@ from processors import ResultSet, hookimpl_processor
 class ScriptTags:
     """Script tags used in the site."""
 
+    default_disabled = True
+
     def __init__(self, crawler):
         self.scriptTags = []
         self.crawler = crawler

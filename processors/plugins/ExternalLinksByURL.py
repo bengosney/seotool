@@ -9,6 +9,8 @@ from processors import ResultSet, hookimpl_processor
 class ExternalLinksByURL:
     """List of external links for each URL."""
 
+    default_disabled = True
+
     def __init__(self, crawler):
         self.crawler = crawler
         self.links = defaultdict(lambda: [])
