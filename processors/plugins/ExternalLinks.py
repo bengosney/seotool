@@ -8,6 +8,8 @@ from processors import ResultSet, hookimpl_processor
 class ExternalLinks:
     """List of external links."""
 
+    default_disabled = True
+
     def __init__(self, crawler):
         self.crawler = crawler
         self.links = []
