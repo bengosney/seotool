@@ -20,4 +20,4 @@ class MissingMeta:
 
         if len([meta for meta in metas if meta["content"] != ""]) == 0:
             self.missing_metas.append(url)
-            self.crawler.printERR(f"Found no H1 on {url}")
+            self.crawler.printERR(f"Found no meta description on {url}")
