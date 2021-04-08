@@ -31,7 +31,7 @@ class OutputText:
             except AttributeError:
                 pass
 
-    @hookimpl_processor(trylast=True)
+    @hookimpl_processor()
     def process_output(self, resultsSets: List[ResultSet]):
         with open(self.file, "w") if self.file is not None else nullcontext() as f:
             console = Console(file=f, width=self.width)
