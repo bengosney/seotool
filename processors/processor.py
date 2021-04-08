@@ -1,6 +1,6 @@
 # Standard Library
 import inspect
-from typing import Any, Dict, List, Optional
+from typing import Any, Awaitable, Dict, List, Optional
 
 # Third Party
 import pluggy
@@ -65,7 +65,7 @@ class Processor:
     def get_results_sets(self) -> List[ResultSet]:
         return self.hook.get_results_set()  # type: ignore
 
-    def process_results_sets(self, resultsSets: List[ResultSet]) -> None:
+    def process_results_sets(self, resultsSets: List[ResultSet]) -> List[Awaitable]:
         return self.hook.process_output(resultsSets=resultsSets)  # type: ignore
 
     def get_options(self) -> List:
