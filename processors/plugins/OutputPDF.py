@@ -5,22 +5,24 @@ from typing import List, Optional
 # Third Party
 import click
 from jinja2 import Environment, FileSystemLoader, Template
+from pyppeteer import launch
 
 # First Party
 from processors import ResultSet, hookimpl_processor
 from seotool.crawl import Crawler
 
 
-class OutputHTML:
+class OutputPDF:
     def __init__(self, crawler: Crawler, html_template: Optional[str] = None) -> None:
         self.crawler = crawler
         self.template = html_template
 
-    @hookimpl_processor
+    @hookimpl_processor()
     def process_output(self, resultsSets: List[ResultSet]):
-        self.crawler.print("Writing HTML")
+        self.crawler.print("Writing PDF")
 
-        path = self.crawler.get_output_name("report", "html")
+        tmppath = self.crawler.get_output_name("temp", "html")
+        path = self.crawler.get_output_name("report", "pdf")
         data = {"url": self.crawler.base_url, "results_sets": resultsSets, "styles": self.get_styles()}
 
         if self.template is not None:
@@ -30,13 +32,25 @@ class OutputHTML:
         else:
             template = Template(self.get_template())
 
-        with open(path, "w") as f:
+        with open(tmppath, "w") as f:
             f.write(template.render(**data))
+
+        return self.renderPDF(tmppath, path)
+
+    async def renderPDF(self, html_path, pdf_path):
+        browser = await launch()
+        page = await browser.newPage()
+        await page.goto(f"file://{html_path}", {"waitUntil": "domcontentloaded"})
+        await page.pdf(path=pdf_path)
+        await page.close()
+        await browser.close()
+
+        os.remove(html_path)
 
     @hookimpl_processor
     def get_options(self):
         return [
-            click.option("--html-template", default=None, help="Jinja template used to render the report"),
+            click.option("--pdf-html-template", default=None, help="Jinja template used to render the report"),
         ]
 
     def get_template(self):

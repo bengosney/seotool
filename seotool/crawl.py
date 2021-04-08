@@ -130,7 +130,7 @@ class Crawler:
     def printERR(self, text) -> None:
         self.print(text, "red")
 
-    def save_results(self) -> None:
+    async def save_results(self) -> None:
         self.print(f"\nSaving results to {self.results_base_path}\n", "green")
 
         try:
@@ -139,7 +139,9 @@ class Crawler:
             pass
 
         results_store = self.processor.get_results_sets()
-        self.processor.process_results_sets(results_store)
+        awaits = self.processor.process_results_sets(results_store)
+        for a in awaits:
+            await a
 
     def get_output_name(self, name: str, extention: str, folder: str = "") -> str:
         path = os.path.join(self.results_base_path, folder)
@@ -183,7 +185,7 @@ class Crawler:
                 self._crawling = False
 
         if save:
-            self.save_results()
+            await self.save_results()
 
         return self.processor.get_results_sets()
 
