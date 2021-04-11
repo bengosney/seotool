@@ -19,7 +19,6 @@ import urllib3
 from bs4 import BeautifulSoup
 from requests import head
 from requests.exceptions import MissingSchema, TooManyRedirects
-from rich.console import Console
 
 # First Party
 from engines import EngineException
@@ -61,8 +60,6 @@ class Crawler:
         self.worker_count = worker_count if worker_count is not None else multiprocessing.cpu_count()
 
         self.verbose = verbose
-        self.console = Console()
-        self.error_console = Console(stderr=True, style="bold red")
 
         self._init_plugins(plugin_options)
 
@@ -125,10 +122,10 @@ class Crawler:
 
     def print(self, text, style: str | None = None) -> None:
         if self.verbose:
-            self.console.print(text, style=style)
+            self.processor.log(text, style=style)
 
     def printERR(self, text) -> None:
-        self.print(text, "red")
+        self.processor.log_error(text)
 
     async def save_results(self) -> None:
         self.print(f"\nSaving results to {self.results_base_path}\n", "green")

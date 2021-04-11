@@ -31,3 +31,11 @@ class processor:
     @hookspec_processor
     def get_options(self):
         """Get any cli arguments."""
+
+    @hookspec_processor(firstresult=True)
+    def log(self, line, style):
+        """Output any log messages."""
+
+    @hookspec_processor(firstresult=True)
+    def log_error(self, line):
+        """Output any error messages."""
