@@ -125,7 +125,7 @@ class Crawler:
 
     def print(self, text, style: str | None = None) -> None:
         if self.verbose:
-            self.console.print(text, style=style)
+            self.processor.log(text, style=style)
 
     def printERR(self, text) -> None:
         self.print(text, "red")

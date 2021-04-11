@@ -70,3 +70,6 @@ class Processor:
 
     def get_options(self) -> List:
         return self.hook.get_options()  # type: ignore
+
+    def log(self, line, style) -> None:
+        self.hook.log(line=line, style=style)  # type: ignore
