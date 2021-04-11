@@ -73,3 +73,6 @@ class Processor:
 
     def log(self, line, style) -> None:
         self.hook.log(line=line, style=style)  # type: ignore
+
+    def log_error(self, line) -> None:
+        self.hook.log_error(line=line)  # type: ignore

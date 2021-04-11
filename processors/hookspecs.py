@@ -35,3 +35,7 @@ class processor:
     @hookspec_processor(firstresult=True)
     def log(self, line, style):
         """Output any log messages."""
+
+    @hookspec_processor(firstresult=True)
+    def log_error(self, line):
+        """Output any error messages."""
