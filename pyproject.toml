@@ -1,12 +1,12 @@
 [project]
 name = "SEO Tool"
-version = "2.0.0"
-description = "Pluing based SEO Reporting Tool"
+version = "2.0.1"
+description = "Plugin based SEO Reporting Tool"
 authors = [
     "Ben Gosney <bengosney@googlemail.com>"
 ]
 python = "^3.8"
-repository = "https://github.com/bengosney/stretchtheirlegs/"
+repository = "https://github.com/bengosney/seotool/"
 
 [build-system]
 requires = ["setuptools", "wheel"]
