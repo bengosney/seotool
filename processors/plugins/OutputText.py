@@ -1,5 +1,6 @@
 # Standard Library
 from contextlib import nullcontext
+from functools import cached_property
 from typing import List
 
 # Third Party
@@ -18,18 +19,18 @@ class OutputText:
     def __init__(self, crawler: Crawler, text_show_no_issue=False, text_save_output=True, text_width=None) -> None:
         self.crawler = crawler
         self.show_no_issue = text_show_no_issue
-        self.file = None
 
         if text_save_output and text_width is None:
             self.width = 120
         else:
             self.width = int(text_width) if text_width is not None else None
 
-        if text_save_output:
-            try:
-                self.file = self.crawler.get_output_name("text-report", "txt")
-            except AttributeError:
-                pass
+    @cached_property
+    def file(self):
+        try:
+            return self.crawler.get_output_name("text-report", "txt")
+        except AttributeError:
+            return None
 
     @hookimpl_processor()
     def process_output(self, resultsSets: List[ResultSet]):

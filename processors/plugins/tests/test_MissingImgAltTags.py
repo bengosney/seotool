@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 from processors.plugins.MissingImgAltTags import MissingImgAltTags
 from seotool.crawl import Crawler
 
-c = Crawler("")
+c = Crawler("example.com")
 
 
 def test_missing_img_alt():

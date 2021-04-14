@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 from processors.plugins.MultipleH1 import MultipleH1
 from seotool.crawl import Crawler
 
-c = Crawler("")
+c = Crawler("example.com")
 
 
 def test_multiple_h1():

@@ -20,7 +20,7 @@ def test_clean_name_changes():
 
 
 def test_skip_page():
-    c = Crawler("localhost")
+    c = Crawler("example.com")
     with pytest.raises(SkipPage):
         c.skip_page()
 

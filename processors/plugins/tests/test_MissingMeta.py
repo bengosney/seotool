@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 from processors.plugins.MissingMeta import MissingMeta
 from seotool.crawl import Crawler
 
-c = Crawler("")
+c = Crawler("example.com")
 
 
 def test_missing_meta():

@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 from processors.plugins.ScriptTags import ScriptTags
 from seotool.crawl import Crawler
 
-c = Crawler("")
+c = Crawler("example.com")
 
 
 def test_script_tabs():

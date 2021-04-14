@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 from processors.plugins.MissingH1 import MissingH1
 from seotool.crawl import Crawler
 
-c = Crawler("")
+c = Crawler("example.com")
 
 
 def test_missing_h1():
