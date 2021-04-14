@@ -1,8 +1,9 @@
-.PHONY := install, install-dev, help, tools
+.PHONY := install, install-dev, help, tools, clean, deploy-local, clean-deploy
 .DEFAULT_GOAL := install-dev
 
 INS=$(wildcard requirements.*.in)
 REQS=$(subst in,txt,$(INS))
+PACKAGE_NAME:=$(shell python setup.py --fullname)
 
 help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
@@ -25,3 +26,18 @@ install-dev: requirements.txt $(REQS) ## Install development requirements (defau
 	@pip -q install pip-tools
 	@echo "Installing $^"
 	@pip-sync $^
+
+clean: ## Clean any tempory and build files
+	@find . -type f -name '*.pyc' -exec rm -f {} +
+	@find . -type d -name '__pycache__' -exec rm -rf {} +
+	@rm -rf .mypy_cache
+	@rm -rf .pytest_cache
+	@rm -rf *.egg-info
+	@find . -maxdepth 1 -type d -name results-* -exec rm -rf {} \;
+
+clean-deploy: ## Clean local pypi
+	@sudo rm -f ~/packages/${PACKAGE_NAME}.tar.gz
+	@echo "Removed ${PACKAGE_NAME}"
+
+deploy-local: clean-deploy ## Deploy to local pypi
+	python setup.py sdist upload -r local
