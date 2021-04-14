@@ -36,7 +36,7 @@ class Crawler:
     def __init__(
         self,
         url: str,
-        plugins=[],
+        plugins: list[str] = [],
         verbose=True,
         verify=True,
         disabled=[],
