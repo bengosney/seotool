@@ -58,4 +58,8 @@ repos:
     rev: 6.0.1
     hooks:
       - id: pip-compile
-        files: ^(setup\.py|requirements.txt)$
+        files: ^(setup\.py|requirements.in)$
+        args: [--no-emit-index-url, setup.py]
+      - id: pip-compile
+        files: ^requirements.dev.in$
+        args: [--no-emit-index-url, -o requirements.dev.txt, requirements.dev.in]

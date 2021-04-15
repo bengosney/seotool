@@ -10,11 +10,11 @@ help:
 
 requirements.%.txt: requirements.%.in
 	@echo "Builing $@"
-	@pip-compile -q -o $@ $^
+	@pip-compile --no-emit-index-url -q -o $@ $^
 
 requirements.txt: setup.py
 	@echo "Builing $@"
-	@pip-compile -q $^
+	@pip-compile --no-emit-index-url -q $^
 	@sed -i 's/pip-compile $^/pip-compile/g' $@
 
 install: requirements.txt ## Install production requirements
@@ -39,5 +39,5 @@ clean-deploy: ## Clean local pypi
 	@sudo rm -f ~/packages/${PACKAGE_NAME}.tar.gz
 	@echo "Removed ${PACKAGE_NAME}"
 
-deploy-local: clean-deploy ## Deploy to local pypi
+deploy-local: ## Deploy to local pypi
 	python setup.py sdist upload -r local

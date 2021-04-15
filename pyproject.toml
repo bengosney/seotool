@@ -1,6 +1,6 @@
 [project]
-name = "SEO Tool"
-version = "2.0.1"
+name = "seotool"
+version = "2.1.0"
 description = "Plugin based cli SEO Reporting Tool"
 authors = [
     "Ben Gosney <bengosney@googlemail.com>"
