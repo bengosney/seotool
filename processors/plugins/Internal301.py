@@ -1,8 +1,17 @@
 # Standard Library
 import urllib.parse
+from dataclasses import dataclass
+from typing import List
 
 # First Party
-from processors import ResultSet, hookimpl_processor
+from processors import BaseResultData, ResultSet, hookimpl_processor
+
+
+@dataclass
+class ResultData(BaseResultData):
+    src: str
+    dest: str
+    links: List[str]
 
 
 class Internal301:
@@ -19,7 +28,7 @@ class Internal301:
     @hookimpl_processor
     def get_results_set(self):
         resolve_cache = self.crawler.resolve_cache
-        data = [{"src": url, "dest": resolve_cache[url], "links": self._find_links(url)} for url in self.url301s]
+        data = [ResultData(url, resolve_cache[url], self._find_links(url)) for url in self.url301s]
 
         return ResultSet("Internal 301s", f"{self.__doc__}", data)
 

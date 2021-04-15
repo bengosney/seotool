@@ -1,5 +1,15 @@
+# Standard Library
+from dataclasses import dataclass
+from typing import List
+
 # First Party
-from processors import ResultSet, hookimpl_processor
+from processors import BaseResultData, ResultSet, hookimpl_processor
+
+
+@dataclass
+class ResultData(BaseResultData):
+    title: str
+    urls: List[str]
 
 
 class DuplicateTitle:
@@ -11,7 +21,7 @@ class DuplicateTitle:
 
     @hookimpl_processor
     def get_results_set(self):
-        data = [{"title": title, "urls": sorted(urls)} for (title, urls) in self.titles.items() if len(urls) > 1]
+        data = [ResultData(title, sorted(urls)) for (title, urls) in self.titles.items() if len(urls) > 1]
 
         return ResultSet("Duplicate Titles", f"{self.__doc__}", data)
 

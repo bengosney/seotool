@@ -1,8 +1,16 @@
 # Standard Library
 import urllib.parse
+from dataclasses import dataclass
+from typing import List
 
 # First Party
-from processors import ResultSet, hookimpl_processor
+from processors import BaseResultData, ResultSet, hookimpl_processor
+
+
+@dataclass
+class ResultData(BaseResultData):
+    link: str
+    pages: List[str]
 
 
 class Internal404:
@@ -18,7 +26,7 @@ class Internal404:
 
     @hookimpl_processor
     def get_results_set(self):
-        data = [{"link": url, "pages": self._find_links(url)} for url in self.f404s]
+        data = [ResultData(url, self._find_links(url)) for url in self.f404s]
 
         return ResultSet("Internal 404's", f"{self.__doc__}", data)
 

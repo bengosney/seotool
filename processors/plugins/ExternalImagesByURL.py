@@ -1,9 +1,17 @@
 # Standard Library
 import urllib.parse
 from collections import defaultdict
+from dataclasses import dataclass
+from typing import List
 
 # First Party
-from processors import ResultSet, hookimpl_processor
+from processors import BaseResultData, ResultSet, hookimpl_processor
+
+
+@dataclass
+class ResultData(BaseResultData):
+    image: str
+    urls: List[str]
 
 
 class ExternalImagesByURL:
@@ -17,7 +25,7 @@ class ExternalImagesByURL:
 
     @hookimpl_processor
     def get_results_set(self):
-        data = [{"image": image, "urls": sorted(urls)} for (image, urls) in self.images.items()]
+        data = [ResultData(image, sorted(urls)) for (image, urls) in self.images.items()]
 
         return ResultSet("External Images by URL", f"{self.__doc__}", data)
 

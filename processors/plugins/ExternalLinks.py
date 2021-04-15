@@ -1,8 +1,14 @@
 # Standard Library
 import urllib.parse
+from dataclasses import dataclass
 
 # First Party
-from processors import ResultSet, hookimpl_processor
+from processors import BaseResultData, ResultSet, hookimpl_processor
+
+
+@dataclass
+class ResultData(BaseResultData):
+    link: str
 
 
 class ExternalLinks:
@@ -16,7 +22,7 @@ class ExternalLinks:
 
     @hookimpl_processor
     def get_results_set(self):
-        data = [{"link": link} for link in set(self.links)]
+        data = [ResultData(link) for link in set(self.links)]
 
         return ResultSet("External Links", f"{self.__doc__}", data)
 

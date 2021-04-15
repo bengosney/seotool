@@ -2,7 +2,7 @@
 from bs4 import BeautifulSoup
 
 # First Party
-from processors.plugins.MissingMeta import MissingMeta
+from processors.plugins.MissingMeta import MissingMeta, ResultData
 from seotool.crawl import Crawler
 
 c = Crawler("example.com")
@@ -20,7 +20,7 @@ def test_missing_meta():
     plugin.process(html=html, url="/")
     res = plugin.get_results_set()
 
-    assert res.data == [{"url": "/"}]
+    assert res.data == [ResultData("/")]
 
 
 def test_empty_meta():
@@ -35,7 +35,7 @@ def test_empty_meta():
     plugin.process(html=html, url="/")
     res = plugin.get_results_set()
 
-    assert res.data == [{"url": "/"}]
+    assert res.data == [ResultData("/")]
 
 
 def test_not_missing_meta():

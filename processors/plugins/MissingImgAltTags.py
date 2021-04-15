@@ -1,5 +1,14 @@
+# Standard Library
+from dataclasses import dataclass
+
 # First Party
-from processors import ResultSet, hookimpl_processor
+from processors import BaseResultData, ResultSet, hookimpl_processor
+
+
+@dataclass
+class ResultData(BaseResultData):
+    url: str
+    src: str
 
 
 class MissingImgAltTags:
@@ -26,5 +35,5 @@ class MissingImgAltTags:
                 except KeyError:
                     output = str(image)
 
-                self.missing_alts.append({"url": url, "src": output})
+                self.missing_alts.append(ResultData(url, output))
                 self.crawler.printERR(f"Found missing alt tag for {output}")

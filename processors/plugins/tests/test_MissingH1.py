@@ -2,7 +2,7 @@
 from bs4 import BeautifulSoup
 
 # First Party
-from processors.plugins.MissingH1 import MissingH1
+from processors.plugins.MissingH1 import MissingH1, ResultData
 from seotool.crawl import Crawler
 
 c = Crawler("example.com")
@@ -20,7 +20,7 @@ def test_missing_h1():
     plugin.process(html=html, url="/")
     res = plugin.get_results_set()
 
-    assert res.data == [{"url": "/"}]
+    assert res.data == [ResultData("/")]
 
 
 def test_empty_h1():
@@ -36,7 +36,7 @@ def test_empty_h1():
     plugin.process(html=html, url="/")
     res = plugin.get_results_set()
 
-    assert res.data == [{"url": "/"}]
+    assert res.data == [ResultData("/")]
 
 
 def test_not_missing_h1():

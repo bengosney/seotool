@@ -2,6 +2,7 @@
 from pytest_httpserver import HTTPServer
 
 # First Party
+from processors.plugins.Internal301 import ResultData
 from seotool.crawl import Crawler
 
 
@@ -27,8 +28,8 @@ def test_internal_301(httpserver: HTTPServer):
     (res,) = crawler.asyncio_crawl(save=False)
 
     expected_data = [
-        {"src": page2_url, "dest": page2_url, "links": sorted([page1_url, page3_url])},
-        {"src": page3_url, "dest": page3_url, "links": [page1_url]},
+        ResultData(page2_url, page2_url, sorted([page1_url, page3_url])),
+        ResultData(page3_url, page3_url, [page1_url]),
     ]
 
     assert res.data == expected_data
