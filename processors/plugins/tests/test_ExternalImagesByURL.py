@@ -4,6 +4,7 @@
 from pytest_httpserver import HTTPServer
 
 # First Party
+from processors.plugins.ExternalImagesByURL import ResultData
 from seotool.crawl import Crawler
 
 
@@ -29,7 +30,7 @@ def test_external(httpserver: HTTPServer):
     crawler = Crawler(httpserver.url_for("/"), verbose=False, plugins=["ExternalImagesByURL"])
     (res,) = crawler.asyncio_crawl(save=False)
 
-    expected_data = [{"image": img, "urls": sorted([httpserver.url_for("/page1"), httpserver.url_for("/page2")])}]
+    expected_data = [ResultData(img, sorted([httpserver.url_for("/page1"), httpserver.url_for("/page2")]))]
 
     assert res.data == expected_data
 

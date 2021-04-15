@@ -1,8 +1,14 @@
 # Standard Library
 import urllib.parse
+from dataclasses import dataclass
 
 # First Party
-from processors import ResultSet, hookimpl_processor
+from processors import BaseResultData, ResultSet, hookimpl_processor
+
+
+@dataclass
+class ResultData(BaseResultData):
+    image: str
 
 
 class ExternalImages:
@@ -16,7 +22,7 @@ class ExternalImages:
 
     @hookimpl_processor
     def get_results_set(self):
-        data = [{"image": image} for image in set(self.images)]
+        data = [ResultData(image) for image in set(self.images)]
 
         return ResultSet("External Images", f"{self.__doc__}", data)
 

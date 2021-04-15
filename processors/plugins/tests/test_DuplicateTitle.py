@@ -2,6 +2,7 @@
 from pytest_httpserver import HTTPServer
 
 # First Party
+from processors.plugins.DuplicateTitle import ResultData
 from seotool.crawl import Crawler
 
 
@@ -43,7 +44,7 @@ def test_duplicates(httpserver: HTTPServer):
     crawler = Crawler(httpserver.url_for("/"), verbose=False, plugins=["DuplicateTitle"])
     (res,) = crawler.asyncio_crawl(save=False)
 
-    expected_data = [{"title": title, "urls": sorted([httpserver.url_for("/"), httpserver.url_for("/page2")])}]
+    expected_data = [ResultData(title, sorted([httpserver.url_for("/"), httpserver.url_for("/page2")]))]
 
     assert res.data == expected_data
 

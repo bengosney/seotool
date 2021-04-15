@@ -1,5 +1,14 @@
+# Standard Library
+from dataclasses import dataclass
+
 # First Party
-from processors import ResultSet, hookimpl_processor
+from processors import BaseResultData, ResultSet, hookimpl_processor
+
+
+@dataclass
+class ResultData(BaseResultData):
+    src: str
+    url: str
 
 
 class ScriptTags:
@@ -13,7 +22,7 @@ class ScriptTags:
 
     @hookimpl_processor
     def get_results_set(self):
-        data = [{"src": src, "url": url} for (url, src) in self.scriptTags]
+        data = [ResultData(src, url) for (url, src) in self.scriptTags]
         return ResultSet("Script tags", f"{self.__doc__}", data)
 
     @hookimpl_processor

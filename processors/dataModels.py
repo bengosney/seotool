@@ -1,13 +1,35 @@
 # Standard Library
-from dataclasses import dataclass
-from typing import Any, Dict, List
+from abc import ABC
+from dataclasses import dataclass, fields
+from typing import Any, List
 
 
-@dataclass
+@dataclass(frozen=True)
+class BaseResultData(ABC):
+    def keys(self):
+        return [f.name for f in fields(self)]
+
+    def values(self):
+        return [self.__dict__[f] for f in self.keys()]
+
+    def __iter__(self):
+        return iter(self.__dict__)
+
+    def __setitem__(self, key, item):
+        self.__dict__[key] = item
+
+    def __getitem__(self, key):
+        return self.__dict__[key]
+
+    def __delitem__(self, key):
+        del self.__dict__[key]
+
+
+@dataclass(frozen=True)
 class ResultSet:
     title: str
     body: str
-    data: List[Dict[str, Any]]
+    data: List[Any]
 
     @property
     def data_headers(self):

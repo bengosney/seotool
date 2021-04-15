@@ -1,5 +1,15 @@
+# Standard Library
+from dataclasses import dataclass
+from typing import List
+
 # First Party
-from processors import ResultSet, hookimpl_processor
+from processors import BaseResultData, ResultSet, hookimpl_processor
+
+
+@dataclass
+class ResultData(BaseResultData):
+    meta: str
+    urls: List[str]
 
 
 class DuplicateMeta:
@@ -11,7 +21,7 @@ class DuplicateMeta:
 
     @hookimpl_processor
     def get_results_set(self):
-        data = [{"meta": meta, "urls": sorted(urls)} for (meta, urls) in self.metas.items() if len(urls) > 1]
+        data = [ResultData(meta, sorted(urls)) for (meta, urls) in self.metas.items() if len(urls) > 1]
 
         return ResultSet("Duplicate Metadata", f"{self.__doc__}", data)
 

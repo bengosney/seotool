@@ -1,5 +1,13 @@
+# Standard Library
+from dataclasses import dataclass
+
 # First Party
-from processors import ResultSet, hookimpl_processor
+from processors import BaseResultData, ResultSet, hookimpl_processor
+
+
+@dataclass
+class ResultData(BaseResultData):
+    url: str
 
 
 class MissingH1:
@@ -12,7 +20,7 @@ class MissingH1:
 
     @hookimpl_processor
     def get_results_set(self):
-        data = [{"url": v} for v in self.missing_h1s]
+        data = [ResultData(v) for v in self.missing_h1s]
         return ResultSet("Missing H1's", f"{self.__doc__}", data)
 
     @hookimpl_processor

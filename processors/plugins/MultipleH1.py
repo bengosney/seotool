@@ -1,5 +1,15 @@
+# Standard Library
+from dataclasses import dataclass
+from typing import List
+
 # First Party
-from processors import ResultSet, hookimpl_processor
+from processors import BaseResultData, ResultSet, hookimpl_processor
+
+
+@dataclass
+class ResultData(BaseResultData):
+    url: str
+    h1s: List[str]
 
 
 class MultipleH1:
@@ -20,5 +30,5 @@ class MultipleH1:
         count = len(h1s)
         if count > 1:
             h1s = [h1.getText() for h1 in h1s]
-            self.multiple_h1s.append({"url": url, "h1s": h1s})
+            self.multiple_h1s.append(ResultData(url, h1s))
             self.crawler.printERR(f"Found {count} H1s on {url}")

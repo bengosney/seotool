@@ -2,6 +2,7 @@
 from pytest_httpserver import HTTPServer
 
 # First Party
+from processors.plugins.Internal404 import ResultData
 from seotool.crawl import Crawler
 
 
@@ -26,10 +27,9 @@ def test_internal_404(httpserver: HTTPServer):
     crawler = Crawler(httpserver.url_for("/"), verbose=False, plugins=["Internal404"])
     (res,) = crawler.asyncio_crawl(save=False)
 
-    expected_data = [{"title": "title", "urls": sorted([page2_url, page3_url])}]
     expected_data = [
-        {"link": page2_url, "pages": sorted([page1_url, page3_url])},
-        {"link": page3_url, "pages": [page1_url]},
+        ResultData(page2_url, sorted([page1_url, page3_url])),
+        ResultData(page3_url, [page1_url]),
     ]
 
     assert res.data == expected_data

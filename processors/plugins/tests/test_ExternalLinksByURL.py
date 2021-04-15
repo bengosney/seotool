@@ -4,6 +4,7 @@
 from pytest_httpserver import HTTPServer
 
 # First Party
+from processors.plugins.ExternalLinksByURL import ResultData
 from seotool.crawl import Crawler
 
 
@@ -29,6 +30,6 @@ def test_external(httpserver: HTTPServer):
     crawler = Crawler(httpserver.url_for("/"), verbose=False, plugins=["ExternalLinksByURL"])
     (res,) = crawler.asyncio_crawl(save=False)
 
-    expected_data = [{"link": link, "urls": sorted([httpserver.url_for("/page1"), httpserver.url_for("/page2")])}]
+    expected_data = [ResultData(link, sorted([httpserver.url_for("/page1"), httpserver.url_for("/page2")]))]
 
     assert res.data == expected_data
