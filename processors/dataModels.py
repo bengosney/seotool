@@ -24,6 +24,10 @@ class BaseResultData(ABC):
     def __delitem__(self, key):
         del self.__dict__[key]
 
+    @property
+    def name(self):
+        return self.__module__.split(".")[-1]
+
 
 @dataclass(frozen=True)
 class ResultSet:
