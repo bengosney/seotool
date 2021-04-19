@@ -6,7 +6,7 @@
 #
 appdirs==1.4.4
     # via virtualenv
-asttokens==2.0.4
+asttokens==2.0.5
     # via icecream
 attrs==20.3.0
     # via pytest
