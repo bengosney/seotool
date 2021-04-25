@@ -7,3 +7,4 @@ pytest-clarity
 mypy
 pytest-httpserver
 icecream
+lorem
