@@ -5,6 +5,12 @@ INS=$(wildcard requirements.*.in)
 REQS=$(subst in,txt,$(INS))
 PACKAGE_NAME:=$(shell python setup.py --fullname)
 
+ifeq ($(strip $(shell git status --porcelain 2>/dev/null)),)
+	GIT_TREE_STATE=clean
+else
+	GIT_TREE_STATE=dirty
+endif
+
 help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
@@ -42,6 +48,14 @@ clean-deploy: ## Clean local pypi
 deploy-local: ## Deploy to local pypi
 	@python setup.py sdist upload -r local
 
-dependabot: ## Merge all dependabot updates into current branch
+checkgit:
+ifeq ($(GIT_TREE_STATE),dirty)
+    $(error git state is not clean)
+endif
+
+dependabot: dependabot-update install-dev ## Merge all dependabot updates into current branch
+	@pytest
+
+dependabot-update: @checkgit
+	@git fetch
 	@git branch --remotes | grep dependabot | xargs git merge
-	@pip-sync
