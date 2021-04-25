@@ -1,4 +1,4 @@
-.PHONY := install, install-dev, help, tools, clean, deploy-local, clean-deploy
+.PHONY := install, install-dev, help, tools, clean, deploy-local, clean-deploy, dependabot
 .DEFAULT_GOAL := install-dev
 
 INS=$(wildcard requirements.*.in)
@@ -40,4 +40,8 @@ clean-deploy: ## Clean local pypi
 	@echo "Removed ${PACKAGE_NAME}"
 
 deploy-local: ## Deploy to local pypi
-	python setup.py sdist upload -r local
+	@python setup.py sdist upload -r local
+
+dependabot: ## Merge all dependabot updates into current branch
+	@git branch --remotes | grep dependabot | xargs git merge
+	@pip-sync
