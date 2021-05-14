@@ -129,7 +129,6 @@ class Crawler:
 
     async def save_results(self) -> None:
         self.print(f"\nSaving results to {self.results_base_path}\n", "green")
-
         try:
             os.makedirs(self.results_base_path)
         except FileExistsError:
@@ -137,8 +136,8 @@ class Crawler:
 
         results_store = self.processor.get_results_sets()
         awaits = self.processor.process_results_sets(results_store)
-        for a in awaits:
-            await a
+
+        await asyncio.wait(awaits)
 
     def get_output_name(self, name: str, extention: str, folder: str = "") -> str:
         path = os.path.join(self.results_base_path, folder)
