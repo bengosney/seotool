@@ -24,7 +24,7 @@ jinja2==2.11.3
     # via seotool (setup.py)
 markdown==3.3.4
     # via seotool (setup.py)
-markupsafe==1.1.1
+markupsafe==2.0.1
     # via jinja2
 pdfkit==0.6.1
     # via seotool (setup.py)
@@ -33,7 +33,9 @@ pluggy==0.13.1
 pyee==8.1.0
     # via pyppeteer
 pygments==2.8.1
-    # via rich
+    # via
+    #   rich
+    #   seotool (setup.py)
 pyppeteer==0.2.5
     # via seotool (setup.py)
 requests==2.25.1
@@ -44,9 +46,9 @@ soupsieve==2.2.1
     # via beautifulsoup4
 tqdm==4.60.0
     # via pyppeteer
-typing-extensions==3.7.4.3
+typing-extensions==3.10.0.0
     # via rich
-urllib3==1.26.4
+urllib3==1.26.5
     # via
     #   pyppeteer
     #   requests
