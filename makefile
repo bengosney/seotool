@@ -48,14 +48,9 @@ clean-deploy: ## Clean local pypi
 deploy-local: ## Deploy to local pypi
 	@python setup.py sdist upload -r local
 
-checkgit:
-ifeq ($(GIT_TREE_STATE),dirty)
-    $(error git state is not clean)
-endif
-
 dependabot: dependabot-update install-dev ## Merge all dependabot updates into current branch
 	@pytest
 
-dependabot-update: @checkgit
+dependabot-update:
 	@git fetch
 	@git branch --remotes | grep dependabot | xargs git merge
