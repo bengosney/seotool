@@ -12,7 +12,7 @@ certifi==2020.12.5
     # via requests
 chardet==4.0.0
     # via requests
-click==8.0.1
+click==7.1.2
     # via seotool (setup.py)
 colorama==0.4.4
     # via rich
@@ -32,8 +32,10 @@ pluggy==0.13.1
     # via seotool (setup.py)
 pyee==8.1.0
     # via pyppeteer
-pygments==2.9.0
-    # via rich
+pygments==2.8.1
+    # via
+    #   rich
+    #   seotool (setup.py)
 pyppeteer==0.2.5
     # via seotool (setup.py)
 requests==2.25.1
@@ -50,5 +52,5 @@ urllib3==1.26.5
     # via
     #   pyppeteer
     #   requests
-websockets==9.1
+websockets==8.1
     # via pyppeteer

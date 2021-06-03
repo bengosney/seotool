@@ -9,8 +9,9 @@ setup(
     python_requires="~=3.8",
     install_requires=[
         "beautifulsoup4",
-        "click",
+        "click==7.*",
         "rich",
+        "pygments==2.8.*",  # remove once icecream updates requirements
         "markdown",
         "pdfkit",
         "pyppeteer",
