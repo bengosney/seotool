@@ -8,7 +8,7 @@ appdirs==1.4.4
     # via pyppeteer
 beautifulsoup4==4.9.3
     # via seotool (setup.py)
-certifi==2020.12.5
+certifi==2021.5.30
     # via requests
 chardet==4.0.0
     # via requests
@@ -33,7 +33,9 @@ pluggy==0.13.1
 pyee==8.1.0
     # via pyppeteer
 pygments==2.8.1
-    # via rich
+    # via
+    #   rich
+    #   seotool (setup.py)
 pyppeteer==0.2.5
     # via seotool (setup.py)
 requests==2.25.1
@@ -44,9 +46,9 @@ soupsieve==2.2.1
     # via beautifulsoup4
 tqdm==4.60.0
     # via pyppeteer
-typing-extensions==3.7.4.3
+typing-extensions==3.10.0.0
     # via rich
-urllib3==1.26.4
+urllib3==1.26.5
     # via
     #   pyppeteer
     #   requests
