@@ -53,4 +53,5 @@ dependabot: dependabot-update install-dev ## Merge all dependabot updates into c
 
 dependabot-update:
 	@git fetch
+	@git remote prune origin
 	@git branch --remotes | grep dependabot | xargs git merge
