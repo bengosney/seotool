@@ -9,7 +9,7 @@ setup(
     python_requires="~=3.8",
     install_requires=[
         "beautifulsoup4",
-        "click==7.*",
+        "click>=7,<9",
         "rich",
         "pygments==2.8.*",  # remove once icecream updates requirements
         "markdown",
