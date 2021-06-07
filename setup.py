@@ -11,7 +11,7 @@ setup(
         "beautifulsoup4",
         "click==7.*",
         "rich",
-        "pygments==2.8.*",  # remove once icecream updates requirements
+        "pygments>=2.8,<2.10",  # remove once icecream updates requirements
         "markdown",
         "pdfkit",
         "pyppeteer",
