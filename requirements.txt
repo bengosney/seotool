@@ -44,7 +44,7 @@ rich==10.1.0
     # via seotool (setup.py)
 soupsieve==2.2.1
     # via beautifulsoup4
-tqdm==4.60.0
+tqdm==4.61.1
     # via pyppeteer
 typing-extensions==3.10.0.0
     # via rich
