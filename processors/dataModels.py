@@ -4,7 +4,7 @@ from dataclasses import dataclass, fields
 from typing import Any, List
 
 
-@dataclass(frozen=True)
+@dataclass()
 class BaseResultData(ABC):
     def keys(self):
         return [f.name for f in fields(self)]

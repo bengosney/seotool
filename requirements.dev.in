@@ -8,3 +8,4 @@ mypy
 pytest-httpserver
 icecream
 lorem
+typing-extensions==3.10.*
