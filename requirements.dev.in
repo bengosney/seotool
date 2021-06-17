@@ -6,6 +6,5 @@ pytest_click
 pytest-clarity
 mypy
 pytest-httpserver
-icecream
 lorem
 typing-extensions==3.10.*
