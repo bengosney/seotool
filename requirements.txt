@@ -44,7 +44,7 @@ rich==10.3.0
     # via seotool (setup.py)
 soupsieve==2.2.1
     # via beautifulsoup4
-tqdm==4.61.1
+tqdm==4.61.2
     # via pyppeteer
 urllib3==1.26.5
     # via
