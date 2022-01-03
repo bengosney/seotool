@@ -38,7 +38,7 @@ pygments==2.9.0
     #   seotool (setup.py)
 pyppeteer==0.2.5
     # via seotool (setup.py)
-requests==2.25.1
+requests==2.27.0
     # via seotool (setup.py)
 rich==10.3.0
     # via seotool (setup.py)
