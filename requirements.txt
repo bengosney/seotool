@@ -50,5 +50,5 @@ urllib3==1.26.8
     # via
     #   pyppeteer
     #   requests
-websockets==10.1
+websockets==10.2
     # via pyppeteer
