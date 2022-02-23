@@ -7,4 +7,4 @@ pytest-clarity
 mypy
 pytest-httpserver
 lorem
-typing-extensions==3.10.*
+typing-extensions==4.1.*
