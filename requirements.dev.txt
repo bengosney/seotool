@@ -75,7 +75,7 @@ typing-extensions==3.10.0.0
     # via
     #   -r requirements.dev.in
     #   mypy
-virtualenv==20.13.0
+virtualenv==20.13.2
     # via pre-commit
 werkzeug==1.0.1
     # via pytest-httpserver
