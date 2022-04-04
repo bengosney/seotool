@@ -40,7 +40,7 @@ pyppeteer==0.2.5
     # via seotool (setup.py)
 requests==2.27.1
     # via seotool (setup.py)
-rich==11.1.0
+rich==12.1.0
     # via seotool (setup.py)
 soupsieve==2.2.1
     # via beautifulsoup4
