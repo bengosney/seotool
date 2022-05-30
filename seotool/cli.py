@@ -65,6 +65,7 @@ def main(url, verbose, plugin, verify, disable, delay, engine, workers, **kwargs
         delay=delay,
         engine=engine,
         plugin_options=kwargs,
+        worker_count=workers,
     )
     asyncio.run(crawler.crawl())
 
