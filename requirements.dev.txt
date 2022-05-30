@@ -64,11 +64,8 @@ pyparsing==2.4.7
 pytest==6.2.4
     # via
     #   -r requirements.dev.in
-    #   pytest-clarity
     #   pytest-click
     #   pytest-mock
-pytest-clarity==0.3.0a0
-    # via -r requirements.dev.in
 pytest-click==1.0.2
     # via -r requirements.dev.in
 pytest-httpserver==1.0.0
@@ -81,8 +78,6 @@ six==1.16.0
     # via
     #   asttokens
     #   virtualenv
-termcolor==1.1.0
-    # via pytest-clarity
 toml==0.10.2
     # via
     #   pep517

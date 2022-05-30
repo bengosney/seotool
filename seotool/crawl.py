@@ -41,7 +41,7 @@ class Crawler:
         verify=True,
         disabled=[],
         delay=0,
-        engine="pyppeteer",
+        engine="playwright",
         plugin_options={},
         worker_count=None,
     ) -> None:
