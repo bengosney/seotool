@@ -3,17 +3,17 @@ import asyncio
 
 
 class Queue:
-    def __init__(self, worker_count=1) -> None:
-        self._waiting = 0
-        self._worker_count = worker_count
-        self._queue = asyncio.Queue()
+    def __init__(self, worker_count: int = 1) -> None:
+        self._waiting: int = 0
+        self._worker_count: int = worker_count
+        self._queue: asyncio.Queue = asyncio.Queue()
 
     @property
-    def waiting(self):
+    def waiting(self) -> int:
         return self._waiting
 
     @property
-    def worker_count(self):
+    def worker_count(self) -> int:
         return self._worker_count
 
     @property
