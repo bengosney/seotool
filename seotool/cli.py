@@ -30,7 +30,7 @@ def list_plugins(ctx, param, value):
 @click.option("--verbose/--quiet", default=True, help="Show or suppress output")
 @click.option("--verify/--noverify", default=True, help="Verify SSLs")
 @click.option("--delay", help="Delay between crawling pages", default=0)
-@click.option("--engine", default="pyppeteer", help="Fetch and parse engine to use")
+@click.option("--engine", default="playwright", help="Fetch and parse engine to use")
 @click.option("--workers", type=int, default=None, help="Number of workers to run, defaults to CPU core count")
 @click.option(
     "--list-plugins", is_flag=True, callback=list_plugins, expose_value=False, is_eager=True, help="Lists plugins"

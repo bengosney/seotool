@@ -1,10 +1,11 @@
+# Third Party
 import click
 from playwright.async_api import async_playwright
 
 # First Party
 from engines import engine, response
 
-from icecream import ic
+
 class playwright(engine):
     playwright = None
     browser = None
