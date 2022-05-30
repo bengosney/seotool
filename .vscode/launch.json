@@ -1,25 +1,24 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
-    "version": "0.2.0",
-    "configurations": [
-
-        {
-            "name": "Python: iibd",
-            "type": "python",
-            "request": "launch",
-            "program": "seotool-cli.py",
-            "console": "integratedTerminal",
-            "args": ["--html-template","bob","https://www.isitbinday.com"]
-        },
-        {
-            "name": "Python: stl",
-            "type": "python",
-            "request": "launch",
-            "program": "seotool-cli.py",
-            "console": "integratedTerminal",
-            "args": ["https://www.stretchtheirlegs.co.uk"]
-        }
-    ]
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Python: iibd",
+      "type": "python",
+      "request": "launch",
+      "program": "seotool-cli.py",
+      "console": "integratedTerminal",
+      "args": ["--html-template", "bob", "https://www.isitbinday.com"]
+    },
+    {
+      "name": "Python: stl",
+      "type": "python",
+      "request": "launch",
+      "program": "seotool-cli.py",
+      "console": "integratedTerminal",
+      "args": ["https://www.stretchtheirlegs.co.uk"]
+    }
+  ]
 }

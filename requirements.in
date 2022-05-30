@@ -1,11 +1,10 @@
+Jinja2
 beautifulsoup4
 click>=7,<9
-rich
-pygments>=2.8,<2.10
 markdown
 pdfkit
-
-requests
-pluggy
-Jinja2
 playwright
+pluggy
+pygments>=2.8,<2.10
+requests
+rich

@@ -1,15 +1,11 @@
 # Third Party
-import click
-from pyppeteer import launch
+
+# Third Party
+from playwright.async_api import async_playwright
 
 # First Party
 from engines import engine, response
-import asyncio
-from playwright.async_api import async_playwright
-from playwright.async_api._context_manager import PlaywrightContextManager
-from playwright.sync_api import sync_playwright
 
-from icecream import ic
 
 class playwright(engine):
     playwright = None

@@ -22,7 +22,7 @@ class Internal404:
         self.f404s = []
 
     def _find_links(self, url):
-        return sorted([page for page in self.links if url in self.links[page]])
+        return sorted(page for page in self.links if url in self.links[page])
 
     @hookimpl_processor
     def get_results_set(self):
