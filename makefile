@@ -16,12 +16,12 @@ help:
 
 requirements.%.txt: requirements.%.in
 	@echo "Builing $@"
-	@pip-compile --no-emit-index-url -q -o $@ $^
+	@python -m piptools compile --no-emit-index-url -q -o $@ $^
 
-requirements.txt: setup.py
+requirements.txt: requirements.in
 	@echo "Builing $@"
-	@pip-compile --no-emit-index-url -q $^
-	@sed -i 's/pip-compile $^/pip-compile/g' $@
+	@python -m piptools compile --no-emit-index-url -q $^
+	@sed -i 's/python -m piptools compile $^/python -m piptools compile/g' $@
 
 install: requirements.txt ## Install production requirements
 	@pip -q install pip-tools

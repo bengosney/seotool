@@ -1,4 +1,5 @@
-pip-tools
+-c requirements.txt
+pip-tools>=6.6.2
 pre-commit
 pytest
 pytest-mock
@@ -7,4 +8,5 @@ pytest-clarity
 mypy
 pytest-httpserver
 lorem
-typing-extensions==3.10.*
+typing-extensions
+icecream

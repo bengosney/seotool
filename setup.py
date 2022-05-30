@@ -23,6 +23,7 @@ setup(
         # "seo_processor": ["search=processors.plugins.IgnoreSearchPages"]
         "console_scripts": ["seo-crawl=seotool.cli:main"],
         "seo_engines": [
+            "playwright=engines.playwright:playwright",
             "pyppeteer=engines.pyppeteer:pyppeteer",
             "requests=engines.requests:requests",
         ],
