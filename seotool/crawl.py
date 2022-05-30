@@ -200,11 +200,14 @@ class Crawler:
     @cached_property
     def engine_instance(self) -> engine:
         self.print(f"Attempting to load {self.engine}")
-        engine_cls = None
-        for entry_point in pkg_resources.iter_entry_points("seo_engines"):
-            if self.engine == entry_point.name:
-                engine_cls = entry_point.load()
-                break
+        engine_cls = next(
+            (
+                entry_point.load()
+                for entry_point in pkg_resources.iter_entry_points("seo_engines")
+                if self.engine == entry_point.name
+            ),
+            None,
+        )
 
         if engine_cls is None:
             raise EngineException(f"Engine not found: {self.engine}")
