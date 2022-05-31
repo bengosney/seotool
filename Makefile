@@ -28,11 +28,11 @@ requirements.in:
 
 requirements.%.txt: requirements.%.in requirements.txt
 	@echo "Builing $@"
-	@python -m piptools compile --generate-hashes -q -o $@ $^
+	@python -m piptools compile -q -o $@ $^
 
 requirements.txt: requirements.in
 	@echo "Builing $@"
-	@python -m piptools compile --generate-hashes -q $^
+	@python -m piptools compile -q $^
 
 .direnv: .envrc
 	python -m pip install --upgrade pip

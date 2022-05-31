@@ -4,27 +4,15 @@
 #
 #    pip-compile --generate-hashes requirements.in
 #
-# WARNING: pip install will require the following package to be hashed.
-# Consider using a hashable URL like https://github.com/jazzband/pip-tools/archive/SOMECOMMIT.zip
--e file:///home/ben/projects/seotool
-    # via -r requirements.in
-appdirs==1.4.4 \
-    --hash=sha256:7d5d0167b2b1ba821647616af46a749d1c653740dd0d2415100fe26e27afdf41 \
-    --hash=sha256:a841dacd6b99318a741b166adb07e19ee71a274450e68237b4650ca1055ab128
-    # via pyppeteer
 beautifulsoup4==4.9.3 \
     --hash=sha256:4c98143716ef1cb40bf7f39a8e3eec8f8b009509e74904ba3a7b315431577e35 \
     --hash=sha256:84729e322ad1d5b4d25f805bfa05b902dd96450f43842c4e99067d5e1369eb25 \
     --hash=sha256:fff47e031e34ec82bf17e00da8f592fe7de69aeea38be00523c04623c04fb666
-    # via
-    #   -r requirements.in
-    #   seotool
+    # via -r requirements.in
 certifi==2021.5.30 \
     --hash=sha256:2bbf76fd432960138b3ef6dda3dde0544f27cbf8546c458e60baf371917ba9ee \
     --hash=sha256:50b1e4f8446b06f41be7dd6338db18e0990601dce795c2b1686458aa7e8fa7d8
-    # via
-    #   pyppeteer
-    #   requests
+    # via requests
 charset-normalizer==2.0.12 \
     --hash=sha256:2857e29ff0d34db842cd7ca3230549d1a697f96ee6d3fb071cfa6c7393832597 \
     --hash=sha256:6881edbebdb17b39b4eaaa821b438bf6eddffb4468cf344f09f89def34a8b1df
@@ -102,22 +90,14 @@ idna==3.3 \
     --hash=sha256:84d9dd047ffa80596e0f246e2eab0b391788b0503584e8945f2368256d2735ff \
     --hash=sha256:9d643ff0a55b762d5cdb124b8eaa99c66322e2157b69160bc32796e824360e6d
     # via requests
-importlib-metadata==4.11.4 \
-    --hash=sha256:5d26852efe48c0a32b0509ffbc583fda1a2266545a78d104a6f4aff3db17d700 \
-    --hash=sha256:c58c8eb8a762858f49e18436ff552e83914778e50e9d2f1660535ffb364552ec
-    # via pyppeteer
 jinja2==3.0.1 \
     --hash=sha256:1f06f2da51e7b56b8f238affdd6b4e2c61e39598a378cc49345bc1bd42a978a4 \
     --hash=sha256:703f484b47a6af502e743c9122595cc812b0271f661722403114f71a79d0f5a4
-    # via
-    #   -r requirements.in
-    #   seotool
+    # via -r requirements.in
 markdown==3.3.4 \
     --hash=sha256:31b5b491868dcc87d6c24b7e3d19a0d730d59d3e46f4eea6430a321bed387a49 \
     --hash=sha256:96c3ba1261de2f7547b46a00ea8463832c921d3f9d6aba3f255a6f71386db20c
-    # via
-    #   -r requirements.in
-    #   seotool
+    # via -r requirements.in
 markupsafe==2.0.1 \
     --hash=sha256:01a9b8ea66f1658938f65b93a85ebe8bc016e6769611be228d797c9d998dd298 \
     --hash=sha256:023cb26ec21ece8dc3907c0e8320058b2e0cb3c55cf9564da612bc325bed5e64 \
@@ -193,9 +173,7 @@ pdfkit==0.6.1 \
     --hash=sha256:05f1c631e8d9ab877886955da825e48b459e097886a21448ab17b34c60cfd66c \
     --hash=sha256:6a866c9659e62a81abd72cdb32b400762d76085b964beb0b15106d573a539677 \
     --hash=sha256:ef1da35b78d534197e7ce4a604a4a190e9aa769e56634957535f3479a50d8cd1
-    # via
-    #   -r requirements.in
-    #   seotool
+    # via -r requirements.in
 playwright==1.22.0 \
     --hash=sha256:217b2f623527ded15d602ccca5138395a1677c67399c4494844d5341420d34e0 \
     --hash=sha256:78ddf51d0c08d94edb6d2ddf7b262f0d87a1c0ab5e121bfefa1945214c308f95 \
@@ -208,51 +186,33 @@ playwright==1.22.0 \
 pluggy==0.13.1 \
     --hash=sha256:15b2acde666561e1298d71b523007ed7364de07029219b604cf808bfa1c765b0 \
     --hash=sha256:966c145cd83c96502c3c3868f50408687b38434af77734af1e9ca461a4081d2d
-    # via
-    #   -r requirements.in
-    #   seotool
+    # via -r requirements.in
 pyee==8.1.0 \
     --hash=sha256:383973b63ad7ed5e3c0311f8b179c52981f9e7b3eaea0e9a830d13ec34dde65f \
     --hash=sha256:92dacc5bd2bdb8f95aa8dd2585d47ca1c4840e2adb95ccf90034d64f725bfd31
-    # via
-    #   playwright
-    #   pyppeteer
+    # via playwright
 pygments==2.9.0 \
     --hash=sha256:a18f47b506a429f6f4b9df81bb02beab9ca21d0a5fee38ed15aef65f0545519f \
     --hash=sha256:d66e804411278594d764fc69ec36ec13d9ae9147193a1740cd34d272ca383b8e
     # via
     #   -r requirements.in
     #   rich
-pyppeteer==1.0.2 \
-    --hash=sha256:11a734d8f02c6b128035aba8faf32748f2016310a6a1cbc6aa5b1e2580742e8f \
-    --hash=sha256:ddb0d15cb644720160d49abb1ad0d97e87a55581febf1b7531be9e983aad7742
-    # via seotool
 requests==2.27.1 \
     --hash=sha256:68d7c56fd5a8999887728ef304a6d12edc7be74f1cfa47714fc8b414525c9a61 \
     --hash=sha256:f22fa1e554c9ddfd16e6e41ac79759e17be9e492b3587efa038054674760e72d
-    # via
-    #   -r requirements.in
-    #   seotool
+    # via -r requirements.in
 rich==11.1.0 \
     --hash=sha256:365ebcdbfb3aa8d4b0ed2490e0fbf7b886a39d14eb7ea5fb7aece950835e1eed \
     --hash=sha256:43e03d8eec12e21beaecc22c828a41c4247356414a12d5879834863d4ad53816
-    # via
-    #   -r requirements.in
-    #   seotool
+    # via -r requirements.in
 soupsieve==2.2.1 \
     --hash=sha256:052774848f448cf19c7e959adf5566904d525f33a3f8b6ba6f6f8f26ec7de0cc \
     --hash=sha256:c2c1c2d44f158cdbddab7824a9af8c4f83c76b1e23e049479aa432feb6c4c23b
     # via beautifulsoup4
-tqdm==4.64.0 \
-    --hash=sha256:40be55d30e200777a307a7585aee69e4eabb46b4ec6a4b4a5f2d9f11e7d5408d \
-    --hash=sha256:74a2cdefe14d11442cedf3ba4e21a3b84ff9a2dbdc6cfae2c34addb2a14a5ea6
-    # via pyppeteer
 urllib3==1.26.8 \
     --hash=sha256:000ca7f471a233c2251c6c7023ee85305721bfdf18621ebff4fd17a8653427ed \
     --hash=sha256:0e7c33d9a63e7ddfcb86780aac87befc2fbddf46c58dbb487e0855f7ceec283c
-    # via
-    #   pyppeteer
-    #   requests
+    # via requests
 websockets==10.1 \
     --hash=sha256:002071169d2e44ce8eb9e5ebac9fbce142ba4b5146eef1cfb16b177a27662657 \
     --hash=sha256:05e7f098c76b0a4743716590bb8f9706de19f1ef5148d61d0cf76495ec3edb9c \
@@ -302,10 +262,4 @@ websockets==10.1 \
     --hash=sha256:e259be0863770cb91b1a6ccf6907f1ac2f07eff0b7f01c249ed751865a70cb0d \
     --hash=sha256:e3872ae57acd4306ecf937d36177854e218e999af410a05c17168cd99676c512 \
     --hash=sha256:e4819c6fb4f336fd5388372cb556b1f3a165f3f68e66913d1a2fc1de55dc6f58
-    # via
-    #   playwright
-    #   pyppeteer
-zipp==3.8.0 \
-    --hash=sha256:56bf8aadb83c24db6c4b577e13de374ccfb67da2078beba1d037c17980bf43ad \
-    --hash=sha256:c4f6e5bbf48e74f7a38e7cc5b0480ff42b0ae5178957d564d18932525d5cf099
-    # via importlib-metadata
+    # via playwright
