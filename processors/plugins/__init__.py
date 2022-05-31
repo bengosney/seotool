@@ -7,4 +7,4 @@ def _get_all():
     return [basename(f)[:-3] for f in modules if isfile(f) and not f.endswith("__init__.py")]
 
 
-__all__ = _get_all()  # type: ignore
+__all__ = _get_all()

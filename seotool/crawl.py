@@ -3,6 +3,7 @@ from __future__ import annotations
 
 # Standard Library
 import asyncio
+import contextlib
 import inspect
 import multiprocessing
 import os
@@ -37,13 +38,13 @@ class Crawler:
         self,
         url: str,
         plugins: list[str] = [],
-        verbose=True,
-        verify=True,
+        verbose: bool = True,
+        verify: bool = True,
         disabled=[],
-        delay=0,
-        engine="pyppeteer",
+        delay: int = 0,
+        engine: str = "playwright",
         plugin_options={},
-        worker_count=None,
+        worker_count: int = 0,
     ) -> None:
         self.url = url
         self.verify = verify
@@ -57,7 +58,7 @@ class Crawler:
         self.engine = engine
         self.plugin_options = plugin_options
 
-        self.worker_count = worker_count if worker_count is not None else multiprocessing.cpu_count()
+        self.worker_count = worker_count if worker_count > 0 else multiprocessing.cpu_count()
 
         self.verbose = verbose
 
@@ -97,11 +98,11 @@ class Crawler:
     def skip_page(self) -> None:
         raise SkipPage
 
-    def _init_plugins(self, plugin_options={}) -> None:
-        self.processor = Processor(self, self.plugins, self.disabled, plugin_options)
+    def _init_plugins(self, plugin_options=None) -> None:
+        self.processor: Processor = Processor(self, self.plugins, self.disabled, plugin_options or {})
         self.print(f"Loaded plugins: {', '.join(self.processor.plugin_names)}")
 
-    async def _add_links(self, html_soup) -> None:
+    async def _add_links(self, html_soup: BeautifulSoup) -> None:
         links = html_soup.find_all("a")
         for link in links:
             try:
@@ -120,20 +121,17 @@ class Crawler:
                 self.all_urls.append(abs_url)
                 await self.queue.put(abs_url)
 
-    def print(self, text, style: str | None = None) -> None:
+    def print(self, text: str, style: str | None = None) -> None:
         if self.verbose:
             self.processor.log(text, style=style)
 
-    def printERR(self, text) -> None:
+    def printERR(self, text: str) -> None:
         self.processor.log_error(text)
 
     async def save_results(self) -> None:
         self.print(f"\nSaving results to {self.results_base_path}\n", "green")
-        try:
+        with contextlib.suppress(FileExistsError):
             os.makedirs(self.results_base_path)
-        except FileExistsError:
-            pass
-
         results_store = self.processor.get_results_sets()
         awaits = self.processor.process_results_sets(results_store)
 
@@ -141,15 +139,12 @@ class Crawler:
 
     def get_output_name(self, name: str, extention: str, folder: str = "") -> str:
         path = os.path.join(self.results_base_path, folder)
-        try:
+        with contextlib.suppress(FileExistsError):
             os.makedirs(path)
-        except FileExistsError:
-            pass
-
         return os.path.join(path, f"{self._clean_filename(name)}.{extention}")
 
     @staticmethod
-    def _clean_filename(filename) -> str:
+    def _clean_filename(filename: str) -> str:
         regex_not_special = re.compile(f"[^{string.ascii_letters}{string.digits}_\\-. ]")
         regex_whitespace = re.compile(r"\s+")
 
@@ -200,13 +195,11 @@ class Crawler:
     @cached_property
     def engine_instance(self) -> engine:
         self.print(f"Attempting to load {self.engine}")
-        engine_cls = None
         for entry_point in pkg_resources.iter_entry_points("seo_engines"):
             if self.engine == entry_point.name:
                 engine_cls = entry_point.load()
                 break
-
-        if engine_cls is None:
+        else:
             raise EngineException(f"Engine not found: {self.engine}")
 
         args = {"crawler": self, **self.plugin_options}
@@ -215,15 +208,18 @@ class Crawler:
 
         return engine_cls(**{key: value for (key, value) in args.items() if key in supported_prams})
 
-    async def getResponse(self, url) -> response:
+    async def getResponse(self, url: str) -> response:
         engine = self.engine_instance
         try:
             return await engine.get(url, verify=self.verify)
         except Exception as ERR:
             raise EngineException() from ERR
 
-    def should_process(self, url, response) -> bool:
+    def should_process(self, url: str, response: response) -> bool:
         self.resolve_cache.update({url: response.url})
+
+        should_process = self.processor.should_process(url, response)
+
         if url != response.url and response.url in self.visited:
             self.print(f"{url} resolves to {response.url} and has already been visited", "yellow")
             return False
@@ -236,7 +232,7 @@ class Crawler:
             self.print(f"{content_type} is not crawlable", "yellow")
             return False
 
-        return True
+        return should_process
 
     async def _crawl(self) -> None:
         while self._crawling:

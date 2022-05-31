@@ -2,6 +2,8 @@
 
 # Standard Library
 import asyncio
+import contextlib
+import pathlib
 
 # Third Party
 import click
@@ -18,8 +20,9 @@ def list_plugins(ctx, param, value):
         return
 
     click.secho("\nAvailable plugins:\n", fg="green")
-    plugins = Crawler.get_plugin_list()
-    [click.echo(f"\t{plugin}") for plugin in plugins]
+    for plugin in Crawler.get_plugin_list():
+        click.echo(f"\t{plugin}")
+
     ctx.exit()
 
 
@@ -30,13 +33,13 @@ def list_plugins(ctx, param, value):
 @click.option("--verbose/--quiet", default=True, help="Show or suppress output")
 @click.option("--verify/--noverify", default=True, help="Verify SSLs")
 @click.option("--delay", help="Delay between crawling pages", default=0)
-@click.option("--engine", default="pyppeteer", help="Fetch and parse engine to use")
-@click.option("--workers", type=int, default=None, help="Number of workers to run, defaults to CPU core count")
+@click.option("--engine", default="playwright", help="Fetch and parse engine to use")
+@click.option("--workers", type=int, default=0, help="Number of workers to run, defaults to CPU core count")
 @click.option(
     "--list-plugins", is_flag=True, callback=list_plugins, expose_value=False, is_eager=True, help="Lists plugins"
 )
 @click.version_option()
-def main(url, verbose, plugin, verify, disable, delay, engine, workers, **kwargs):
+def main(url, verbose, plugin, verify, disable, delay, engine, workers: int, **kwargs):
     """This script will crawl give URL and analyse the output using plugins."""
 
     if verbose:
@@ -45,14 +48,11 @@ def main(url, verbose, plugin, verify, disable, delay, engine, workers, **kwargs
     if url is None:
         console = Console()
         ctx = click.get_current_context()
-        try:
-            with open("README.md") as f:
-                rawMarkdown = f.read()
+        with contextlib.suppress(FileNotFoundError):
+            rawMarkdown = pathlib.Path("README.md").read_text()
             md = Markdown(rawMarkdown)
             console.print(md)
             console.print("\n")
-        except FileNotFoundError:
-            pass
         console.print(ctx.get_help())
         ctx.exit()
 
@@ -65,6 +65,7 @@ def main(url, verbose, plugin, verify, disable, delay, engine, workers, **kwargs
         delay=delay,
         engine=engine,
         plugin_options=kwargs,
+        worker_count=workers,
     )
     asyncio.run(crawler.crawl())
 

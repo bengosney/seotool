@@ -1,7 +1,6 @@
 # Standard Library
 import urllib.parse
 from dataclasses import dataclass
-from typing import List
 
 # First Party
 from processors import BaseResultData, ResultSet, hookimpl_processor
@@ -10,7 +9,7 @@ from processors import BaseResultData, ResultSet, hookimpl_processor
 @dataclass
 class ResultData(BaseResultData):
     link: str
-    pages: List[str]
+    pages: list[str]
 
 
 class Internal404:
@@ -22,7 +21,7 @@ class Internal404:
         self.f404s = []
 
     def _find_links(self, url):
-        return sorted([page for page in self.links if url in self.links[page]])
+        return sorted(page for page in self.links if url in self.links[page])
 
     @hookimpl_processor
     def get_results_set(self):

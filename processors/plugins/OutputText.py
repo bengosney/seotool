@@ -1,7 +1,6 @@
 # Standard Library
 from contextlib import nullcontext
 from functools import cached_property
-from typing import List
 
 # Third Party
 import click
@@ -33,7 +32,7 @@ class OutputText:
             return None
 
     @hookimpl_processor()
-    def process_output(self, resultsSets: List[ResultSet]):
+    def process_output(self, resultsSets: list[ResultSet]):
         with open(self.file, "w") if self.file is not None else nullcontext() as f:
             console = Console(file=f, width=self.width)
 

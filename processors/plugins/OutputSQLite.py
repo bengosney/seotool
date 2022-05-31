@@ -2,7 +2,7 @@
 import sqlite3
 from dataclasses import fields
 from functools import cached_property
-from typing import Any, Dict, List
+from typing import Any
 
 # First Party
 from processors import ResultSet, hookimpl_processor
@@ -11,7 +11,7 @@ from seotool.crawl import Crawler
 
 
 class SQLite:
-    tables: List[str] = []
+    tables: list[str] = []
 
     def __init__(self, file="sqlite.db"):
         self.file = file
@@ -26,7 +26,7 @@ class SQLite:
         self.connection = None
 
     def _get_sql_type(self, python_type: Any) -> str:
-        field_mappings: Dict[Any, str] = {
+        field_mappings: dict[Any, str] = {
             str: "TEXT",
             int: "INTEGER",
         }
@@ -80,7 +80,7 @@ class OutputSQLite:
             return ":memory:"
 
     @hookimpl_processor()
-    def process_output(self, resultsSets: List[ResultSet]) -> None:
+    def process_output(self, resultsSets: list[ResultSet]) -> None:
         with self.storage as storage:
             for resultSet in resultsSets:
                 if not resultSet.has_data:

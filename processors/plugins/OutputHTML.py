@@ -1,6 +1,5 @@
 # Standard Library
 import os
-from typing import List, Optional
 
 # Third Party
 import click
@@ -12,12 +11,12 @@ from seotool.crawl import Crawler
 
 
 class OutputHTML:
-    def __init__(self, crawler: Crawler, html_template: Optional[str] = None) -> None:
+    def __init__(self, crawler: Crawler, html_template: str | None = None) -> None:
         self.crawler = crawler
         self.template = html_template
 
     @hookimpl_processor
-    def process_output(self, resultsSets: List[ResultSet]):
+    def process_output(self, resultsSets: list[ResultSet]):
         self.crawler.print("Writing HTML")
 
         path = self.crawler.get_output_name("report", "html")

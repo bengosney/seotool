@@ -3,7 +3,6 @@ from collections import defaultdict
 from dataclasses import dataclass
 from difflib import SequenceMatcher
 from itertools import permutations, product
-from typing import List
 
 # Third Party
 import click
@@ -16,13 +15,13 @@ from processors import BaseResultData, ResultSet, hookimpl_processor
 @dataclass
 class ResultData(BaseResultData):
     content: str
-    urls: List[str]
+    urls: list[str]
 
 
 @dataclass
 class PageContent:
     url: str
-    content: List[str]
+    content: list[str]
 
 
 class DuplicateContent:
@@ -30,7 +29,7 @@ class DuplicateContent:
 
     def __init__(self, crawler, duplicate_content_min_length: int = 20, duplicate_content_ratio: float = 0.8):
         self.min_length = duplicate_content_min_length
-        self.content: List[PageContent] = []
+        self.content: list[PageContent] = []
         self.crawler = crawler
         self.ratio = duplicate_content_ratio
 

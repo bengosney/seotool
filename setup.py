@@ -4,14 +4,12 @@ from setuptools import find_packages, setup
 
 setup(
     name="seotool",
-    version="2.1.0",
+    version="2.2.0",
     packages=find_packages(),
-    python_requires="~=3.8",
+    python_requires="~=3.10",
     install_requires=[
         "beautifulsoup4",
-        "click>=7,<9",
         "rich",
-        "pygments>=2.8,<2.10",  # remove once icecream updates requirements
         "markdown",
         "pdfkit",
         "pyppeteer",
@@ -23,6 +21,7 @@ setup(
         # "seo_processor": ["search=processors.plugins.IgnoreSearchPages"]
         "console_scripts": ["seo-crawl=seotool.cli:main"],
         "seo_engines": [
+            "playwright=engines.playwright:playwright",
             "pyppeteer=engines.pyppeteer:pyppeteer",
             "requests=engines.requests:requests",
         ],

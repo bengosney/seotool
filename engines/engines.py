@@ -1,6 +1,5 @@
 # Standard Library
 from abc import ABC, abstractmethod
-from typing import List
 
 # First Party
 from engines import response
@@ -18,5 +17,5 @@ class engine(ABC):
         pass
 
     @staticmethod
-    def get_options() -> List:
+    def get_options() -> list:
         return []

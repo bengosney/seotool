@@ -1,10 +1,12 @@
-pip-tools
+-c requirements.txt
+-e file:.#egg=seotool
+icecream
+lorem
+mypy
+pip-tools>=6.6.2
 pre-commit
 pytest
+pytest-httpserver
 pytest-mock
 pytest_click
-pytest-clarity
-mypy
-pytest-httpserver
-lorem
-typing-extensions==3.10.*
+typing-extensions

@@ -1,7 +1,7 @@
 # Standard Library
 from abc import ABC
 from dataclasses import dataclass, fields
-from typing import Any, List
+from typing import Any
 
 
 @dataclass()
@@ -33,7 +33,7 @@ class BaseResultData(ABC):
 class ResultSet:
     title: str
     body: str
-    data: List[Any]
+    data: list[Any]
 
     @property
     def data_headers(self):

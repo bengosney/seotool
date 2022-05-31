@@ -1,9 +1,9 @@
 # Standard Library
 import urllib.parse
 from dataclasses import dataclass
-from typing import List
 
 # First Party
+from engines.dataModels import response
 from processors import BaseResultData, ResultSet, hookimpl_processor
 
 
@@ -11,7 +11,7 @@ from processors import BaseResultData, ResultSet, hookimpl_processor
 class ResultData(BaseResultData):
     src: str
     dest: str
-    links: List[str]
+    links: list[str]
 
 
 class Internal301:
@@ -23,7 +23,7 @@ class Internal301:
         self.url301s = []
 
     def _find_links(self, url):
-        return sorted([page for page in self.links if url in self.links[page]])
+        return sorted(page for page in self.links if url in self.links[page])
 
     @hookimpl_processor
     def get_results_set(self):
@@ -47,3 +47,10 @@ class Internal301:
                 continue
 
         self.links.update({url: urls})
+
+    @hookimpl_processor
+    def should_process(self, url: str, response: response) -> bool:
+        if url != response.url:
+            self.url301s.append(url)
+
+        return True
