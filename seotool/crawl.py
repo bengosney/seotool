@@ -18,6 +18,7 @@ from typing import Callable
 import pkg_resources
 import urllib3
 from bs4 import BeautifulSoup
+from click.decorators import FC
 from requests import head
 from requests.exceptions import MissingSchema, TooManyRedirects
 
@@ -87,12 +88,12 @@ class Crawler:
         return p.plugin_names
 
     @staticmethod
-    def get_plugin_options() -> list[list[Callable]]:
+    def get_plugin_options() -> list[list[Callable[[FC], FC]]]:
         p = Processor(None)
         return p.get_options()
 
     @classmethod
-    def get_extra_options(cls) -> list[list[Callable]]:
+    def get_extra_options(cls) -> list[list[Callable[[FC], FC]]]:
         return cls.get_plugin_options() + [cls.get_engine_options()]
 
     def skip_page(self) -> None:
@@ -184,7 +185,7 @@ class Crawler:
         return asyncio.run(self.crawl(save))
 
     @staticmethod
-    def get_engine_options() -> list[Callable]:
+    def get_engine_options() -> list[Callable[[FC], FC]]:
         options = []
         for entry_point in pkg_resources.iter_entry_points("seo_engines"):
             engine_cls = entry_point.load()
