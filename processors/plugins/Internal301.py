@@ -3,6 +3,7 @@ import urllib.parse
 from dataclasses import dataclass
 
 # First Party
+from engines.dataModels import response
 from processors import BaseResultData, ResultSet, hookimpl_processor
 
 
@@ -46,3 +47,10 @@ class Internal301:
                 continue
 
         self.links.update({url: urls})
+
+    @hookimpl_processor
+    def should_process(self, url: str, response: response) -> bool:
+        if url != response.url:
+            self.url301s.append(url)
+
+        return True
