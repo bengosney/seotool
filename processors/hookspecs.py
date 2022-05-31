@@ -5,6 +5,7 @@ import pluggy
 from bs4 import BeautifulSoup
 
 # First Party
+from engines.dataModels import response
 from processors.dataModels import ResultSet
 
 hookspec_processor = pluggy.HookspecMarker("seo_processor")
@@ -30,6 +31,10 @@ class processor:
     @hookspec_processor
     def get_options(self):
         """Get any cli arguments."""
+
+    @hookspec_processor
+    def should_process(self, url: str, response: response) -> bool:
+        """Do we want to process this url?"""
 
     @hookspec_processor(firstresult=True)
     def log(self, line, style):

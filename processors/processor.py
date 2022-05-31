@@ -1,4 +1,5 @@
 # Standard Library
+import contextlib
 import inspect
 from typing import Any, Awaitable
 
@@ -36,11 +37,9 @@ class Processor:
             sig = inspect.signature(_class)
             supported_prams = [p.name for p in sig.parameters.values()]
             pm.register(_class(**{key: value for (key, value) in args.items() if key in supported_prams}), plugin)
-            try:
+            with contextlib.suppress(AttributeError):
                 if _class.default_disabled:
                     plugin_default_disabled.append(plugin)
-            except AttributeError:
-                pass
 
         pm.load_setuptools_entrypoints("seo_processor")
         plugin_names = [p for p, _ in pm.list_name_plugin()]
@@ -70,6 +69,9 @@ class Processor:
 
     def get_options(self) -> list:
         return self.hook.get_options()
+
+    def should_process(self, url: str, response: response) -> bool:
+        return all(self.hook.should_process(url=url, response=response))
 
     def log(self, line, style) -> None:
         self.hook.log(line=line, style=style)

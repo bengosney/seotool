@@ -217,6 +217,9 @@ class Crawler:
 
     def should_process(self, url: str, response: response) -> bool:
         self.resolve_cache.update({url: response.url})
+
+        should_process = self.processor.should_process(url, response)
+
         if url != response.url and response.url in self.visited:
             self.print(f"{url} resolves to {response.url} and has already been visited", "yellow")
             return False
@@ -229,7 +232,7 @@ class Crawler:
             self.print(f"{content_type} is not crawlable", "yellow")
             return False
 
-        return True
+        return should_process
 
     async def _crawl(self) -> None:
         while self._crawling:
