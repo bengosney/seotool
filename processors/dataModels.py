@@ -6,10 +6,10 @@ from typing import Any
 
 @dataclass()
 class BaseResultData(ABC):
-    def keys(self):
+    def keys(self) -> list[str]:
         return [f.name for f in fields(self)]
 
-    def values(self):
+    def values(self) -> list[str]:
         return [self.__dict__[f] for f in self.keys()]
 
     def __iter__(self):
@@ -25,7 +25,7 @@ class BaseResultData(ABC):
         del self.__dict__[key]
 
     @property
-    def name(self):
+    def name(self) -> str:
         return self.__module__.split(".")[-1]
 
 
@@ -36,14 +36,14 @@ class ResultSet:
     data: list[Any]
 
     @property
-    def data_headers(self):
+    def data_headers(self) -> list[str]:
         try:
             return list(self.data[0].keys())
         except IndexError:
             return []
 
     @property
-    def data_list(self):
+    def data_list(self) -> list[str]:
         return [d.values() for d in self.data_flat_dict]
 
     @property
@@ -59,5 +59,5 @@ class ResultSet:
         return rows
 
     @property
-    def has_data(self):
+    def has_data(self) -> bool:
         return len(self.data) > 0
