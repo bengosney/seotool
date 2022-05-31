@@ -9,4 +9,5 @@ pytest
 pytest-httpserver
 pytest-mock
 pytest_click
+types-beautifulsoup4
 typing-extensions

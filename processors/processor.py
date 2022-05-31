@@ -1,30 +1,67 @@
 # Standard Library
 import contextlib
 import inspect
-from typing import Any, Awaitable
+from typing import TYPE_CHECKING, Any, Awaitable, Callable, cast
 
 # Third Party
 import pluggy
 from bs4 import BeautifulSoup
+from click.decorators import FC
 
 # First Party
 from engines.dataModels import response
 from processors import hookspecs, plugins
 from processors.dataModels import ResultSet
 
+if TYPE_CHECKING:
+    # First Party
+    from seotool.crawl import Crawler
+
+
+class HookType:
+    def process_html(self, html: BeautifulSoup, url: str, status_code: int, response: response) -> None:
+        ...
+
+    def process(self, html: BeautifulSoup, url: str, status_code: int, response: response) -> None:
+        ...
+
+    def process_output(self, resultsSets: list[ResultSet]) -> list[Awaitable]:
+        ...
+
+    def get_results_set(self) -> list[ResultSet]:
+        ...
+
+    def get_options(self) -> list[Callable[[FC], FC]]:
+        ...
+
+    def should_process(self, url: str, response: response) -> list[bool]:
+        ...
+
+    def log(self, line: str, style: str) -> None:
+        ...
+
+    def log_error(self, line: str) -> None:
+        ...
+
 
 class Processor:
-    def __init__(self, crawler, enabled: list | None = None, disabled: list = [], plugin_options: dict[str, Any] = {}):
+    def __init__(
+        self,
+        crawler: "Crawler",
+        enabled: list[str] | None = None,
+        disabled: list[str] = [],
+        plugin_options: dict[str, Any] = {},
+    ):
         self.crawler = crawler
         self.enabled = enabled
         self.disabled = disabled
         self.plugin_options = plugin_options
 
-        self.plugin_names = []
+        self.plugin_names: list[str] = []
         self.pm = self.get_plugin_manager()
-        self.hook = self.pm.hook
+        self.hook: HookType = cast(HookType, self.pm.hook)
 
-    def get_plugin_manager(self):
+    def get_plugin_manager(self) -> pluggy.PluginManager:
         pm = pluggy.PluginManager("seo_processor")
         pm.add_hookspecs(hookspecs.processor)
         plugin_default_disabled = []
@@ -58,7 +95,7 @@ class Processor:
     def process_html(self, html: BeautifulSoup, url: str, status_code: int, response: response) -> None:
         self.hook.process_html(html=html, response=response, url=url, status_code=status_code)
 
-    def process(self, html, url, status_code, response) -> None:
+    def process(self, html: BeautifulSoup, url: str, status_code: int, response: response) -> None:
         self.hook.process(html=html, response=response, url=url, status_code=status_code)
 
     def get_results_sets(self) -> list[ResultSet]:
@@ -67,7 +104,7 @@ class Processor:
     def process_results_sets(self, resultsSets: list[ResultSet]) -> list[Awaitable]:
         return self.hook.process_output(resultsSets=resultsSets)
 
-    def get_options(self) -> list:
+    def get_options(self) -> list[Callable[[FC], FC]]:
         return self.hook.get_options()
 
     def should_process(self, url: str, response: response) -> bool:
