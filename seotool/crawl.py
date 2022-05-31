@@ -44,7 +44,7 @@ class Crawler:
         delay: int = 0,
         engine: str = "playwright",
         plugin_options={},
-        worker_count: int | None = None,
+        worker_count: int = 0,
     ) -> None:
         self.url = url
         self.verify = verify
@@ -58,7 +58,7 @@ class Crawler:
         self.engine = engine
         self.plugin_options = plugin_options
 
-        self.worker_count = worker_count if worker_count is not None else multiprocessing.cpu_count()
+        self.worker_count = worker_count if worker_count > 0 else multiprocessing.cpu_count()
 
         self.verbose = verbose
 
@@ -99,7 +99,7 @@ class Crawler:
         raise SkipPage
 
     def _init_plugins(self, plugin_options=None) -> None:
-        self.processor = Processor(self, self.plugins, self.disabled, plugin_options or {})
+        self.processor: Processor = Processor(self, self.plugins, self.disabled, plugin_options or {})
         self.print(f"Loaded plugins: {', '.join(self.processor.plugin_names)}")
 
     async def _add_links(self, html_soup: BeautifulSoup) -> None:
@@ -195,13 +195,11 @@ class Crawler:
     @cached_property
     def engine_instance(self) -> engine:
         self.print(f"Attempting to load {self.engine}")
-        engine_cls = None
         for entry_point in pkg_resources.iter_entry_points("seo_engines"):
             if self.engine == entry_point.name:
                 engine_cls = entry_point.load()
                 break
-
-        if engine_cls is None:
+        else:
             raise EngineException(f"Engine not found: {self.engine}")
 
         args = {"crawler": self, **self.plugin_options}
