@@ -40,17 +40,17 @@ class OutputText:
             console.print("\n")
             for result_set in resultsSets:
                 table = Table(title=result_set.title, expand=True)
-                if not result_set.has_data:
-                    if not self.show_no_issue:
-                        continue
-                    table.add_row("No issues")
-                else:
+                if result_set.has_data:
                     for key in result_set.data_headers:
                         table.add_column(key)
 
                     for row in result_set.data_flat_dict:
                         table.add_row(*list(row.values()))
 
+                elif not self.show_no_issue:
+                    continue
+                else:
+                    table.add_row("No issues")
                 console.print(table)
                 console.print("\n")
 
