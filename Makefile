@@ -50,15 +50,16 @@ requirements.txt: requirements.in
 
 init: .direnv .git .git/hooks/pre-commit requirements.dev.txt ## Initalise a enviroment
 
-clean: ## Remove all build files
+clean: clean-results ## Remove all build files
 	find . -name '*.pyc' -delete
 	find . -type d -name '__pycache__' -delete
 	rm -rf .pytest_cache
 	rm -f .testmondata
 	rm -rf .mypy_cache
 	rm -rf .hypothesis
+
+clean-results: ## Remove any results folders
 	rm -rf results-*
-	rm -rf *.egg-info
 
 package-lock.json: package.json
 	npm install
