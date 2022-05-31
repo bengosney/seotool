@@ -1,6 +1,5 @@
 # Standard Library
 import csv
-from typing import List
 
 # First Party
 from processors import ResultSet, hookimpl_processor
@@ -12,7 +11,7 @@ class OutputCSV:
         self.crawler = crawler
 
     @hookimpl_processor
-    def process_output(self, resultsSets: List[ResultSet]):
+    def process_output(self, resultsSets: list[ResultSet]):
         self.crawler.print("Writing CSVs")
 
         for result_set in resultsSets:

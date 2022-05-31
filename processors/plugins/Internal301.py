@@ -1,7 +1,6 @@
 # Standard Library
 import urllib.parse
 from dataclasses import dataclass
-from typing import List
 
 # First Party
 from processors import BaseResultData, ResultSet, hookimpl_processor
@@ -11,7 +10,7 @@ from processors import BaseResultData, ResultSet, hookimpl_processor
 class ResultData(BaseResultData):
     src: str
     dest: str
-    links: List[str]
+    links: list[str]
 
 
 class Internal301:

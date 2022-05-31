@@ -1,7 +1,6 @@
 # Standard Library
 import urllib.parse
 from dataclasses import dataclass
-from typing import List
 
 # First Party
 from processors import BaseResultData, ResultSet, hookimpl_processor
@@ -10,7 +9,7 @@ from processors import BaseResultData, ResultSet, hookimpl_processor
 @dataclass
 class ResultData(BaseResultData):
     link: str
-    pages: List[str]
+    pages: list[str]
 
 
 class Internal404:

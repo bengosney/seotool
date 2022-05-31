@@ -1,7 +1,7 @@
 # Standard Library
 import asyncio
 from types import TracebackType
-from typing import Optional, Type
+from typing import Optional
 
 QueueType = asyncio.Queue[Optional[str]]
 
@@ -48,6 +48,6 @@ class Queue:
         return self._queue
 
     async def __aexit__(
-        self, exc_type: Optional[Type[BaseException]], exc: Optional[BaseException], traceback: Optional[TracebackType]
+        self, exc_type: type[BaseException] | None, exc: BaseException | None, traceback: TracebackType | None
     ) -> None:
         self._waiting -= 1

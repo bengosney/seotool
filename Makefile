@@ -40,7 +40,9 @@ requirements.txt: requirements.in
 	@touch $@ $^
 
 .git/hooks/pre-commit: .pre-commit-config.yaml
+	python -m pip install pre-commit
 	pre-commit install
+	pre-commit autoupdate
 
 .envrc:
 	@echo "Setting up .envrc then stopping"

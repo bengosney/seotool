@@ -1,6 +1,5 @@
 # Standard Library
 from dataclasses import dataclass
-from typing import List
 
 # First Party
 from processors import BaseResultData, ResultSet, hookimpl_processor
@@ -15,7 +14,7 @@ class MissingMeta:
     """Meta descriptions give search engins a synopsys of the page."""
 
     def __init__(self, crawler):
-        self.missing_metas: List[str] = []
+        self.missing_metas: list[str] = []
         self.crawler = crawler
 
     @hookimpl_processor

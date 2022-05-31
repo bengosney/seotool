@@ -1,6 +1,5 @@
 # Standard Library
 from dataclasses import dataclass
-from typing import List
 
 # First Party
 from processors import BaseResultData, ResultSet, hookimpl_processor
@@ -9,7 +8,7 @@ from processors import BaseResultData, ResultSet, hookimpl_processor
 @dataclass
 class ResultData(BaseResultData):
     url: str
-    h1s: List[str]
+    h1s: list[str]
 
 
 class MultipleH1:

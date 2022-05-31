@@ -1,6 +1,6 @@
 # Standard Library
 import inspect
-from typing import Any, Awaitable, Dict, List, Optional
+from typing import Any, Awaitable
 
 # Third Party
 import pluggy
@@ -11,9 +11,7 @@ from processors.dataModels import ResultSet
 
 
 class Processor:
-    def __init__(
-        self, crawler, enabled: Optional[List] = None, disabled: List = [], plugin_options: Dict[str, Any] = {}
-    ):
+    def __init__(self, crawler, enabled: list | None = None, disabled: list = [], plugin_options: dict[str, Any] = {}):
         self.crawler = crawler
         self.enabled = enabled
         self.disabled = disabled
@@ -62,13 +60,13 @@ class Processor:
     def process(self, html, url, status_code, response) -> None:
         self.hook.process(html=html, response=response, url=url, status_code=status_code)  # type: ignore
 
-    def get_results_sets(self) -> List[ResultSet]:
+    def get_results_sets(self) -> list[ResultSet]:
         return self.hook.get_results_set()  # type: ignore
 
-    def process_results_sets(self, resultsSets: List[ResultSet]) -> List[Awaitable]:
+    def process_results_sets(self, resultsSets: list[ResultSet]) -> list[Awaitable]:
         return self.hook.process_output(resultsSets=resultsSets)  # type: ignore
 
-    def get_options(self) -> List:
+    def get_options(self) -> list:
         return self.hook.get_options()  # type: ignore
 
     def log(self, line, style) -> None:
