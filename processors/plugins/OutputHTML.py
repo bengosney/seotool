@@ -1,8 +1,10 @@
 # Standard Library
 import os
+from typing import Callable
 
 # Third Party
 import click
+from click.decorators import FC
 from jinja2 import Environment, FileSystemLoader, Template
 
 # First Party
@@ -16,7 +18,7 @@ class OutputHTML:
         self.template = html_template
 
     @hookimpl_processor
-    def process_output(self, resultsSets: list[ResultSet]):
+    def process_output(self, resultsSets: list[ResultSet]) -> None:
         self.crawler.print("Writing HTML")
 
         path = self.crawler.get_output_name("report", "html")
@@ -33,12 +35,12 @@ class OutputHTML:
             f.write(template.render(**data))
 
     @hookimpl_processor
-    def get_options(self):
+    def get_options(self) -> list[Callable[[FC], FC]]:
         return [
             click.option("--html-template", default=None, help="Jinja template used to render the report"),
         ]
 
-    def get_template(self):
+    def get_template(self) -> str:
         return """
 <html>
 <head>
@@ -79,7 +81,7 @@ class OutputHTML:
 </html>
 """
 
-    def get_styles(self):
+    def get_styles(self) -> str:
         return """
 @page {
     margin: 1cm;

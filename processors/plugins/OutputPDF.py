@@ -1,8 +1,10 @@
 # Standard Library
 import os
+from typing import Awaitable, Callable
 
 # Third Party
 import click
+from click.decorators import FC
 from jinja2 import Environment, FileSystemLoader, Template
 from pyppeteer import launch
 
@@ -17,7 +19,7 @@ class OutputPDF:
         self.template = html_template
 
     @hookimpl_processor()
-    def process_output(self, resultsSets: list[ResultSet]):
+    def process_output(self, resultsSets: list[ResultSet]) -> Awaitable[None]:
         self.crawler.print("Writing PDF")
 
         tmppath = self.crawler.get_output_name("temp", "html")
@@ -36,7 +38,7 @@ class OutputPDF:
 
         return self.renderPDF(tmppath, path)
 
-    async def renderPDF(self, html_path, pdf_path):
+    async def renderPDF(self, html_path: str, pdf_path: str) -> None:
         browser = await launch()
         page = await browser.newPage()
         await page.goto(f"file://{html_path}", {"waitUntil": "domcontentloaded"})
@@ -47,12 +49,12 @@ class OutputPDF:
         os.remove(html_path)
 
     @hookimpl_processor
-    def get_options(self):
+    def get_options(self) -> list[Callable[[FC], FC]]:
         return [
             click.option("--pdf-html-template", default=None, help="Jinja template used to render the report"),
         ]
 
-    def get_template(self):
+    def get_template(self) -> str:
         return """
 <html>
 <head>
@@ -93,7 +95,7 @@ class OutputPDF:
 </html>
 """
 
-    def get_styles(self):
+    def get_styles(self) -> str:
         return """
 @page {
     margin: 1cm;
