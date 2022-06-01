@@ -17,31 +17,8 @@ if TYPE_CHECKING:
     # First Party
     from seotool.crawl import Crawler
 
-
-class HookType:
-    def process_html(self, html: BeautifulSoup, url: str, status_code: int, response: response) -> None:
-        ...
-
-    def process(self, html: BeautifulSoup, url: str, status_code: int, response: response) -> None:
-        ...
-
-    def process_output(self, resultsSets: list[ResultSet]) -> list[Awaitable]:
-        ...
-
-    def get_results_set(self) -> list[ResultSet]:
-        ...
-
-    def get_options(self) -> list[Callable[[FC], FC]]:
-        ...
-
-    def should_process(self, url: str, response: response) -> list[bool]:
-        ...
-
-    def log(self, line: str, style: str) -> None:
-        ...
-
-    def log_error(self, line: str) -> None:
-        ...
+# Third Party
+from hookType import HookType
 
 
 class Processor:
