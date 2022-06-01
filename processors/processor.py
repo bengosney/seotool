@@ -17,8 +17,8 @@ if TYPE_CHECKING:
     # First Party
     from seotool.crawl import Crawler
 
-# Third Party
-from hookType import HookType
+# Locals
+from .hookType import HookType
 
 
 class Processor:
@@ -78,8 +78,8 @@ class Processor:
     def get_results_sets(self) -> list[ResultSet]:
         return self.hook.get_results_set()
 
-    def process_results_sets(self, resultsSets: list[ResultSet]) -> list[Awaitable]:
-        return self.hook.process_output(resultsSets=resultsSets)
+    def process_results_sets(self, resultsSets: list[ResultSet]) -> list[Awaitable[None]]:
+        return [a for a in self.hook.process_output(resultsSets=resultsSets) if a is not None]
 
     def get_options(self) -> list[Callable[[FC], FC]]:
         return self.hook.get_options()
