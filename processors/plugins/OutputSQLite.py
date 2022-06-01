@@ -10,20 +10,27 @@ from processors.dataModels import BaseResultData
 from seotool.crawl import Crawler
 
 
-class SQLite:
-    tables: list[str] = []
+class NoConnection(Exception):
+    pass
 
-    def __init__(self, file="sqlite.db"):
+
+class SQLite:
+    file: str
+    tables: list[str] = []
+    connection: sqlite3.Connection | None = None
+
+    def __init__(self, file: str = "sqlite.db") -> None:
         self.file = file
 
-    def __enter__(self):
+    def __enter__(self) -> "SQLite":
         self.connection = sqlite3.connect(self.file)
 
         return self
 
-    def __exit__(self, type, value, traceback):
-        self.connection.close()
-        self.connection = None
+    def __exit__(self, *args) -> None:
+        if self.connection is not None:
+            self.connection.close()
+            self.connection = None
 
     def _get_sql_type(self, python_type: Any) -> str:
         field_mappings: dict[Any, str] = {
@@ -50,7 +57,10 @@ class SQLite:
 
         return f"CREATE TABLE IF NOT EXISTS {dataclass.name} ({','.join(sql_fields)});"
 
-    def save(self, dataclass: BaseResultData):
+    def save(self, dataclass: BaseResultData) -> None:
+        if self.connection is None:
+            raise NoConnection("No connection to database")
+
         if dataclass.name not in self.tables:
             table_sql = self._build_table_sql(dataclass)
 

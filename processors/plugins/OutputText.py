@@ -1,5 +1,4 @@
 # Standard Library
-from contextlib import nullcontext
 from functools import cached_property
 
 # Third Party
@@ -14,6 +13,7 @@ from seotool.crawl import Crawler
 
 class OutputText:
     show_no_issue = False
+    width: int | None = None
 
     def __init__(self, crawler: Crawler, text_show_no_issue=False, text_save_output=True, text_width=None) -> None:
         self.crawler = crawler
@@ -21,8 +21,8 @@ class OutputText:
 
         if text_save_output and text_width is None:
             self.width = 120
-        else:
-            self.width = int(text_width) if text_width is not None else None
+        elif text_width is not None:
+            self.width = int(text_width)
 
     @cached_property
     def file(self):
@@ -33,24 +33,27 @@ class OutputText:
 
     @hookimpl_processor()
     def process_output(self, resultsSets: list[ResultSet]):
-        with open(self.file, "w") if self.file is not None else nullcontext() as f:
+        if self.file is None:
+            return
+
+        with open(self.file, "w") as f:
             console = Console(file=f, width=self.width)
 
             console.print(f"[underline]SEO Report for {self.crawler.url}[/underline]", justify="center")
             console.print("\n")
             for result_set in resultsSets:
                 table = Table(title=result_set.title, expand=True)
-                if not result_set.has_data:
-                    if not self.show_no_issue:
-                        continue
-                    table.add_row("No issues")
-                else:
+                if result_set.has_data:
                     for key in result_set.data_headers:
                         table.add_column(key)
 
                     for row in result_set.data_flat_dict:
                         table.add_row(*list(row.values()))
 
+                elif not self.show_no_issue:
+                    continue
+                else:
+                    table.add_row("No issues")
                 console.print(table)
                 console.print("\n")
 

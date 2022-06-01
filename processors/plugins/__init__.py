@@ -1,4 +1,4 @@
-def _get_all():
+def _get_all() -> list[str]:
     # Standard Library
     import glob
     from os.path import basename, dirname, isfile, join
