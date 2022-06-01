@@ -18,7 +18,7 @@ class HookType(_HookRelay):
     def process(self, html: BeautifulSoup, url: str, status_code: int, response: response) -> None:
         ...
 
-    def process_output(self, resultsSets: list[ResultSet]) -> list[Awaitable]:
+    def process_output(self, resultsSets: list[ResultSet]) -> list[Awaitable[None]]:
         ...
 
     def get_results_set(self) -> list[ResultSet]:
