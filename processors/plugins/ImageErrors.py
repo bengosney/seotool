@@ -73,12 +73,11 @@ class ImageErrors:
         for image in images:
             try:
                 image_parts = urllib.parse.urlparse(image["src"])
-                if missing_parts := {
-                    field: getattr(base_url_parts, field)
-                    for field in image_parts._fields
-                    if getattr(image_parts, field) == ""
-                }:
-                    image_parts._replace(**missing_parts)
+
+                if image_parts.scheme == "":
+                    image_parts = image_parts._replace(scheme=base_url_parts.scheme)
+                if image_parts.netloc == "":
+                    image_parts = image_parts._replace(netloc=base_url_parts.netloc)
 
                 image_path = urllib.parse.urlunparse(image_parts)
                 request = requests.head(image_path)
@@ -87,3 +86,5 @@ class ImageErrors:
             except ImageErrorException as e:
                 self.crawler.printERR(f"Image error: {e}")
                 self.images.append(ImageError(url, e.path, e.status_code))
+            except Exception as e:
+                self.crawler.printERR(f"Uncaught error: {e}")
