@@ -4,7 +4,7 @@ import os
 # Third Party
 import click
 from jinja2 import Environment, FileSystemLoader, Template
-from pyppeteer import launch
+from playwright.async_api import async_playwright
 
 # First Party
 from processors import ResultSet, hookimpl_processor
@@ -37,9 +37,10 @@ class OutputPDF:
         return self.renderPDF(tmppath, path)
 
     async def renderPDF(self, html_path, pdf_path):
-        browser = await launch()
-        page = await browser.newPage()
-        await page.goto(f"file://{html_path}", {"waitUntil": "domcontentloaded"})
+        playwright = await async_playwright().start()
+        browser = await playwright.chromium.launch()
+        page = await browser.new_page()
+        await page.goto(f"file://{html_path}")
         await page.pdf(path=pdf_path)
         await page.close()
         await browser.close()
