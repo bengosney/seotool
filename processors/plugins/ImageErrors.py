@@ -54,9 +54,14 @@ class ImageErrors:
             errors[image.path].add(image.url)
             status[image.path].add(image.status_code)
 
-        data: list[ResultData] = []
-        for image in errors:
-            data.append(ResultData(image, status_codes=", ".join(map(str, status[image])), urls=list(errors[image])))
+        data: list[ResultData] = [
+            ResultData(
+                image,
+                status_codes=", ".join(map(str, status[image])),
+                urls=list(value),
+            )
+            for image, value in errors.items()
+        ]
 
         return ResultSet("Image Errors", f"{self.__doc__}", data)
 
@@ -68,12 +73,11 @@ class ImageErrors:
         for image in images:
             try:
                 image_parts = urllib.parse.urlparse(image["src"])
-                missing_parts = {}
-                for field in image_parts._fields:
-                    if getattr(image_parts, field) == "":
-                        missing_parts[field] = getattr(base_url_parts, field)
-
-                if len(missing_parts) > 0:
+                if missing_parts := {
+                    field: getattr(base_url_parts, field)
+                    for field in image_parts._fields
+                    if getattr(image_parts, field) == ""
+                }:
                     image_parts._replace(**missing_parts)
 
                 image_path = urllib.parse.urlunparse(image_parts)
