@@ -4,6 +4,7 @@ from playwright.async_api import async_playwright
 
 # First Party
 from engines import engine, response
+from engines.exceptions import EngineResultFailed, EngineUninitialized
 
 
 class playwright(engine):
@@ -34,8 +35,14 @@ class playwright(engine):
             self.playwright = None
 
     async def get(self, url: str, **kwargs) -> response:
+        if self.browser is None:
+            raise EngineUninitialized()
+
         page = await self.browser.new_page()
         result = await page.goto(url)
+
+        if result is None:
+            raise EngineResultFailed()
 
         if self.screenshot:
             title = await page.title()

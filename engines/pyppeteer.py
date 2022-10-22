@@ -4,6 +4,7 @@ from pyppeteer import launch
 
 # First Party
 from engines import engine, response
+from engines.exceptions import EngineResultFailed, EngineUninitialized
 
 
 class pyppeteer(engine):
@@ -15,8 +16,14 @@ class pyppeteer(engine):
         self.screenshot = screenshot
 
     async def get(self, url: str, **kwargs) -> response:
+        if self.browser is None:
+            raise EngineUninitialized()
+
         page = await self.browser.newPage()
         result = await page.goto(url, {"waitUntil": "domcontentloaded"})
+
+        if result is None:
+            raise EngineResultFailed()
 
         if self.screenshot:
             title = await page.title()
