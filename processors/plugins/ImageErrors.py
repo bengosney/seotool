@@ -47,7 +47,7 @@ class ImageErrors:
     @hookimpl_processor
     def get_results_set(self):
 
-        errors: dict[str, list[str]] = defaultdict(lambda: set())
+        errors: dict[str, set[str]] = defaultdict(lambda: set())
         status: dict[str, set[int]] = defaultdict(lambda: set())
 
         for image in self.images:
