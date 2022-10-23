@@ -42,7 +42,7 @@ class Crawler:
         verify: bool = True,
         disabled=[],
         delay: int = 0,
-        engine: str = "playwright",
+        engine: str = "requests",
         plugin_options={},
         worker_count: int = 0,
     ) -> None:
