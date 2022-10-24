@@ -59,7 +59,7 @@ class Crawler:
         self.engine = engine
         self.plugin_options = plugin_options
 
-        self.worker_count = worker_count if worker_count else min(multiprocessing.cpu_count() - 1, 6)
+        self.worker_count = worker_count or min(multiprocessing.cpu_count() - 1, 6)
 
         self.verbose = verbose
 
