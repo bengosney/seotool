@@ -12,6 +12,7 @@ import string
 import urllib.parse
 from collections import deque
 from functools import cached_property
+from time import time
 from typing import Callable
 
 # Third Party
@@ -44,7 +45,7 @@ class Crawler:
         delay: int = 0,
         engine: str = "requests",
         plugin_options={},
-        worker_count: int = 0,
+        worker_count: int | None = None,
     ) -> None:
         self.url = url
         self.verify = verify
@@ -58,11 +59,13 @@ class Crawler:
         self.engine = engine
         self.plugin_options = plugin_options
 
-        self.worker_count = worker_count if worker_count > 0 else multiprocessing.cpu_count()
+        self.worker_count = worker_count if worker_count else min(multiprocessing.cpu_count() - 1, 6)
 
         self.verbose = verbose
 
         self._init_plugins(plugin_options)
+
+        self._last_request: float = 0
 
     @cached_property
     def base_url(self) -> str:
@@ -234,20 +237,28 @@ class Crawler:
 
         return should_process
 
+    async def _delay(self):
+        while True:
+            ts = time()
+            if self.delay <= (ts - self._last_request):
+                self._last_request = ts
+                return
+
+            await asyncio.sleep(0.25)
+
     async def _crawl(self) -> None:
         while self._crawling:
             if sorted(self.visited) == sorted(self.urls) and await self.queue.try_stop():
                 self._crawling = False
                 break
 
-            if self.delay:
-                await asyncio.sleep(self.delay)
-
             async with self.queue as q:
                 url = await q.get()
 
             if url is None:
                 break
+
+            await self._delay()
 
             if url in self.visited:
                 continue
