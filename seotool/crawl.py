@@ -169,6 +169,8 @@ class Crawler:
         self.print("Fetching robots.txt")
         self.rp.set_url(f"{self.base_url}robots.txt")
         self.rp.read()
+        if not self.rp.mtime():
+            self.rp.modified()
 
         if request_rate := self.rp.request_rate("*"):
             self.delay = max(self.delay, (request_rate.seconds / request_rate.requests))
