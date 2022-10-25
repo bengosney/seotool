@@ -73,6 +73,8 @@ class ImageErrors:
         for image in images:
             try:
                 image_parts = urllib.parse.urlparse(image["src"])
+                if image_parts.scheme == "data":
+                    continue
 
                 if image_parts.scheme == "":
                     image_parts = image_parts._replace(scheme=base_url_parts.scheme)
