@@ -38,8 +38,9 @@ def list_plugins(ctx, param, value):
 @click.option(
     "--list-plugins", is_flag=True, callback=list_plugins, expose_value=False, is_eager=True, help="Lists plugins"
 )
+@click.option("--ignore-robots", default=False, is_flag=True, help="Ignores the robots.txt for dissalowed urls")
 @click.version_option()
-def main(url, verbose, plugin, verify, disable, delay, engine, workers: int, **kwargs):
+def main(url, verbose, plugin, verify, disable, delay, engine, workers: int, ignore_robots, **kwargs):
     """This script will crawl give URL and analyse the output using plugins."""
 
     if verbose:
@@ -66,6 +67,7 @@ def main(url, verbose, plugin, verify, disable, delay, engine, workers: int, **k
         engine=engine,
         plugin_options=kwargs,
         worker_count=workers,
+        ignore_robots=ignore_robots,
     )
     asyncio.run(crawler.crawl())
 

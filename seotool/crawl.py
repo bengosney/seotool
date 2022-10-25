@@ -14,6 +14,7 @@ from collections import deque
 from functools import cached_property
 from time import time
 from typing import Callable
+from urllib.robotparser import RobotFileParser
 
 # Third Party
 import pkg_resources
@@ -46,6 +47,7 @@ class Crawler:
         engine: str = "requests",
         plugin_options={},
         worker_count: int | None = None,
+        ignore_robots: bool = False,
     ) -> None:
         self.url = url
         self.verify = verify
@@ -55,7 +57,7 @@ class Crawler:
         self.all_urls: list[str] = []
         self.resolve_cache: dict[str, str] = {}
         self.disabled = disabled
-        self.delay = delay
+        self.delay: float = delay
         self.engine = engine
         self.plugin_options = plugin_options
 
@@ -66,6 +68,8 @@ class Crawler:
         self._init_plugins(plugin_options)
 
         self._last_request: float = 0
+        self.rp = RobotFileParser()
+        self.ignore_robots = ignore_robots
 
     @cached_property
     def base_url(self) -> str:
@@ -161,6 +165,20 @@ class Crawler:
         self.queue.empty()
         await self.queue.put(self.base_url)
 
+    def parse_robots(self):
+        self.print("Fetching robots.txt")
+        self.rp.set_url(f"{self.base_url}robots.txt")
+        self.rp.read()
+
+        if request_rate := self.rp.request_rate("*"):
+            self.delay = max(self.delay, (request_rate.seconds / request_rate.requests))
+
+        if crawl_delay := self.rp.crawl_delay("*"):
+            self.delay = max(self.delay, float(crawl_delay))
+
+    def can_crawl(self, url: str) -> bool:
+        return self.ignore_robots or self.rp.can_fetch("*", url)
+
     async def crawl(self, save: bool = True) -> list[ResultSet]:
         self._crawling = True
 
@@ -169,6 +187,10 @@ class Crawler:
         self.queue = Queue(self.worker_count)
 
         await self.reset_urls()
+        self.parse_robots()
+        if not self.can_crawl(self.base_url):
+            self.printERR("Robots.txt disallows all")
+            return []
 
         engine = self.engine_instance
         async with engine:
@@ -258,10 +280,13 @@ class Crawler:
             if url is None:
                 break
 
-            await self._delay()
-
             if url in self.visited:
                 continue
+
+            if not self.can_crawl(url):
+                continue
+
+            await self._delay()
 
             self.visited.append(url)
             self.print(f"\n-- Crawling {url}\n")
