@@ -47,6 +47,7 @@ class Crawler:
         engine: str = "requests",
         plugin_options={},
         worker_count: int | None = None,
+        ignore_robots: bool = False,
     ) -> None:
         self.url = url
         self.verify = verify
@@ -68,6 +69,7 @@ class Crawler:
 
         self._last_request: float = 0
         self.rp = RobotFileParser()
+        self.ignore_robots = ignore_robots
 
     @cached_property
     def base_url(self) -> str:
@@ -168,16 +170,14 @@ class Crawler:
         self.rp.set_url(f"{self.base_url}robots.txt")
         self.rp.read()
 
-        request_rate = self.rp.request_rate("*")
-        if request_rate is not None:
+        if request_rate := self.rp.request_rate("*"):
             self.delay = max(self.delay, (request_rate.seconds / request_rate.requests))
 
-        crawl_delay = self.rp.crawl_delay("*")
-        if crawl_delay:
+        if crawl_delay := self.rp.crawl_delay("*"):
             self.delay = max(self.delay, float(crawl_delay))
 
     def can_crawl(self, url: str) -> bool:
-        return self.rp.can_fetch("*", url)
+        return self.ignore_robots or self.rp.can_fetch("*", url)
 
     async def crawl(self, save: bool = True) -> list[ResultSet]:
         self._crawling = True
