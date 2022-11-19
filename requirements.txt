@@ -6,7 +6,7 @@
 #
 beautifulsoup4==4.11.1
     # via seotool (setup.py)
-certifi==2021.5.30
+certifi==2022.9.24
     # via requests
 charset-normalizer==2.0.12
     # via requests
