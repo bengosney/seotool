@@ -22,7 +22,7 @@ idna==3.3
     # via requests
 jinja2==3.0.1
     # via seotool (setup.py)
-markdown==3.3.4
+markdown==3.4.1
     # via seotool (setup.py)
 markupsafe==2.0.1
     # via jinja2
