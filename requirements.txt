@@ -44,7 +44,7 @@ rich==11.1.0
     # via seotool (setup.py)
 soupsieve==2.2.1
     # via beautifulsoup4
-urllib3==1.26.8
+urllib3==1.26.12
     # via requests
 websockets==10.1
     # via playwright
