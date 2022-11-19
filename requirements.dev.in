@@ -3,7 +3,7 @@
 icecream
 lorem
 mypy
-pip-tools>=6.6.2
+pip-tools
 pre-commit
 pytest
 pytest-httpserver
