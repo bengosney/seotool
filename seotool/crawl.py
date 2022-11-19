@@ -109,6 +109,10 @@ class Crawler:
         self.processor: Processor = Processor(self, self.plugins, self.disabled, plugin_options or {})
         self.print(f"Loaded plugins: {', '.join(self.processor.plugin_names)}")
 
+    @property
+    def plugin_manager(self):
+        return self.processor.plugin_manager
+
     async def _add_links(self, html_soup: BeautifulSoup) -> None:
         links = html_soup.find_all("a")
         for link in links:

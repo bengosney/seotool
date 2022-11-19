@@ -21,10 +21,14 @@ class Processor:
         self.plugin_options = plugin_options
 
         self.plugin_names = []
-        self.pm = self.get_plugin_manager()
+        self.pm = self._get_plugin_manager()
         self.hook = self.pm.hook
 
-    def get_plugin_manager(self):
+    @property
+    def plugin_manager(self):
+        return self.pm
+
+    def _get_plugin_manager(self):
         pm = pluggy.PluginManager("seo_processor")
         pm.add_hookspecs(hookspecs.processor)
         plugin_default_disabled = []
