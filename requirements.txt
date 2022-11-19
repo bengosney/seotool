@@ -46,5 +46,5 @@ soupsieve==2.2.1
     # via beautifulsoup4
 urllib3==1.26.8
     # via requests
-websockets==10.1
+websockets==10.4
     # via playwright
