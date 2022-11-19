@@ -24,7 +24,7 @@ jinja2==3.1.2
     # via seotool (setup.py)
 markdown==3.3.4
     # via seotool (setup.py)
-markupsafe==2.0.1
+markupsafe==2.1.1
     # via jinja2
 pdfkit==0.6.1
     # via seotool (setup.py)
