@@ -32,7 +32,7 @@ playwright==1.22.0
     # via seotool (setup.py)
 pluggy==1.0.0
     # via seotool (setup.py)
-pyee==8.1.0
+pyee==9.0.4
     # via playwright
 pygments==2.13.0
     # via
