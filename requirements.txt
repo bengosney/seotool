@@ -12,7 +12,7 @@ charset-normalizer==2.0.12
     # via requests
 click==8.0.3
     # via seotool (setup.py)
-colorama==0.4.4
+colorama==0.4.6
     # via rich
 commonmark==0.9.1
     # via rich
