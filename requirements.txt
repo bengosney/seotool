@@ -34,7 +34,7 @@ pluggy==0.13.1
     # via seotool (setup.py)
 pyee==8.1.0
     # via playwright
-pygments==2.9.0
+pygments==2.13.0
     # via
     #   rich
     #   seotool (setup.py)
