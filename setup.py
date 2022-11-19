@@ -4,21 +4,22 @@ from setuptools import find_packages, setup
 
 setup(
     name="seotool",
-    version="2.2.0",
+    version="2.2.1",
     packages=find_packages(),
     python_requires="~=3.10",
     install_requires=[
+        "Jinja2",
         "beautifulsoup4",
-        "rich",
+        "click",
         "markdown",
         "pdfkit",
-        "pyppeteer",
-        "requests",
+        "playwright",
         "pluggy",
-        "Jinja2",
+        "pygments",
+        "requests",
+        "rich",
     ],
     entry_points={
-        # "seo_processor": ["search=processors.plugins.IgnoreSearchPages"]
         "console_scripts": ["seo-crawl=seotool.cli:main"],
         "seo_engines": [
             "playwright=engines.playwright:playwright",
