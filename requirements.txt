@@ -30,7 +30,7 @@ pdfkit==0.6.1
     # via seotool (setup.py)
 playwright==1.22.0
     # via seotool (setup.py)
-pluggy==0.13.1
+pluggy==1.0.0
     # via seotool (setup.py)
 pyee==8.1.0
     # via playwright
