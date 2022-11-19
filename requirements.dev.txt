@@ -6,8 +6,6 @@
 #
 -e file:.#egg=seotool
     # via -r requirements.dev.in
-appdirs==1.4.4
-    # via pyppeteer
 asttokens==2.0.5
     # via icecream
 attrs==21.2.0
@@ -21,7 +19,6 @@ certifi==2021.5.30
     # via
     #   -c requirements.txt
     #   -r requirements.txt
-    #   pyppeteer
     #   requests
 cfgv==3.2.0
     # via pre-commit
@@ -36,6 +33,7 @@ click==8.0.3
     #   -r requirements.txt
     #   pip-tools
     #   pytest-click
+    #   seotool
 colorama==0.4.4
     # via
     #   -c requirements.txt
@@ -67,8 +65,6 @@ idna==3.3
     #   -c requirements.txt
     #   -r requirements.txt
     #   requests
-importlib-metadata==4.11.4
-    # via pyppeteer
 iniconfig==1.1.1
     # via pytest
 jinja2==3.0.1
@@ -111,6 +107,7 @@ playwright==1.22.0
     # via
     #   -c requirements.txt
     #   -r requirements.txt
+    #   seotool
 pluggy==0.13.1
     # via
     #   -c requirements.txt
@@ -126,17 +123,15 @@ pyee==8.1.0
     #   -c requirements.txt
     #   -r requirements.txt
     #   playwright
-    #   pyppeteer
 pygments==2.9.0
     # via
     #   -c requirements.txt
     #   -r requirements.txt
     #   icecream
     #   rich
+    #   seotool
 pyparsing==2.4.7
     # via packaging
-pyppeteer==1.0.2
-    # via seotool
 pytest==6.2.4
     # via
     #   -r requirements.dev.in
@@ -174,8 +169,6 @@ toml==0.10.2
     #   pep517
     #   pre-commit
     #   pytest
-tqdm==4.64.0
-    # via pyppeteer
 typed-ast==1.4.3
     # via mypy
 typing-extensions==3.10.0.0
@@ -186,7 +179,6 @@ urllib3==1.26.8
     # via
     #   -c requirements.txt
     #   -r requirements.txt
-    #   pyppeteer
     #   requests
 virtualenv==20.13.0
     # via pre-commit
@@ -195,13 +187,10 @@ websockets==10.1
     #   -c requirements.txt
     #   -r requirements.txt
     #   playwright
-    #   pyppeteer
 werkzeug==1.0.1
     # via pytest-httpserver
 wheel==0.37.1
     # via pip-tools
-zipp==3.8.0
-    # via importlib-metadata
 
 # The following packages are considered to be unsafe in a requirements file:
 # pip

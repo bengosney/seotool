@@ -42,14 +42,11 @@ $(PRE_COMMIT_PATH): $(PIP_PATH) $(WHEEL_PATH) .direnv
 requirements.%.in:
 	echo "-c requirements.txt" > $@
 
-requirements.in:
-	@touch $@
-
 requirements.%.txt: requirements.%.in requirements.txt
 	@echo "Builing $@"
 	@python -m piptools compile -q -o $@ $^
 
-requirements.txt: requirements.in
+requirements.txt: setup.py
 	@echo "Builing $@"
 	@python -m piptools compile -q $^
 
