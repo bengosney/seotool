@@ -4,7 +4,7 @@
 #
 #    pip-compile setup.py
 #
-beautifulsoup4==4.9.3
+beautifulsoup4==4.11.1
     # via seotool (setup.py)
 certifi==2021.5.30
     # via requests
