@@ -1,7 +1,8 @@
 # Standard Library
 import contextlib
 import inspect
-from typing import Any, Awaitable
+from collections.abc import Awaitable
+from typing import Any
 
 # Third Party
 import pluggy
