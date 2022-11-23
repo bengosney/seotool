@@ -8,7 +8,7 @@ from seotool.crawl import Crawler
 c = Crawler("example.com")
 
 
-def test_missing_meta():
+def test_missing_meta() -> None:
     html = BeautifulSoup(
         """
 <p>content</p>
@@ -23,7 +23,7 @@ def test_missing_meta():
     assert res.data == [ResultData("/")]
 
 
-def test_empty_meta():
+def test_empty_meta() -> None:
     html = BeautifulSoup(
         """
 <meta name="description" content="" />
@@ -38,7 +38,7 @@ def test_empty_meta():
     assert res.data == [ResultData("/")]
 
 
-def test_not_missing_meta():
+def test_not_missing_meta() -> None:
     html = BeautifulSoup(
         """
 <meta name="description" content="bob" />

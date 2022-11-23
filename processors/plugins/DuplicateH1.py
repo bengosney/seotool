@@ -3,6 +3,7 @@ from dataclasses import dataclass
 
 # First Party
 from processors import BaseResultData, ResultSet, hookimpl_processor
+from seotool.crawl import Crawler
 
 
 @dataclass
@@ -14,7 +15,7 @@ class ResultData(BaseResultData):
 class DuplicateH1:
     """Duplicate H1."""
 
-    def __init__(self, crawler):
+    def __init__(self, crawler: Crawler) -> None:
         self.h1s = {}
         self.crawler = crawler
 

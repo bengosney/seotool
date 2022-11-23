@@ -5,6 +5,7 @@ from dataclasses import dataclass
 # First Party
 from engines.dataModels import response
 from processors import BaseResultData, ResultSet, hookimpl_processor
+from seotool.crawl import Crawler
 
 
 @dataclass
@@ -17,12 +18,12 @@ class ResultData(BaseResultData):
 class Internal301:
     """Internal links that 301."""
 
-    def __init__(self, crawler):
+    def __init__(self, crawler: Crawler) -> None:
         self.crawler = crawler
         self.links = {}
         self.url301s = []
 
-    def _find_links(self, url):
+    def _find_links(self, url: str) -> list[str]:
         return sorted(page for page in self.links if url in self.links[page])
 
     @hookimpl_processor

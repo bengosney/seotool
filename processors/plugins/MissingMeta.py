@@ -3,6 +3,7 @@ from dataclasses import dataclass
 
 # First Party
 from processors import BaseResultData, ResultSet, hookimpl_processor
+from seotool.crawl import Crawler
 
 
 @dataclass
@@ -13,7 +14,7 @@ class ResultData(BaseResultData):
 class MissingMeta:
     """Meta descriptions give search engins a synopsys of the page."""
 
-    def __init__(self, crawler):
+    def __init__(self, crawler: Crawler) -> None:
         self.missing_metas: list[str] = []
         self.crawler = crawler
 

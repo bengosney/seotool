@@ -4,6 +4,7 @@ from dataclasses import dataclass
 
 # First Party
 from processors import BaseResultData, ResultSet, hookimpl_processor
+from seotool.crawl import Crawler
 
 
 @dataclass
@@ -15,12 +16,12 @@ class ResultData(BaseResultData):
 class Internal404:
     """Internal 404 links."""
 
-    def __init__(self, crawler):
+    def __init__(self, crawler: Crawler) -> None:
         self.crawler = crawler
         self.links = {}
         self.f404s = []
 
-    def _find_links(self, url):
+    def _find_links(self, url: str) -> list[str]:
         return sorted(page for page in self.links if url in self.links[page])
 
     @hookimpl_processor

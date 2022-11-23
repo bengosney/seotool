@@ -8,6 +8,7 @@ import requests
 
 # First Party
 from processors import BaseResultData, ResultSet, hookimpl_processor
+from seotool.crawl import Crawler
 
 
 @dataclass
@@ -39,7 +40,7 @@ class ImageErrors:
 
     default_disabled = False
 
-    def __init__(self, crawler):
+    def __init__(self, crawler: Crawler) -> None:
         self.crawler = crawler
         self.images: list[ImageError] = []
         self.errors: dict[str, int] = {}

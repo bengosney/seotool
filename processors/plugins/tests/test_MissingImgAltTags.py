@@ -8,7 +8,7 @@ from seotool.crawl import Crawler
 c = Crawler("example.com")
 
 
-def test_missing_img_alt():
+def test_missing_img_alt() -> None:
     html = BeautifulSoup(
         """
 <img src="/bob.png" />
@@ -23,7 +23,7 @@ def test_missing_img_alt():
     assert res.data == [ResultData("/", "/bob.png")]
 
 
-def test_not_missing_img_alt():
+def test_not_missing_img_alt() -> None:
     html = BeautifulSoup(
         """
 <img src="/bob.png" alt="bob" />

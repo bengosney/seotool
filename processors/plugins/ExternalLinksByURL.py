@@ -5,6 +5,7 @@ from dataclasses import dataclass
 
 # First Party
 from processors import BaseResultData, ResultSet, hookimpl_processor
+from seotool.crawl import Crawler
 
 
 @dataclass
@@ -18,7 +19,7 @@ class ExternalLinksByURL:
 
     default_disabled = True
 
-    def __init__(self, crawler):
+    def __init__(self, crawler: Crawler) -> None:
         self.crawler = crawler
         self.links = defaultdict(lambda: [])
 

@@ -8,18 +8,21 @@ from seotool.exceptions import SkipPage
 
 
 def test_clean_name_no_change():
+    # type: () -> None
     name = "bob"
     cleaned_name = Crawler._clean_filename(name)
     assert name == cleaned_name
 
 
 def test_clean_name_changes():
+    # type: () -> None
     name = "-bOb:: '#' ::dOd-"
     cleaned_name = Crawler._clean_filename(name)
     assert cleaned_name == "bob-dod"
 
 
 def test_skip_page():
+    # type: () -> None
     c = Crawler("example.com")
     with pytest.raises(SkipPage):
         c.skip_page()

@@ -8,7 +8,7 @@ from seotool.crawl import Crawler
 c = Crawler("example.com")
 
 
-def test_multiple_h1():
+def test_multiple_h1() -> None:
     html = BeautifulSoup(
         """
 <h1>h1-1</h1>
@@ -24,7 +24,7 @@ def test_multiple_h1():
     assert res.data == [ResultData("/", ["h1-1", "h1-2"])]
 
 
-def test_not_multiple_h1():
+def test_not_multiple_h1() -> None:
     html = BeautifulSoup(
         """
 <h1>h1-1</h1>

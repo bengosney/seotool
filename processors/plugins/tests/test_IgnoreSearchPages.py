@@ -11,7 +11,7 @@ from bs4 import BeautifulSoup
 from processors.plugins.IgnoreSearchPages import IgnoreSearchPages
 
 
-def test_ignore_search_pages():
+def test_ignore_search_pages() -> None:
     html = BeautifulSoup(
         """
 <a href="/link">link</a>

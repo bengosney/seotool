@@ -6,6 +6,7 @@ from typing import Any, Awaitable
 # Third Party
 import pluggy
 from bs4 import BeautifulSoup
+from pluggy._manager import PluginManager
 
 # First Party
 from engines.dataModels import response
@@ -28,7 +29,7 @@ class Processor:
     def plugin_manager(self):
         return self.pm
 
-    def _get_plugin_manager(self):
+    def _get_plugin_manager(self) -> PluginManager:
         pm = pluggy.PluginManager("seo_processor")
         pm.add_hookspecs(hookspecs.processor)
         plugin_default_disabled = []

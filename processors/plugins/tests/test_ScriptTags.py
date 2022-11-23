@@ -8,7 +8,7 @@ from seotool.crawl import Crawler
 c = Crawler("example.com")
 
 
-def test_script_tabs():
+def test_script_tabs() -> None:
     html = BeautifulSoup(
         """
 <script src="/script.js"></script>

@@ -8,7 +8,7 @@ from seotool.crawl import Crawler
 c = Crawler("example.com")
 
 
-def test_missing_h1():
+def test_missing_h1() -> None:
     html = BeautifulSoup(
         """
 <p>Page Content</p>
@@ -23,7 +23,7 @@ def test_missing_h1():
     assert res.data == [ResultData("/")]
 
 
-def test_empty_h1():
+def test_empty_h1() -> None:
     html = BeautifulSoup(
         """
 <h1></h1>
@@ -39,7 +39,7 @@ def test_empty_h1():
     assert res.data == [ResultData("/")]
 
 
-def test_not_missing_h1():
+def test_not_missing_h1() -> None:
     html = BeautifulSoup(
         """
 <h1>Page Content</h1>

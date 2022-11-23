@@ -205,3 +205,4 @@ dmypy.json
 results-*
 .envrc
 .direnv
+type_info.json

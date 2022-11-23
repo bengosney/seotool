@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 from processors.plugins.IgnoreURISchemes import IgnoreURISchemes
 
 
-def test_ignore_uri_schemes():
+def test_ignore_uri_schemes() -> None:
     valid = [
         '<a href="/link">link</a>',
         '<a href="http://www.example.com/">example</a>',

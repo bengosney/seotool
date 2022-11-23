@@ -5,6 +5,7 @@ lorem
 mypy
 pip-tools
 pre-commit
+pyannotate
 pytest
 pytest-httpserver
 pytest-mock

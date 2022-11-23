@@ -13,7 +13,7 @@ from seotool.crawl import Crawler
 class SQLite:
     tables: list[str] = []
 
-    def __init__(self, file="sqlite.db"):
+    def __init__(self, file: str = "sqlite.db") -> None:
         self.file = file
 
     def __enter__(self):

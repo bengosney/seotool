@@ -88,7 +88,9 @@ markupsafe==2.1.1
 mypy==0.991
     # via -r requirements.dev.in
 mypy-extensions==0.4.3
-    # via mypy
+    # via
+    #   mypy
+    #   pyannotate
 nodeenv==1.7.0
     # via pre-commit
 packaging==21.3
@@ -118,6 +120,8 @@ pluggy==1.0.0
     #   pytest
     #   seotool
 pre-commit==2.20.0
+    # via -r requirements.dev.in
+pyannotate==1.2.0
     # via -r requirements.dev.in
 pyee==9.0.4
     # via
@@ -157,7 +161,9 @@ rich==12.6.0
     #   -r requirements.txt
     #   seotool
 six==1.16.0
-    # via asttokens
+    # via
+    #   asttokens
+    #   pyannotate
 soupsieve==2.3.2.post1
     # via
     #   -c requirements.txt

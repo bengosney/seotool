@@ -3,6 +3,7 @@ from dataclasses import dataclass
 
 # First Party
 from processors import BaseResultData, ResultSet, hookimpl_processor
+from seotool.crawl import Crawler
 
 
 @dataclass
@@ -14,7 +15,7 @@ class MissingH1:
     """H1's give users and search engins a good idea of what the page is
     about."""
 
-    def __init__(self, crawler):
+    def __init__(self, crawler: Crawler) -> None:
         self.missing_h1s = []
         self.crawler = crawler
 

@@ -6,7 +6,7 @@ from processors.plugins.DuplicateMeta import ResultData
 from seotool.crawl import Crawler
 
 
-def get_page(body, content):
+def get_page(body: str, content: str) -> str:
     return f"""
 <html>
 <head>
