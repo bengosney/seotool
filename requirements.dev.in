@@ -9,4 +9,5 @@ pytest
 pytest-httpserver
 pytest-mock
 pytest_click
+setup-py-upgrade
 typing-extensions

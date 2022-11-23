@@ -6,6 +6,8 @@
 #
 -e file:.#egg=seotool
     # via -r requirements.dev.in
+ast-decompiler==0.7.0
+    # via table-format
 asttokens==2.1.0
     # via icecream
 attrs==22.1.0
@@ -72,6 +74,8 @@ jinja2==3.1.2
     #   -c requirements.txt
     #   -r requirements.txt
     #   seotool
+libcst==0.4.9
+    # via table-format
 lorem==0.1.1
     # via -r requirements.dev.in
 markdown==3.4.1
@@ -88,13 +92,17 @@ markupsafe==2.1.1
 mypy==0.991
     # via -r requirements.dev.in
 mypy-extensions==0.4.3
-    # via mypy
+    # via
+    #   mypy
+    #   typing-inspect
 nodeenv==1.7.0
     # via pre-commit
 packaging==21.3
     # via
     #   build
     #   pytest
+parsy==2.0
+    # via table-format
 pdfkit==1.0.0
     # via
     #   -c requirements.txt
@@ -145,7 +153,9 @@ pytest-httpserver==1.0.6
 pytest-mock==3.10.0
     # via -r requirements.dev.in
 pyyaml==6.0
-    # via pre-commit
+    # via
+    #   libcst
+    #   pre-commit
 requests==2.28.1
     # via
     #   -c requirements.txt
@@ -156,6 +166,8 @@ rich==12.6.0
     #   -c requirements.txt
     #   -r requirements.txt
     #   seotool
+setup-py-upgrade==1.2.1
+    # via -r requirements.dev.in
 six==1.16.0
     # via asttokens
 soupsieve==2.3.2.post1
@@ -163,20 +175,27 @@ soupsieve==2.3.2.post1
     #   -c requirements.txt
     #   -r requirements.txt
     #   beautifulsoup4
+table-format==1.4.2
+    # via -r requirements.dev.in
 toml==0.10.2
     # via pre-commit
 tomli==2.0.1
     # via
     #   build
     #   mypy
+    #   pep517
     #   pytest
 typing-extensions==4.4.0
     # via
     #   -c requirements.txt
     #   -r requirements.dev.in
     #   -r requirements.txt
+    #   libcst
     #   mypy
     #   pyee
+    #   typing-inspect
+typing-inspect==0.8.0
+    # via libcst
 urllib3==1.26.12
     # via
     #   -c requirements.txt

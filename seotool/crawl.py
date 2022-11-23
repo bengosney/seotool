@@ -11,9 +11,9 @@ import re
 import string
 import urllib.parse
 from collections import deque
+from collections.abc import Callable
 from functools import cached_property
 from time import time
-from typing import Callable
 from urllib.robotparser import RobotFileParser
 
 # Third Party
