@@ -27,6 +27,6 @@ class MissingH1:
     def process(self, html, url):
         h1s = html.find_all("h1")
 
-        if len([h1 for h1 in h1s if h1.getText() != ""]) == 0:
+        if not [h1 for h1 in h1s if h1.getText() != ""]:
             self.missing_h1s.append(url)
             self.crawler.printERR(f"Found no H1 on {url}")
