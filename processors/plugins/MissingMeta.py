@@ -26,6 +26,6 @@ class MissingMeta:
     def process(self, html, url):
         metas = html.find_all("meta", {"name": "description"})
 
-        if len([meta for meta in metas if meta["content"] != ""]) == 0:
+        if not [meta for meta in metas if meta["content"] != ""]:
             self.missing_metas.append(url)
             self.crawler.printERR(f"Found no meta description on {url}")
