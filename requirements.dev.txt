@@ -129,11 +129,11 @@ pytest-mock==3.10.0
     # via -r requirements.dev.in
 pyyaml==6.0
     # via pre-commit
-requests==2.28.1
+requests==2.28.2
     # via
     #   -c requirements.txt
     #   sanitized-package
-rich==13.0.1
+rich==13.1.0
     # via
     #   -c requirements.txt
     #   sanitized-package
@@ -152,7 +152,7 @@ typing-extensions==4.4.0
     #   -c requirements.txt
     #   -r requirements.dev.in
     #   mypy
-urllib3==1.26.13
+urllib3==1.26.14
     # via
     #   -c requirements.txt
     #   requests
