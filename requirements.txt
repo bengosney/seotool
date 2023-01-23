@@ -38,7 +38,7 @@ pygments==2.14.0
     #   seotool (setup.py)
 requests==2.28.2
     # via seotool (setup.py)
-rich==13.1.0
+rich==13.2.0
     # via seotool (setup.py)
 soupsieve==2.3.2.post1
     # via beautifulsoup4
