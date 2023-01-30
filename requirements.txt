@@ -26,7 +26,7 @@ markupsafe==2.1.2
     # via jinja2
 pdfkit==1.0.0
     # via seotool (setup.py)
-playwright==1.29.1
+playwright==1.30.0
     # via seotool (setup.py)
 pluggy==1.0.0
     # via seotool (setup.py)
