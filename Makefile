@@ -22,7 +22,7 @@ help: ## Display this help
 	git init
 
 .pre-commit-config.yaml:
-	curl https://gist.githubusercontent.com/bengosney/4b1f1ab7012380f7e9b9d1d668626143/raw/060fd68f4c7dec75e8481e5f5a4232296282779d/.pre-commit-config.yaml > $@
+	curl https://gist.githubusercontent.com/bengosney/4b1f1ab7012380f7e9b9d1d668626143/raw/.pre-commit-config.yaml > $@
 	python -m pip install pre-commit
 	pre-commit autoupdate
 

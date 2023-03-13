@@ -1,20 +1,23 @@
 # Third Party
 import click
-from playwright.async_api import async_playwright
+from playwright.async_api import TimeoutError, async_playwright
 
 # First Party
 from engines import engine, response
 from engines.exceptions import EngineResultFailed, EngineUninitialized
+from seotool.exceptions import Timeout
 
 
 class playwright(engine):
     playwright = None
     browser = None
+    timeout = 10_000
 
-    def __init__(self, crawler, screenshot=False) -> None:
+    def __init__(self, crawler, screenshot=False, timeout=10_000) -> None:
         super().__init__()
         self.crawler = crawler  # type : seotool.Crawler
         self.screenshot = screenshot
+        self.timeout = timeout
 
     async def __aenter__(self):
         if self.playwright is None:
@@ -31,7 +34,7 @@ class playwright(engine):
             self.browser = None
 
         if self.playwright is not None:
-            await self.playwright.stop()
+            self.playwright.stop()
             self.playwright = None
 
     async def get(self, url: str, **kwargs) -> response:
@@ -39,7 +42,10 @@ class playwright(engine):
             raise EngineUninitialized()
 
         page = await self.browser.new_page()
-        result = await page.goto(url)
+        try:
+            result = await page.goto(url, timeout=self.timeout)
+        except TimeoutError as e:
+            raise Timeout from e
 
         if result is None:
             raise EngineResultFailed()

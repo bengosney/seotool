@@ -10,7 +10,7 @@ import os
 import re
 import string
 import urllib.parse
-from collections import deque
+from collections import defaultdict, deque
 from collections.abc import Callable
 from functools import cached_property
 from time import time
@@ -29,7 +29,7 @@ from engines.dataModels import response
 from engines.engines import engine
 from processors import Processor
 from processors.dataModels import ResultSet
-from seotool.exceptions import SkipPage
+from seotool.exceptions import SkipPage, Timeout
 from seotool.queue import Queue
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -44,7 +44,7 @@ class Crawler:
         verify: bool = True,
         disabled=[],
         delay: int = 0,
-        engine: str = "requests",
+        engine: str | object = "requests",
         plugin_options={},
         worker_count: int | None = None,
         ignore_robots: bool = False,
@@ -70,6 +70,8 @@ class Crawler:
         self._last_request: float = 0
         self.rp = RobotFileParser()
         self.ignore_robots = ignore_robots
+
+        self.fails = defaultdict(lambda: 0)
 
     @cached_property
     def base_url(self) -> str:
@@ -243,6 +245,8 @@ class Crawler:
         engine = self.engine_instance
         try:
             return await engine.get(url, verify=self.verify)
+        except (Timeout, TooManyRedirects) as e:
+            raise e
         except Exception as ERR:
             raise EngineException() from ERR
 
@@ -299,6 +303,13 @@ class Crawler:
 
             try:
                 response = await self.getResponse(url)
+            except Timeout:
+                self.printERR(f"Timeout: {url}")
+                if self.fails[url] < 4:
+                    self.fails[url] += 1
+                    self.visited.remove(url)
+                    await self.queue.put(url)
+                continue
             except TooManyRedirects:
                 self.printERR("Too many redirects, skipping")
                 continue
