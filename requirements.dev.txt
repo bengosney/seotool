@@ -8,7 +8,7 @@
     # via -r requirements.dev.in
 asttokens==2.1.0
     # via icecream
-attrs==22.1.0
+attrs==22.2.0
     # via pytest
 beautifulsoup4==4.11.2
     # via
