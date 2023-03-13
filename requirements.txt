@@ -44,5 +44,5 @@ soupsieve==2.4
     # via beautifulsoup4
 typing-extensions==4.4.0
     # via pyee
-urllib3==1.26.14
+urllib3==1.26.15
     # via requests
