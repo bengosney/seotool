@@ -6,7 +6,7 @@
 #
 -e file:.#egg=seotool
     # via -r requirements.dev.in
-asttokens==2.1.0
+asttokens==2.2.1
     # via icecream
 attrs==22.2.0
     # via pytest
