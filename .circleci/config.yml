@@ -15,6 +15,12 @@ jobs:
           pip-dependency-file: requirements.dev.txt
           pkg-manager: pip
       - run:
+          name: Install headless chromium
+          command: playwright install chromium
+      - run:
+          name: Install playwright deps
+          command: playwright install-deps
+      - run:
           name: Run tests
           command: pytest
 
