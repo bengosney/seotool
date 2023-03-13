@@ -6,6 +6,7 @@ mypy
 pip-tools
 pre-commit
 pytest
+pytest-asyncio
 pytest-httpserver
 pytest-mock
 pytest_click
