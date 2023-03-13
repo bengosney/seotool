@@ -81,7 +81,7 @@ mdurl==0.1.2
     #   markdown-it-py
 mypy==0.991
     # via -r requirements.dev.in
-mypy-extensions==0.4.3
+mypy-extensions==1.0.0
     # via mypy
 nodeenv==1.7.0
     # via pre-commit
