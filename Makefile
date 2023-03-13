@@ -1,4 +1,4 @@
-.PHONY: help clean test install all init dev
+.PHONY: help clean test update install all init dev
 .DEFAULT_GOAL := install
 .PRECIOUS: requirements.%.in
 
@@ -46,7 +46,7 @@ requirements.%.txt: requirements.%.in requirements.txt
 	@echo "Builing $@"
 	@python -m piptools compile -q -o $@ $^
 
-requirements.txt: setup.py
+requirements.txt: pyproject.toml
 	@echo "Builing $@"
 	@python -m piptools compile -q $^
 
@@ -88,3 +88,8 @@ install: $(PIP_SYNC_PATH) python ## Install development requirements (default)
 
 dev: init install ## Start work
 	code .
+
+update: $(PIP_SYNC_PATH) $(REQS)
+	python -m piptools compile --upgrade setup.py
+	python -m piptools compile --upgrade $(filter-out $<,$^)
+	$(MAKE) install

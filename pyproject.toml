@@ -1,16 +1,86 @@
-#[project]
-#name = "seotool"
-#version = "2.2.0"
-#description = "Plugin based cli SEO Reporting Tool"
-#authors = [
-#    "Ben Gosney <bengosney@googlemail.com>"
-#]
-#python = "^3.10"
-#repository = "https://github.com/bengosney/seotool/"
-
 [build-system]
-requires = ["setuptools", "wheel"]
+requires = ["setuptools>=61.2"]
 build-backend = "setuptools.build_meta"
+
+[project]
+name = "seotool"
+version = "2.2.2"
+license = {text = "GPL-3.0"}
+classifiers = ["License :: OSI Approved :: GNU General Public License v3 (GPLv3)"]
+requires-python = "~=3.10"
+dependencies = [
+    "Jinja2",
+    "beautifulsoup4",
+    "click",
+    "markdown",
+    "pdfkit",
+    "playwright",
+    "pluggy",
+    "pygments",
+    "requests",
+    "rich",
+]
+authors = [
+    { name = "Ben Gosney", email = "bengosney@googlemail.com" }
+]
+
+[project.readme]
+file = "README.md"
+content-type = "text/markdown"
+
+[project.entry-points.seo_engines]
+playwright = "engines.playwright:playwright"
+requests = "engines.requests:requests"
+
+[project.scripts]
+seo-crawl = "seotool.cli:main"
+
+[tool.setuptools]
+license-files = ["LICENSE"]
+include-package-data = false
+
+[tool.setuptools.packages]
+find = {namespaces = false}
+
+[tool.isort]
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+ensure_newline_before_comments = true
+line_length = 120
+known_first_party = ["engines", "processors", "seotools"]
+sections = ["FUTURE", "STDLIB", "THIRDPARTY", "FIRSTPARTY", "LOCALFOLDER"]
+import_heading_future = "Future"
+import_heading_stdlib = "Standard Library"
+import_heading_thirdparty = "Third Party"
+import_heading_firstparty = "First Party"
+import_heading_localfolder = "Locals"
+
+[tool.pycodestyle]
+max_line_length = "120"
+
+[tool.flake8]
+exclude = ".git,*migrations*,node_modules,.history"
+max-line-length = "120"
+extend-ignore = "E203"
+
+[tool.mypy]
+check_untyped_defs = true
+disallow_any_generics = true
+disallow_untyped_calls = true
+disallow_untyped_decorators = true
+ignore_errors = false
+ignore_missing_imports = true
+implicit_reexport = false
+strict_optional = true
+strict_equality = true
+no_implicit_optional = true
+warn_unused_ignores = true
+warn_redundant_casts = true
+warn_unused_configs = true
+warn_unreachable = true
+warn_no_return = true
 
 [tool.black]
 line-length = 120
