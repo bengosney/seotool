@@ -95,7 +95,7 @@ pdfkit==1.0.0
     #   seotool
 pip-tools==6.12.3
     # via -r requirements.dev.in
-platformdirs==2.6.2
+platformdirs==3.1.1
     # via virtualenv
 playwright==1.31.1
     # via
