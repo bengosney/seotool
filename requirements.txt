@@ -28,7 +28,7 @@ mdurl==0.1.2
     # via markdown-it-py
 pdfkit==1.0.0
     # via seotool (pyproject.toml)
-playwright==1.31.1
+playwright==1.32.0
     # via seotool (pyproject.toml)
 pluggy==1.0.0
     # via seotool (pyproject.toml)
