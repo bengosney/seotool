@@ -93,11 +93,11 @@ pdfkit==1.0.0
     # via
     #   -c requirements.txt
     #   seotool
-pip-tools==6.12.3
+pip-tools==6.13.0
     # via -r requirements.dev.in
 platformdirs==3.2.0
     # via virtualenv
-playwright==1.32.0
+playwright==1.32.1
     # via
     #   -c requirements.txt
     #   seotool
