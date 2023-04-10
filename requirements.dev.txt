@@ -40,7 +40,7 @@ distlib==0.3.6
     # via virtualenv
 executing==1.2.0
     # via icecream
-filelock==3.10.7
+filelock==3.11.0
     # via virtualenv
 greenlet==2.0.1
     # via
@@ -97,7 +97,7 @@ pip-tools==6.12.3
     # via -r requirements.dev.in
 platformdirs==3.2.0
     # via virtualenv
-playwright==1.32.0
+playwright==1.32.1
     # via
     #   -c requirements.txt
     #   seotool
