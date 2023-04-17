@@ -42,7 +42,7 @@ requests==2.28.2
     # via seotool (pyproject.toml)
 rich==13.3.3
     # via seotool (pyproject.toml)
-soupsieve==2.4
+soupsieve==2.4.1
     # via beautifulsoup4
 typing-extensions==4.5.0
     # via pyee
