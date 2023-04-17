@@ -40,7 +40,7 @@ pygments==2.15.0
     #   seotool (pyproject.toml)
 requests==2.28.2
     # via seotool (pyproject.toml)
-rich==13.3.3
+rich==13.3.4
     # via seotool (pyproject.toml)
 soupsieve==2.4.1
     # via beautifulsoup4
