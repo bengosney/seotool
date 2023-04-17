@@ -8,7 +8,7 @@
     # via -r requirements.dev.in
 asttokens==2.2.1
     # via icecream
-beautifulsoup4==4.12.0
+beautifulsoup4==4.12.2
     # via
     #   -c requirements.txt
     #   seotool
@@ -83,7 +83,7 @@ mypy-extensions==1.0.0
     # via mypy
 nodeenv==1.7.0
     # via pre-commit
-packaging==23.0
+packaging==23.1
     # via
     #   build
     #   pytest
@@ -110,7 +110,7 @@ pyee==9.0.4
     # via
     #   -c requirements.txt
     #   playwright
-pygments==2.14.0
+pygments==2.15.0
     # via
     #   -c requirements.txt
     #   icecream
