@@ -38,7 +38,7 @@ pygments==2.15.1
     # via
     #   rich
     #   seotool (pyproject.toml)
-requests==2.28.2
+requests==2.29.0
     # via seotool (pyproject.toml)
 rich==13.3.4
     # via seotool (pyproject.toml)
