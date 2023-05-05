@@ -18,7 +18,7 @@ def test_duplicates(httpserver: HTTPServer):
     httpserver.expect_request("/").respond_with_data(f"{page2_link}{page3_link}", content_type="text/html")
 
     crawler = Crawler(httpserver.url_for("/"), verbose=False, plugins=["DuplicateContent"])
-    (res,) = crawler.asyncio_crawl(save=False)
+    (res,) = crawler.sync_crawl(save=False)
 
     expected_data = [ResultData(content, sorted([httpserver.url_for("/page2"), httpserver.url_for("/page3")]))]
 
@@ -34,7 +34,7 @@ def test_no_duplicates(httpserver: HTTPServer):
     httpserver.expect_request("/").respond_with_data(f"{page2_link}{page3_link}", content_type="text/html")
 
     crawler = Crawler(httpserver.url_for("/"), verbose=False, plugins=["DuplicateContent"])
-    (res,) = crawler.asyncio_crawl(save=False)
+    (res,) = crawler.sync_crawl(save=False)
 
     expected_data = []
 

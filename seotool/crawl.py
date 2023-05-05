@@ -213,7 +213,7 @@ class Crawler:
 
         return self.processor.get_results_sets()
 
-    def asyncio_crawl(self, save: bool = True) -> list[ResultSet]:
+    def sync_crawl(self, save: bool = True) -> list[ResultSet]:
         return asyncio.run(self.crawl(save))
 
     @staticmethod

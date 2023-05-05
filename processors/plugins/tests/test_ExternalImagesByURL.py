@@ -28,7 +28,7 @@ def test_external(httpserver: HTTPServer):
     )
 
     crawler = Crawler(httpserver.url_for("/"), verbose=False, plugins=["ExternalImagesByURL"])
-    (res,) = crawler.asyncio_crawl(save=False)
+    (res,) = crawler.sync_crawl(save=False)
 
     expected_data = [ResultData(img, sorted([httpserver.url_for("/page1"), httpserver.url_for("/page2")]))]
 
@@ -54,6 +54,6 @@ def test_not_external(httpserver: HTTPServer):
     )
 
     crawler = Crawler(httpserver.url_for("/"), verbose=False, plugins=["ExternalImagesByURL"])
-    (res,) = crawler.asyncio_crawl(save=False)
+    (res,) = crawler.sync_crawl(save=False)
 
     assert res.data == []
