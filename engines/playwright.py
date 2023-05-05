@@ -39,7 +39,7 @@ class playwright(engine):
             self.browser = None
 
         if self.playwright is not None:
-            self.playwright.stop()
+            await self.playwright.stop()
             self.playwright = None
 
     async def get(self, url: str, **kwargs) -> response:
