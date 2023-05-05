@@ -14,7 +14,7 @@ def test_duplicates(httpserver: HTTPServer):
     )
 
     crawler = Crawler(httpserver.url_for("/"), verbose=False, plugins=["DuplicateH1"])
-    (res,) = crawler.asyncio_crawl(save=False)
+    (res,) = crawler.sync_crawl(save=False)
 
     expected_data = [ResultData("page1", sorted([httpserver.url_for("/"), httpserver.url_for("/page2")]))]
 
@@ -29,6 +29,6 @@ def test_no_duplicates(httpserver: HTTPServer):
     )
 
     crawler = Crawler(httpserver.url_for("/"), verbose=False, plugins=["DuplicateH1"])
-    res = crawler.asyncio_crawl(save=False)[0]
+    res = crawler.sync_crawl(save=False)[0]
 
     assert res.data == []

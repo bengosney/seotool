@@ -26,6 +26,6 @@ def test_ignoring_pdf(httpserver: HTTPServer):
     )
 
     crawler = Crawler(httpserver.url_for("/"), verbose=False, plugins=["IgnorePDF"])
-    crawler.asyncio_crawl(save=False)
+    crawler.sync_crawl(save=False)
 
     assert sorted(crawler.all_urls) == sorted([httpserver.url_for("/page1"), httpserver.url_for("/")])

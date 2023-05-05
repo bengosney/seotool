@@ -25,7 +25,7 @@ def test_internal_301(httpserver: HTTPServer):
     page1_url = httpserver.url_for("/")
 
     crawler = Crawler(httpserver.url_for("/"), verbose=False, plugins=["Internal301"])
-    (res,) = crawler.asyncio_crawl(save=False)
+    (res,) = crawler.sync_crawl(save=False)
 
     expected_data = [
         ResultData(page2_url, page2_url, sorted([page1_url, page3_url])),

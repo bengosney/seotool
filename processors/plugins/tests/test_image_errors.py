@@ -14,7 +14,7 @@ def test_image_error(httpserver: HTTPServer):
     )
 
     crawler = Crawler(httpserver.url_for("/"), verbose=False, plugins=["ImageErrors"])
-    (res,) = crawler.asyncio_crawl(save=False)
+    (res,) = crawler.sync_crawl(save=False)
 
     expected_data = [ResultData(img, "404", [httpserver.url_for("/")])]
 
@@ -29,7 +29,7 @@ def test_image_ok(httpserver: HTTPServer):
     )
 
     crawler = Crawler(httpserver.url_for("/"), verbose=False, plugins=["ImageErrors"])
-    (res,) = crawler.asyncio_crawl(save=False)
+    (res,) = crawler.sync_crawl(save=False)
 
     expected_data = []
 
@@ -45,7 +45,7 @@ def test_image_mixed(httpserver: HTTPServer):
     )
 
     crawler = Crawler(httpserver.url_for("/"), verbose=False, plugins=["ImageErrors"])
-    (res,) = crawler.asyncio_crawl(save=False)
+    (res,) = crawler.sync_crawl(save=False)
 
     expected_data = [ResultData(img_bad, "404", [httpserver.url_for("/")])]
 

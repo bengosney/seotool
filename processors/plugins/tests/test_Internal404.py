@@ -25,7 +25,7 @@ def test_internal_404(httpserver: HTTPServer):
     page1_url = httpserver.url_for("/")
 
     crawler = Crawler(httpserver.url_for("/"), verbose=False, plugins=["Internal404"])
-    (res,) = crawler.asyncio_crawl(save=False)
+    (res,) = crawler.sync_crawl(save=False)
 
     expected_data = [
         ResultData(page2_url, sorted([page1_url, page3_url])),

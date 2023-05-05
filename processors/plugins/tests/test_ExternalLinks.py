@@ -14,7 +14,7 @@ def test_external(httpserver: HTTPServer):
     )
 
     crawler = Crawler(httpserver.url_for("/"), verbose=False, plugins=["ExternalLinks"])
-    (res,) = crawler.asyncio_crawl(save=False)
+    (res,) = crawler.sync_crawl(save=False)
 
     expected_data = [ResultData(link)]
 
@@ -28,7 +28,7 @@ def test_not_external(httpserver: HTTPServer):
     )
 
     crawler = Crawler(httpserver.url_for("/"), verbose=False, plugins=["ExternalLinks"])
-    (res,) = crawler.asyncio_crawl(save=False)
+    (res,) = crawler.sync_crawl(save=False)
 
     assert res.data == []
 
@@ -41,7 +41,7 @@ def test_mixed(httpserver: HTTPServer):
     )
 
     crawler = Crawler(httpserver.url_for("/"), verbose=False, plugins=["ExternalLinks"])
-    (res,) = crawler.asyncio_crawl(save=False)
+    (res,) = crawler.sync_crawl(save=False)
 
     expected_data = [ResultData(link)]
 
