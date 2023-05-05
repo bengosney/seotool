@@ -48,5 +48,5 @@ typing-extensions==4.5.0
     # via pyee
 unsync==1.4.0
     # via seotool (pyproject.toml)
-urllib3==1.26.15
+urllib3==2.0.2
     # via requests
