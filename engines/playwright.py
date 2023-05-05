@@ -70,7 +70,7 @@ class playwright(engine):
     def get_options(cls):
         def install(ctx, param, value) -> None:
             if value is not None:
-                cmd = ["playwright", "install"]
+                cmd = ["python", "-m", "playwright", "install"]
                 if value != "default":
                     cmd.append(value)
                 subprocess.run(cmd)
