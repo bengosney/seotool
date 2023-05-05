@@ -1,3 +1,6 @@
+# Standard Library
+import subprocess
+
 # Third Party
 import click
 from playwright.async_api import TimeoutError, async_playwright
@@ -12,19 +15,21 @@ class playwright(engine):
     playwright = None
     browser = None
     timeout = 10_000
+    browser_name = "chromium"
 
-    def __init__(self, crawler, screenshot=False, timeout=10_000) -> None:
+    def __init__(self, crawler, screenshot=False, timeout=10_000, browser="chromium") -> None:
         super().__init__()
         self.crawler = crawler  # type : seotool.Crawler
         self.screenshot = screenshot
         self.timeout = timeout
+        self.browser_name = browser
 
     async def __aenter__(self):
         if self.playwright is None:
             self.playwright = await async_playwright().start()
 
         if self.browser is None:
-            self.browser = await self.playwright.chromium.launch()
+            self.browser = await self.playwright[self.browser_name].launch()
 
         return self
 
@@ -57,6 +62,42 @@ class playwright(engine):
 
         return response(headers=result.headers, status_code=result.status, url=result.url, body=await page.content())
 
-    @staticmethod
-    def get_options():
-        return [click.option("--screenshot", is_flag=True, help="Take screen shots of every page (playwrite only)")]
+    @classmethod
+    def get_supported_browsers(cls):
+        return ["chromium", "chrome", "chrome-beta", "msedge", "msedge-beta", "msedge-dev", "firefox", "webkit"]
+
+    @classmethod
+    def get_options(cls):
+        def install(ctx, param, value) -> None:
+            if value is not None:
+                cmd = ["playwright", "install"]
+                if value != "default":
+                    cmd.append(value)
+                subprocess.run(cmd)
+
+                ctx.exit()
+
+        return [
+            click.option("--screenshot", is_flag=True, help="Take screen shots of every page (playwrite only)"),
+            click.option("--timeout", type=int, help="Browser timeout"),
+            click.option(
+                "--playwright-browser",
+                type=click.Choice(cls.get_supported_browsers(), case_sensitive=False),
+                default="chromium",
+                help="Browser for playwright to use",
+            ),
+            click.option(
+                "--playwright-install",
+                type=click.Choice(
+                    [
+                        "default",
+                    ]
+                    + cls.get_supported_browsers(),
+                    case_sensitive=False,
+                ),
+                callback=install,
+                expose_value=False,
+                is_eager=True,
+                help="Install the browsers for playwright",
+            ),
+        ]

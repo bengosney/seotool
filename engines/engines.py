@@ -19,3 +19,7 @@ class engine(ABC):
     @staticmethod
     def get_options() -> list:
         return []
+
+    @staticmethod
+    def get_commands() -> list:
+        return []
