@@ -89,7 +89,7 @@ install: $(PIP_SYNC_PATH) python ## Install development requirements (default)
 dev: init install ## Start work
 	code .
 
-update: $(PIP_SYNC_PATH) $(REQS)
-	python -m piptools compile --upgrade setup.py
+update: $(PIP_SYNC_PATH) $(INS)
+	python -m piptools compile --upgrade pyproject.toml
 	python -m piptools compile --upgrade $(filter-out $<,$^)
 	$(MAKE) install
