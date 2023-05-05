@@ -28,7 +28,7 @@ mdurl==0.1.2
     # via markdown-it-py
 pdfkit==1.0.0
     # via seotool (pyproject.toml)
-playwright==1.32.1
+playwright==1.33.0
     # via seotool (pyproject.toml)
 pluggy==1.0.0
     # via seotool (pyproject.toml)
@@ -38,7 +38,7 @@ pygments==2.15.1
     # via
     #   rich
     #   seotool (pyproject.toml)
-requests==2.29.0
+requests==2.30.0
     # via seotool (pyproject.toml)
 rich==13.3.5
     # via seotool (pyproject.toml)
@@ -46,7 +46,5 @@ soupsieve==2.4.1
     # via beautifulsoup4
 typing-extensions==4.5.0
     # via pyee
-unsync==1.4.0
-    # via seotool (pyproject.toml)
-urllib3==1.26.15
+urllib3==2.0.2
     # via requests
