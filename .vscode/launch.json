@@ -1,6 +1,14 @@
 {
   "version": "0.2.0",
   "configurations": [
+    {
+      "name": "Python: install",
+      "type": "python",
+      "request": "launch",
+      "module": "playwright",
+      "args": ["install"],
+      "justMyCode": false
+    },
 
     {
       "name": "Python: iibd",
@@ -18,7 +26,8 @@
       "console": "integratedTerminal",
       "args": [
         "--ignore-robots",
-        "--plugin", "LinkMap",
+        "--plugin",
+        "LinkMap",
         "https://www.stretchtheirlegs.co.uk"
       ]
     }

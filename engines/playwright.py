@@ -3,6 +3,7 @@ import subprocess
 
 # Third Party
 import click
+from playwright._impl._driver import compute_driver_executable, get_driver_env
 from playwright.async_api import TimeoutError, async_playwright
 
 # First Party
@@ -70,10 +71,12 @@ class playwright(engine):
     def get_options(cls):
         def install(ctx, param, value) -> None:
             if value is not None:
-                cmd = ["python", "-m", "playwright", "install"]
+                args = ["install"]
                 if value != "default":
-                    cmd.append(value)
-                subprocess.run(cmd)
+                    args.append(value)
+
+                driver_executable = compute_driver_executable()
+                subprocess.run([str(driver_executable), *args], env=get_driver_env())
 
                 ctx.exit()
 
