@@ -104,7 +104,7 @@ pluggy==1.0.0
     #   -c requirements.txt
     #   pytest
     #   seotool
-pre-commit==3.3.1
+pre-commit==3.3.2
     # via -r requirements.dev.in
 pyee==9.0.4
     # via
