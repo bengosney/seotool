@@ -32,7 +32,7 @@ playwright==1.33.0
     # via seotool (pyproject.toml)
 pluggy==1.0.0
     # via seotool (pyproject.toml)
-pyee==9.0.4
+pyee==10.0.1
     # via playwright
 pygments==2.15.1
     # via
