@@ -64,7 +64,7 @@ markdown==3.4.3
     # via
     #   -c requirements.txt
     #   seotool
-markdown-it-py==2.2.0
+markdown-it-py==3.0.0
     # via
     #   -c requirements.txt
     #   rich
@@ -93,7 +93,7 @@ pdfkit==1.0.0
     #   seotool
 pip-tools==6.13.0
     # via -r requirements.dev.in
-platformdirs==3.5.3
+platformdirs==3.6.0
     # via virtualenv
 playwright==1.33.0
     # via
@@ -141,7 +141,7 @@ requests==2.31.0
     # via
     #   -c requirements.txt
     #   seotool
-rich==13.4.1
+rich==13.4.2
     # via
     #   -c requirements.txt
     #   seotool
@@ -159,7 +159,7 @@ typing-extensions==4.5.0
     #   -r requirements.dev.in
     #   mypy
     #   pyee
-urllib3==2.0.2
+urllib3==2.0.3
     # via
     #   -c requirements.txt
     #   requests
