@@ -24,7 +24,7 @@ charset-normalizer==3.2.0
     # via
     #   -c requirements.txt
     #   requests
-click==8.1.4
+click==8.1.5
     # via
     #   -c requirements.txt
     #   pip-tools
@@ -163,7 +163,7 @@ urllib3==2.0.3
     # via
     #   -c requirements.txt
     #   requests
-virtualenv==20.24.0
+virtualenv==20.24.2
     # via pre-commit
 werkzeug==2.3.6
     # via pytest-httpserver
