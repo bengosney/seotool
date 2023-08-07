@@ -60,7 +60,7 @@ jinja2==3.1.2
     #   seotool
 lorem==0.1.1
     # via -r requirements.dev.in
-markdown==3.4.3
+markdown==3.4.4
     # via
     #   -c requirements.txt
     #   seotool
@@ -91,7 +91,7 @@ pdfkit==1.0.0
     # via
     #   -c requirements.txt
     #   seotool
-pip-tools==7.1.0
+pip-tools==7.2.0
     # via -r requirements.dev.in
 platformdirs==3.10.0
     # via virtualenv
@@ -141,7 +141,7 @@ requests==2.31.0
     # via
     #   -c requirements.txt
     #   seotool
-rich==13.4.2
+rich==13.5.1
     # via
     #   -c requirements.txt
     #   seotool
