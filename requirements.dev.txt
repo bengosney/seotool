@@ -60,7 +60,7 @@ jinja2==3.1.2
     #   seotool
 lorem==0.1.1
     # via -r requirements.dev.in
-markdown==3.4.3
+markdown==3.4.4
     # via
     #   -c requirements.txt
     #   seotool
@@ -141,7 +141,7 @@ requests==2.31.0
     # via
     #   -c requirements.txt
     #   seotool
-rich==13.4.2
+rich==13.5.1
     # via
     #   -c requirements.txt
     #   seotool
@@ -167,7 +167,7 @@ virtualenv==20.24.2
     # via pre-commit
 werkzeug==2.3.6
     # via pytest-httpserver
-wheel==0.41.0
+wheel==0.41.1
     # via pip-tools
 
 # The following packages are considered to be unsafe in a requirements file:
