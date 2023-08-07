@@ -34,7 +34,7 @@ pluggy==1.2.0
     # via seotool (pyproject.toml)
 pyee==9.0.4
     # via playwright
-pygments==2.15.1
+pygments==2.16.1
     # via
     #   rich
     #   seotool (pyproject.toml)
