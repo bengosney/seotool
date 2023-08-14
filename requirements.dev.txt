@@ -91,7 +91,7 @@ pdfkit==1.0.0
     # via
     #   -c requirements.txt
     #   seotool
-pip-tools==7.2.0
+pip-tools==7.3.0
     # via -r requirements.dev.in
 platformdirs==3.10.0
     # via virtualenv
@@ -110,7 +110,7 @@ pyee==9.0.4
     # via
     #   -c requirements.txt
     #   playwright
-pygments==2.15.1
+pygments==2.16.1
     # via
     #   -c requirements.txt
     #   icecream
@@ -141,7 +141,7 @@ requests==2.31.0
     # via
     #   -c requirements.txt
     #   seotool
-rich==13.5.1
+rich==13.5.2
     # via
     #   -c requirements.txt
     #   seotool
