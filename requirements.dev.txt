@@ -110,7 +110,7 @@ pyee==9.0.4
     # via
     #   -c requirements.txt
     #   playwright
-pygments==2.15.1
+pygments==2.16.1
     # via
     #   -c requirements.txt
     #   icecream
@@ -141,7 +141,7 @@ requests==2.31.0
     # via
     #   -c requirements.txt
     #   seotool
-rich==13.5.1
+rich==13.5.2
     # via
     #   -c requirements.txt
     #   seotool
@@ -163,7 +163,7 @@ urllib3==2.0.4
     # via
     #   -c requirements.txt
     #   requests
-virtualenv==20.24.2
+virtualenv==20.24.3
     # via pre-commit
 werkzeug==2.3.6
     # via pytest-httpserver
