@@ -146,9 +146,7 @@ class Crawler:
         with contextlib.suppress(FileExistsError):
             os.makedirs(self.results_base_path)
         results_store = self.processor.get_results_sets()
-        awaits = self.processor.process_results_sets(results_store)
-
-        await asyncio.wait(awaits)
+        await self.processor.process_results_sets(results_store)
 
     def get_output_name(self, name: str, extention: str, folder: str = "") -> str:
         path = os.path.join(self.results_base_path, folder)

@@ -1,7 +1,6 @@
 # Standard Library
 import contextlib
 import inspect
-from collections.abc import Awaitable
 from typing import Any
 
 # Third Party
@@ -69,8 +68,12 @@ class Processor:
     def get_results_sets(self) -> list[ResultSet]:
         return self.hook.get_results_set()
 
-    def process_results_sets(self, resultsSets: list[ResultSet]) -> list[Awaitable]:
-        return self.hook.process_output(resultsSets=resultsSets)
+    async def process_results_sets(self, resultsSets: list[ResultSet]) -> None:
+        for results in self.hook.process_output(resultsSets=resultsSets):
+            try:
+                await results
+            except TypeError:
+                pass
 
     def get_options(self) -> list:
         return self.hook.get_options()

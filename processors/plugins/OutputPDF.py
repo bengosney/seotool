@@ -17,7 +17,7 @@ class OutputPDF:
         self.template = html_template
 
     @hookimpl_processor()
-    def process_output(self, resultsSets: list[ResultSet]):
+    async def process_output(self, resultsSets: list[ResultSet]):
         self.crawler.print("Writing PDF")
 
         tmppath = self.crawler.get_output_name("temp", "html")
@@ -34,7 +34,7 @@ class OutputPDF:
         with open(tmppath, "w") as f:
             f.write(template.render(**data))
 
-        return self.renderPDF(tmppath, path)
+        return await self.renderPDF(tmppath, path)
 
     async def renderPDF(self, html_path, pdf_path):
         playwright = await async_playwright().start()
