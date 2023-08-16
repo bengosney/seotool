@@ -70,10 +70,8 @@ class Processor:
 
     async def process_results_sets(self, resultsSets: list[ResultSet]) -> None:
         for results in self.hook.process_output(resultsSets=resultsSets):
-            try:
+            with contextlib.suppress(TypeError):
                 await results
-            except TypeError:
-                pass
 
     def get_options(self) -> list:
         return self.hook.get_options()
