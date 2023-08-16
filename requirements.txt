@@ -12,7 +12,7 @@ charset-normalizer==3.2.0
     # via requests
 click==8.1.6
     # via seotool (pyproject.toml)
-greenlet==2.0.1
+greenlet==2.0.2
     # via playwright
 idna==3.4
     # via requests
@@ -28,7 +28,7 @@ mdurl==0.1.2
     # via markdown-it-py
 pdfkit==1.0.0
     # via seotool (pyproject.toml)
-playwright==1.33.0
+playwright==1.37.0
     # via seotool (pyproject.toml)
 pluggy==1.2.0
     # via seotool (pyproject.toml)
@@ -44,7 +44,7 @@ rich==13.5.2
     # via seotool (pyproject.toml)
 soupsieve==2.4.1
     # via beautifulsoup4
-typing-extensions==4.5.0
+typing-extensions==4.7.1
     # via pyee
 urllib3==2.0.4
     # via requests
