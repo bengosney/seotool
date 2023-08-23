@@ -70,7 +70,7 @@ class Processor:
 
     async def process_results_sets(self, resultsSets: list[ResultSet]) -> None:
         for results in self.hook.process_output(resultsSets=resultsSets):
-            with contextlib.suppress(TypeError):
+            if inspect.isawaitable(results):
                 await results
 
     def get_options(self) -> list:
