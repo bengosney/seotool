@@ -24,7 +24,7 @@ charset-normalizer==3.2.0
     # via
     #   -c requirements.txt
     #   requests
-click==8.1.6
+click==8.1.7
     # via
     #   -c requirements.txt
     #   pip-tools
@@ -167,7 +167,7 @@ virtualenv==20.24.3
     # via pre-commit
 werkzeug==2.3.7
     # via pytest-httpserver
-wheel==0.41.1
+wheel==0.41.2
     # via pip-tools
 
 # The following packages are considered to be unsafe in a requirements file:
