@@ -38,7 +38,7 @@ distlib==0.3.7
     # via virtualenv
 executing==1.2.0
     # via icecream
-filelock==3.12.2
+filelock==3.12.3
     # via virtualenv
 greenlet==2.0.2
     # via
