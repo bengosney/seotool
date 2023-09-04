@@ -118,7 +118,7 @@ pygments==2.16.1
     #   seotool
 pyproject-hooks==1.0.0
     # via build
-pytest==7.4.0
+pytest==7.4.1
     # via
     #   -r requirements.dev.in
     #   pytest-asyncio
