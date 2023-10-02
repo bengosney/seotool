@@ -83,7 +83,7 @@ mypy-extensions==1.0.0
     # via mypy
 nodeenv==1.8.0
     # via pre-commit
-packaging==23.1
+packaging==23.2
     # via
     #   build
     #   pytest
@@ -95,7 +95,7 @@ pip-tools==7.3.0
     # via -r requirements.dev.in
 platformdirs==3.10.0
     # via virtualenv
-playwright==1.37.0
+playwright==1.38.0
     # via
     #   -c requirements.txt
     #   seotool
@@ -141,7 +141,7 @@ requests==2.31.0
     # via
     #   -c requirements.txt
     #   seotool
-rich==13.5.2
+rich==13.5.3
     # via
     #   -c requirements.txt
     #   seotool
@@ -159,7 +159,7 @@ typing-extensions==4.7.1
     #   -r requirements.dev.in
     #   mypy
     #   pyee
-urllib3==2.0.4
+urllib3==2.0.5
     # via
     #   -c requirements.txt
     #   requests
