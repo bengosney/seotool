@@ -36,7 +36,7 @@ coverage[toml]==7.3.0
     # via pytest-cov
 distlib==0.3.7
     # via virtualenv
-executing==1.2.0
+executing==2.0.0
     # via icecream
 filelock==3.12.4
     # via virtualenv
