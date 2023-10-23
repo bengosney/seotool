@@ -133,7 +133,7 @@ pytest-cov==4.1.0
     # via -r requirements.dev.in
 pytest-httpserver==1.0.8
     # via -r requirements.dev.in
-pytest-mock==3.11.1
+pytest-mock==3.12.0
     # via -r requirements.dev.in
 pyyaml==6.0.1
     # via pre-commit
@@ -159,7 +159,7 @@ typing-extensions==4.7.1
     #   -r requirements.dev.in
     #   mypy
     #   pyee
-urllib3==2.0.6
+urllib3==2.0.7
     # via
     #   -c requirements.txt
     #   requests
