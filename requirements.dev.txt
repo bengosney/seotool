@@ -6,7 +6,7 @@
 #
 -e file:.#egg=seotool
     # via -r requirements.dev.in
-asttokens==2.4.0
+asttokens==2.4.1
     # via icecream
 beautifulsoup4==4.12.2
     # via
