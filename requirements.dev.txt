@@ -167,7 +167,7 @@ virtualenv==20.24.6
     # via pre-commit
 werkzeug==3.0.1
     # via pytest-httpserver
-wheel==0.41.2
+wheel==0.41.3
     # via pip-tools
 
 # The following packages are considered to be unsafe in a requirements file:
