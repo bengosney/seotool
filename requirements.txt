@@ -14,7 +14,7 @@ click==8.1.7
     # via seotool (pyproject.toml)
 greenlet==2.0.2
     # via playwright
-idna==3.4
+idna==3.6
     # via requests
 jinja2==3.1.2
     # via seotool (pyproject.toml)
