@@ -12,7 +12,7 @@ charset-normalizer==3.3.2
     # via requests
 click==8.1.7
     # via seotool (pyproject.toml)
-greenlet==2.0.2
+greenlet==3.0.2
     # via playwright
 idna==3.6
     # via requests
