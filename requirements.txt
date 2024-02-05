@@ -22,7 +22,7 @@ markdown==3.5.2
     # via seotool (pyproject.toml)
 markdown-it-py==3.0.0
     # via rich
-markupsafe==2.1.4
+markupsafe==2.1.5
     # via jinja2
 mdurl==0.1.2
     # via markdown-it-py
