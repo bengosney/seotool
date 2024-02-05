@@ -6,7 +6,7 @@
 #
 beautifulsoup4==4.12.3
     # via seotool (pyproject.toml)
-certifi==2023.11.17
+certifi==2024.2.2
     # via requests
 charset-normalizer==3.3.2
     # via requests
