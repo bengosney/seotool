@@ -95,13 +95,13 @@ pdfkit==1.0.0
     #   seotool
 pip-tools==7.3.0
     # via -r requirements.dev.in
-platformdirs==4.1.0
+platformdirs==4.2.0
     # via virtualenv
 playwright==1.38.0
     # via
     #   -c requirements.txt
     #   seotool
-pluggy==1.3.0
+pluggy==1.4.0
     # via
     #   -c requirements.txt
     #   pytest
