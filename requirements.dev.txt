@@ -14,7 +14,7 @@ beautifulsoup4==4.12.3
     #   seotool
 build==1.0.3
     # via pip-tools
-certifi==2023.11.17
+certifi==2024.2.2
     # via
     #   -c requirements.txt
     #   requests
@@ -70,7 +70,7 @@ markdown-it-py==3.0.0
     # via
     #   -c requirements.txt
     #   rich
-markupsafe==2.1.4
+markupsafe==2.1.5
     # via
     #   -c requirements.txt
     #   jinja2
@@ -127,7 +127,7 @@ pytest==7.4.4
     #   pytest-click
     #   pytest-cov
     #   pytest-mock
-pytest-asyncio==0.23.4
+pytest-asyncio==0.23.5
     # via -r requirements.dev.in
 pytest-click==1.1.0
     # via -r requirements.dev.in
@@ -161,7 +161,7 @@ typing-extensions==4.7.1
     #   -r requirements.dev.in
     #   mypy
     #   pyee
-urllib3==2.1.0
+urllib3==2.2.0
     # via
     #   -c requirements.txt
     #   requests
