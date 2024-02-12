@@ -127,7 +127,7 @@ pytest==7.4.4
     #   pytest-click
     #   pytest-cov
     #   pytest-mock
-pytest-asyncio==0.23.4
+pytest-asyncio==0.23.5
     # via -r requirements.dev.in
 pytest-click==1.1.0
     # via -r requirements.dev.in
