@@ -93,7 +93,7 @@ pdfkit==1.0.0
     # via
     #   -c requirements.txt
     #   seotool
-pip-tools==7.3.0
+pip-tools==7.4.0
     # via -r requirements.dev.in
 platformdirs==4.2.0
     # via virtualenv
@@ -119,7 +119,9 @@ pygments==2.17.2
     #   rich
     #   seotool
 pyproject-hooks==1.0.0
-    # via build
+    # via
+    #   build
+    #   pip-tools
 pytest==7.4.4
     # via
     #   -r requirements.dev.in
