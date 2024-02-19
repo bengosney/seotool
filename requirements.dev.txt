@@ -135,7 +135,7 @@ pytest-click==1.1.0
     # via -r requirements.dev.in
 pytest-cov==4.1.0
     # via -r requirements.dev.in
-pytest-httpserver==1.0.8
+pytest-httpserver==1.0.9
     # via -r requirements.dev.in
 pytest-mock==3.12.0
     # via -r requirements.dev.in
