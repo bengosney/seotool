@@ -122,7 +122,7 @@ pyproject-hooks==1.0.0
     # via
     #   build
     #   pip-tools
-pytest==8.0.2
+pytest==8.1.1
     # via
     #   -r requirements.dev.in
     #   pytest-asyncio
@@ -145,7 +145,7 @@ requests==2.31.0
     # via
     #   -c requirements.txt
     #   seotool
-rich==13.7.0
+rich==13.7.1
     # via
     #   -c requirements.txt
     #   seotool
