@@ -93,7 +93,7 @@ pdfkit==1.0.0
     # via
     #   -c requirements.txt
     #   seotool
-pip-tools==7.4.0
+pip-tools==7.4.1
     # via -r requirements.dev.in
 platformdirs==4.2.0
     # via virtualenv
