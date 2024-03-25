@@ -33,9 +33,7 @@ click==8.1.7
 colorama==0.4.6
     # via icecream
 coverage[toml]==7.3.0
-    # via
-    #   coverage
-    #   pytest-cov
+    # via pytest-cov
 distlib==0.3.8
     # via virtualenv
 executing==2.0.1
@@ -137,7 +135,7 @@ pytest-cov==4.1.0
     # via -r requirements.dev.in
 pytest-httpserver==1.0.10
     # via -r requirements.dev.in
-pytest-mock==3.12.0
+pytest-mock==3.14.0
     # via -r requirements.dev.in
 pyyaml==6.0.1
     # via pre-commit
